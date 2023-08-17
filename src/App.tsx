@@ -1,6 +1,5 @@
 import React from 'react'
 import Menu from './components/layout/Menu'
-import Line from './components/Line'
 
 function App() {
   return (

@@ -23,20 +23,20 @@ import {
   Inbox as InboxIcon,
   Email as MailIcon,
   ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon     
+  ChevronRight as ChevronRightIcon
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
-import Circle from '../Circle'
-import Line from '../Line'
 import Circuferencia from '../pages/circuferencia/Conteiner'
-import {TEMA_COR }from '../material.theme'
+import Transformacoes from '../pages/tranformacoes/Conteiner'
+
+import { TEMA_COR } from '../material.theme'
 const drawerWidth = 240;
 
 
-const useStyles =  makeStyles({
-  ativo:{
-    backgroundColor:"#F3F3"    
+const useStyles = makeStyles({
+  ativo: {
+    backgroundColor: "#F3F3"
   }
 })
 
@@ -94,19 +94,17 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const object = (value: number) => {
   switch (value) {
     case 0:
-      return <Circuferencia />
+      return <Transformacoes />
 
-    case 1:
-      return <Circle />
-
+ 
     default:
-      return "undefined"
+      return "Não encontrado"
 
   }
 }
 
 export default function PersistentDrawerLeft() {
-  const theme = useTheme()    
+  const theme = useTheme()
   const classes = useStyles()
 
   const [open, setOpen] = React.useState(false);
@@ -121,6 +119,8 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
+  const titulo = ['Transformações', '2', '3', '4']
+      
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -160,13 +160,13 @@ export default function PersistentDrawerLeft() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['1', '2', '3', '4'].map((text, index) => (
+          {titulo.map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => setObjectNumber(index)}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} />     
+                <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
