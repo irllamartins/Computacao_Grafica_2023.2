@@ -32,41 +32,85 @@ const TAMANHO_CANVAS = 500
 
 const Conteiner = () => {
     const classes = useStyles()
-    const [tamanho_min_x, setTamanho_min_x] = useState(0)
-    const [tamanho_max_x, setTamanho_max_x] = useState(500)
-    const [tamanho_min_y, setTamanho_min_y] = useState(0)
-    const [tamanho_max_y, setTamanho_max_y] = useState(500)
+    const [tamanho_min_x, setTamanho_min_x] = useState(10.3)
+    const [tamanho_max_x, setTamanho_max_x] = useState(20.3)
+    const [tamanho_min_y, setTamanho_min_y] = useState(10.3)
+    const [tamanho_max_y, setTamanho_max_y] = useState(20.3)
     const [tamanho_min_x_res, setTamanho_min_x_res] = useState(0)
-    const [tamanho_max_x_res, setTamanho_max_x_res] = useState(500)
+    const [tamanho_max_x_res, setTamanho_max_x_res] = useState(1)
     const [tamanho_min_y_res, setTamanho_min_y_res] = useState(0)
-    const [tamanho_max_y_res, setTamanho_max_y_res] = useState(500)
-    const [valor_x, setValor_x] = useState(0)
-    const [valor_y, setValor_y] = useState(0)
+    const [tamanho_max_y_res, setTamanho_max_y_res] = useState(1)
+    const [valor_x, setValor_x] = useState(15.5)
+    const [valor_y, setValor_y] = useState(15.5)
     const [valor_x_res, setValor_x_res] = useState(0)
     const [valor_y_res, setValor_y_res] = useState(0)
+    const [selection, setSelection] = useState()   
 
-
-    const WD_para_NDC = () => {
-        // ((ndc_max- ndc_min) * ((ponto.getX()-x_min) / (x_max-x_min))) + ndc_min
+    const WD_para_NDC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
         const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
-        setValor_x_res(resultadoX)
-        setValor_y_res(resultadoY)
-        return true
+        setValor_x_res(Math.round(resultadoX*100)/100)
+        setValor_y_res(Math.round(resultadoY*100)/100)
+       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+    }
+    const NDC_para_WD = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+
+        setValor_x_res(Math.round(resultadoX*100)/100)
+        setValor_y_res(Math.round(resultadoY*100)/100)
+        {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+    }
+    const NDC_para_DC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res-1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res-1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+
+        setValor_x_res(Math.round(resultadoX*100)/100)
+        setValor_y_res(Math.round(resultadoY*100)/100)
+       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+    }
+    const DC_para_NDC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x-1)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y-1)) + tamanho_min_y_res
+
+        setValor_x_res(Math.round(resultadoX*100)/100)
+        setValor_y_res(Math.round(resultadoY*100)/100)
+       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+    }
+    const WD_para_DC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res-1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res-1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+
+        setValor_x_res(Math.round(resultadoX*100)/100)
+        setValor_y_res(Math.round(resultadoY*100)/100)
+       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+    }
+    const DC_para_WD = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x-1)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y-1)) + tamanho_min_y_res
+
+        setValor_x_res(Math.round(resultadoX*100)/100)
+        setValor_y_res(Math.round(resultadoY*100)/100)
+       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
     }
 
 
-
-
+    let variavel
 
     const conversoes = [
-        { label: "W.D para N.D.C", value: WD_para_NDC() },
-        { label: "N.D.C para W.D", value: 2 },
-        { label: "N.D.C para D.C", value: 3 },
-        { label: "D.C para N.D.C", value: 4 },
-        { label: "W.D para D.C", value: 5 },
-        { label: "D.C para W.D", value: 6 }
+        // metrica do mundo para normalização
+        { label: "W.D para N.D.C", value: ()=> WD_para_NDC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) },
+       // normalização para o metrica do mundo
+        { label: "N.D.C para W.D", value: ()=> NDC_para_WD(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res)  },
+        // normalização para o dispositivo de exibição 
+        { label: "N.D.C para D.C",  value: ()=> NDC_para_DC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res)},
+        // dispositivo de exibição para a normalização
+        { label: "D.C para N.D.C",  value: ()=> DC_para_NDC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) },
+        // metrica do mundo para diretamente o dispositivo de exibição
+        { label: "W.D para D.C",  value: ()=> WD_para_DC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res)},
+        // dispositivo de exibição para a metrica do mundo
+        { label: "D.C para W.D",  value: ()=> DC_para_WD(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) }
     ]
     return (
         <Grid container direction="row" >
@@ -82,18 +126,15 @@ const Conteiner = () => {
                         id="standard-select"
                         select
                         fullWidth
+                        value={selection}
                         variant="standard"
                     >
                         {conversoes.map((option) => (
-                            <MenuItem key={option.label} value={option.label}>
-                                {option.label}
-                             
+                            <MenuItem key={option.label} value={option.label} onClick={option.value }>
+                                {option.label}   
                             </MenuItem>
                         ))}
-                    </TextField>   
-{/*   <Button onClick={option.value}>
-                                    Calcular
-                                </Button>*/}
+                    </TextField>
                 </Grid>
             </Grid>
             <Grid container item sm={6} align="center">
