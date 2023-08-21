@@ -2,10 +2,10 @@
 
 const DesenharLimite = (ctx,canvas) => { 
     // Define a cor das linhas
-  ctx.strokeStyle = '#f04201';
+  ctx.strokeStyle = "#b2b2b2";
 
     // Define a largura das linhas
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 0.5;
 
     // Desenha o eixo x
     ctx.beginPath();

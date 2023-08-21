@@ -23,12 +23,15 @@ import {
   Inbox as InboxIcon,
   Email as MailIcon,
   ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
+  TransformSharp,
+  Timeline
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
 import Circuferencia from '../pages/circuferencia/Conteiner'
 import Transformacoes from '../pages/tranformacoes/Conteiner'
+import Retas from '../pages/reta/Conteiner'
 
 import { TEMA_COR } from '../material.theme'
 const drawerWidth = 240;
@@ -36,7 +39,10 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles({
   ativo: {
-    backgroundColor: "#F3F3"
+     backgroundColor: "#173c51"
+  },
+  header:{
+    backgroundColor: "#173c"
   }
 })
 
@@ -91,12 +97,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 
-const object = (value: number) => {
+const pages = (value: number) => {
   switch (value) {
     case 0:
       return <Transformacoes />
+    case 1:
+      return <Retas />
 
- 
+
     default:
       return "Não encontrado"
 
@@ -109,7 +117,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false);
 
-  const [objectNumber, setObjectNumber] = React.useState(0);
+  const [pagesNumber, setPagesNumber] = React.useState(1);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -119,13 +127,16 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
-  const titulo = ['Transformações', '2', '3', '4']
-      
+  const titulo = [
+    { label: 'Transformações', icon: <TransformSharp /> },
+    { label: 'Reta', icon: <Timeline /> },
+  ]
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
+      <AppBar position="fixed" open={open} >
+        <Toolbar className={classes.header}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -153,20 +164,20 @@ export default function PersistentDrawerLeft() {
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        <DrawerHeader  >
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        <List >
           {titulo.map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => setObjectNumber(index)}>
+            <ListItem key={text.label} disablePadding>
+              <ListItemButton onClick={() => setPagesNumber(index)}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {text.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text.label} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -175,7 +186,7 @@ export default function PersistentDrawerLeft() {
       <Main open={open} className={classes.ativo}>
         <DrawerHeader />
         <Paper>
-          {object(objectNumber)}
+          {pages(pagesNumber)}
         </Paper>
       </Main>
     </Box>

@@ -19,17 +19,29 @@ const useStyles = makeStyles({
         paddingTop: "1%",
         paddingBottom: "1%"
     },
+    header: {
+        // backgroundColor: "green",
+        paddingInline: "1%",
+    },
     teste2: {
         backgroundColor: "gray"
     },
 })
 const TAMANHO_CANVAS = 500
-
-
-
-
-
-
+const Operacoes = {
+    // metrica do mundo para normalização
+    WD_NDC: "W.D para N.D.C",
+    // normalização para o metrica do mundo
+    NDC_WD: "N.D.C para W.D",
+    // normalização para o dispositivo de exibição 
+    NDC_DC: "N.D.C para D.C",
+    // dispositivo de exibição para a normalização
+    DC_NDC: "D.C para N.D.C",
+    // metrica do mundo para diretamente o dispositivo de exibição
+    WD_DC: "W.D para D.C",
+    // dispositivo de exibição para a metrica do mundo
+    DC_WD: "D.C para W.D",
+}
 const Conteiner = () => {
     const classes = useStyles()
     const [tamanho_min_x, setTamanho_min_x] = useState(10.3)
@@ -44,107 +56,157 @@ const Conteiner = () => {
     const [valor_y, setValor_y] = useState(15.5)
     const [valor_x_res, setValor_x_res] = useState(0)
     const [valor_y_res, setValor_y_res] = useState(0)
-    const [selection, setSelection] = useState()   
+    const [selection, setSelection] = useState()
+    const [TAMANHO_CANVAS_A, setTAMANHO_CANVAS_A] = useState(1)
+    const [TAMANHO_CANVAS_B, setTAMANHO_CANVAS_B] = useState(1)
 
-    const WD_para_NDC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+    const WD_para_NDC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
         const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
-        setValor_x_res(Math.round(resultadoX*100)/100)
-        setValor_y_res(Math.round(resultadoY*100)/100)
-       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+        setValor_x_res(Math.round(resultadoX * 100) / 100)
+        setValor_y_res(Math.round(resultadoY * 100) / 100)
+        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
-    const NDC_para_WD = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
+    const NDC_para_WD = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
         const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
-        setValor_x_res(Math.round(resultadoX*100)/100)
-        setValor_y_res(Math.round(resultadoY*100)/100)
-        {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+        setValor_x_res(Math.round(resultadoX * 100) / 100)
+        setValor_y_res(Math.round(resultadoY * 100) / 100)
+        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
-    const NDC_para_DC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
-        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res-1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
-        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res-1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+    const NDC_para_DC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res - 1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res - 1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
-        setValor_x_res(Math.round(resultadoX*100)/100)
-        setValor_y_res(Math.round(resultadoY*100)/100)
-       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+        setValor_x_res(Math.round(resultadoX))
+        setValor_y_res(Math.round(resultadoY))
+        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
-    const DC_para_NDC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
-        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x-1)) + tamanho_min_x_res
-        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y-1)) + tamanho_min_y_res
+    const DC_para_NDC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x - 1)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y - 1)) + tamanho_min_y_res
 
-        setValor_x_res(Math.round(resultadoX*100)/100)
-        setValor_y_res(Math.round(resultadoY*100)/100)
-       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+        setValor_x_res(Math.round(resultadoX * 100) / 100)
+        setValor_y_res(Math.round(resultadoY * 100) / 100)
+        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
-    const WD_para_DC = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
-        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res-1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
-        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res-1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+    const WD_para_DC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res - 1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res - 1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
-        setValor_x_res(Math.round(resultadoX*100)/100)
-        setValor_y_res(Math.round(resultadoY*100)/100)
-       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+        setValor_x_res(Math.round(resultadoX))
+        setValor_y_res(Math.round(resultadoY))
+        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
-    const DC_para_WD = (valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) => {
-        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x-1)) + tamanho_min_x_res
-        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y-1)) + tamanho_min_y_res
+    const DC_para_WD = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
+        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x - 1)) + tamanho_min_x_res
+        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y - 1)) + tamanho_min_y_res
 
-        setValor_x_res(Math.round(resultadoX*100)/100)
-        setValor_y_res(Math.round(resultadoY*100)/100)
-       {console.log("x",resultadoX,"y",resultadoY,"teste",valor_x,"|",valor_y)}
+        setValor_x_res(Math.round(resultadoX * 100) / 100)
+        setValor_y_res(Math.round(resultadoY * 100) / 100)
+        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
+    const propocao = (tamanho_x, tamanho_y) => {
+        let razao =tamanho_y/tamanho_x
+         
+        return TAMANHO_CANVAS/razao
 
-
-    let variavel
+    }
 
     const conversoes = [
         // metrica do mundo para normalização
-        { label: "W.D para N.D.C", value: ()=> WD_para_NDC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) },
-       // normalização para o metrica do mundo
-        { label: "N.D.C para W.D", value: ()=> NDC_para_WD(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res)  },
-        // normalização para o dispositivo de exibição 
-        { label: "N.D.C para D.C",  value: ()=> NDC_para_DC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res)},
+        Operacoes.WD_NDC,
+        // normalização para o metrica do mundo
+        Operacoes.NDC_WD,
+        // normalização para o dispositivo de exibição
+        Operacoes.NDC_DC,
         // dispositivo de exibição para a normalização
-        { label: "D.C para N.D.C",  value: ()=> DC_para_NDC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) },
+        Operacoes.DC_NDC,
         // metrica do mundo para diretamente o dispositivo de exibição
-        { label: "W.D para D.C",  value: ()=> WD_para_DC(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res)},
+        Operacoes.WD_DC,
         // dispositivo de exibição para a metrica do mundo
-        { label: "D.C para W.D",  value: ()=> DC_para_WD(valor_x,valor_y,tamanho_min_x_res,tamanho_max_x_res,tamanho_min_y_res,tamanho_max_y_res) }
+        Operacoes.DC_WD,
     ]
+    const calcular = (label) => {
+        switch (label) {
+            // metrica do mundo para normalização
+            case Operacoes.WD_NDC:
+                WD_para_NDC(valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res)
+                break
+            // normalização para o metrica do mundo
+            case Operacoes.NDC_WD:
+                NDC_para_WD(valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res)
+                break
+            // normalização para o dispositivo de exibição
+            case Operacoes.NDC_DC:
+                NDC_para_DC(valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res)
+                break
+            // dispositivo de exibição para a normalização
+            case Operacoes.DC_NDC:
+                DC_para_NDC(valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res)
+                break
+            // metrica do mundo para diretamente o dispositivo de exibição
+            case Operacoes.WD_DC:
+                WD_para_DC(valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res)
+                break
+            // dispositivo de exibição para a metrica do mundo
+            case Operacoes.DC_WD:
+                DC_para_WD(valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res)
+                break
+            default:
+                return "Operação não encontrada"
+        }
+    }
+    const propocaoPainelA = propocao(Math.abs((tamanho_max_x - tamanho_min_x)), Math.abs((tamanho_max_y - tamanho_min_y)))
+    const propocaoPainelB = propocao(Math.abs((tamanho_max_x_res - tamanho_min_x_res)), Math.abs((tamanho_max_y_res - tamanho_min_y_res)))
+    
     return (
         <Grid container direction="row" >
             <Grid container item
                 align="center"
-                direction="column"
                 sm={12}
+                xl={12}
                 className={classes.header}
             >
-                <Grid item sm={6}>
-                    <Typography>Transformações</Typography>
+                <Grid item sm={12} xl={12} p={2}>
+                    <Typography variant="h5">Transformações</Typography>
+                </Grid>
+                <Grid item sm={10} xl={10}
+                    className={classes.header}>
                     <TextField
                         id="standard-select"
                         select
                         fullWidth
-                        value={selection}
+                        value={selection || ""}
                         variant="standard"
                     >
-                        {conversoes.map((option) => (
-                            <MenuItem key={option.label} value={option.label} onClick={option.value }>
-                                {option.label}   
+                        {conversoes.map((option, index) => (
+                            <MenuItem key={index} value={option} onClick={() => setSelection(option)}>
+                                {option}
                             </MenuItem>
                         ))}
                     </TextField>
                 </Grid>
+                <Button
+                    variant="contained"
+                    size='small'
+                    onClick={() => calcular(selection)} >
+                    Calcular
+                </Button>
+
             </Grid>
-            <Grid container item sm={6} align="center">
-                <Grid item sm={12}  >
+            <Grid container item sm={6} xl={12} align="center">
+                <Grid item sm={12}   >
                     <Painel
-                        tamanhoX={Math.abs(tamanho_max_x - tamanho_min_x)}
-                        tamanhoY={Math.abs(tamanho_max_y - tamanho_min_y)}
-                        x={valor_x} y={valor_y} />
+                       // tamanhoX={Math.abs((tamanho_max_x - tamanho_min_x))*propocaoPainelA}
+                        //tamanhoY={Math.abs((tamanho_max_y - tamanho_min_y))*propocaoPainelA}
+                         tamanhoX={propocaoPainelA}
+                        tamanhoY={propocaoPainelA}
+                        x={valor_x} y={valor_y} propocao={Math.abs(propocaoPainelA*1)} />
                 </Grid>
-                <Grid item container direction="row" sm={12} >
+                <Grid item container direction="row" sm={12}>
                     <Grid item className={classes.espacamento} sm={3} >
                         <TextField
                             id="x"
@@ -220,12 +282,13 @@ const Conteiner = () => {
 
                 </Grid>
             </Grid>
-            <Grid container item sm={6} align="center" >
+            <Grid container item sm={6} xl={12} align="center" >
                 <Grid item sm={12}  >
                     <Painel
-                        tamanhoX={Math.abs(tamanho_max_x_res - tamanho_min_x_res)}
-                        tamanhoY={Math.abs(tamanho_max_y_res - tamanho_min_y_res)}
-                        x={valor_x_res} y={valor_y_res} />
+                        tamanhoX={Math.abs(tamanho_max_x_res - tamanho_min_x_res)*propocaoPainelB}
+                        tamanhoY={Math.abs(tamanho_max_y_res - tamanho_min_y_res)*propocaoPainelB}
+                        x={valor_x_res} y={valor_y_res} propocao={Math.abs(propocaoPainelB)}/>
+                {console.log(propocaoPainelA,"|",propocaoPainelA*valor_x,"|",propocaoPainelB,"|",propocaoPainelB*valor_x_res,"|")}
                 </Grid>
                 <Grid item container direction="row" sm={12} >
                     <Grid item className={classes.espacamento} sm={3} >
@@ -299,7 +362,7 @@ const Conteiner = () => {
 
                 </Grid>
             </Grid>
-        </Grid>
+        </Grid >
     )
 }
 export default Conteiner
