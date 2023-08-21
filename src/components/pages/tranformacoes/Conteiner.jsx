@@ -108,12 +108,16 @@ const Conteiner = () => {
         setValor_y_res(Math.round(resultadoY * 100) / 100)
         console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
-    const propocao = (tamanho_x, tamanho_y) => {
-        let razao =tamanho_y/tamanho_x
-         
-        return TAMANHO_CANVAS/razao
-
+    //Calcular a conversao caso o numero for maior
+    const conversao = (tamanho_painel,variacaoX,variacaoY) => {
+        if(variacaoX>variacaoY){
+            return (tamanho_painel/variacaoX)
+        }
+        else{
+            return (tamanho_painel/variacaoY)
+        }
     }
+
 
     const conversoes = [
         // metrica do mundo para normalização
@@ -159,9 +163,15 @@ const Conteiner = () => {
                 return "Operação não encontrada"
         }
     }
-    const propocaoPainelA = propocao(Math.abs((tamanho_max_x - tamanho_min_x)), Math.abs((tamanho_max_y - tamanho_min_y)))
-    const propocaoPainelB = propocao(Math.abs((tamanho_max_x_res - tamanho_min_x_res)), Math.abs((tamanho_max_y_res - tamanho_min_y_res)))
-    
+
+   // const razaoPainelB = razao((tamanho_max_x_res - tamanho_min_x_res), (tamanho_max_y_res - tamanho_min_y_res))
+    //const propocaoPainelA = propocao(razaoPainelA)
+   // const propocaoPainelB = propocao(razaoPainelB)
+    const conversaoPainelA = conversao(TAMANHO_CANVAS,(tamanho_max_x - tamanho_min_x),(tamanho_max_y - tamanho_min_y))
+
+    const conversaoPainelB = conversao(TAMANHO_CANVAS,(tamanho_max_x_res - tamanho_min_x_res),(tamanho_max_y_res - tamanho_min_y_res))
+
+   
     return (
         <Grid container direction="row" >
             <Grid container item
@@ -202,9 +212,11 @@ const Conteiner = () => {
                     <Painel
                        // tamanhoX={Math.abs((tamanho_max_x - tamanho_min_x))*propocaoPainelA}
                         //tamanhoY={Math.abs((tamanho_max_y - tamanho_min_y))*propocaoPainelA}
-                         tamanhoX={propocaoPainelA}
-                        tamanhoY={propocaoPainelA}
-                        x={valor_x} y={valor_y} propocao={Math.abs(propocaoPainelA*1)} />
+                         tamanhoX={(tamanho_max_x - tamanho_min_x)}
+                        tamanhoY={(tamanho_max_y - tamanho_min_y)}
+                        x={valor_x} y={valor_y} propocao={conversaoPainelA} />
+                        {console.log((tamanho_max_x - tamanho_min_x)*conversaoPainelA,"|",conversaoPainelA,"|cod",valor_x*conversaoPainelA,"| painel",(tamanho_max_y - tamanho_min_y)*conversaoPainelA,"|",conversaoPainelA,"|cod",valor_y*conversaoPainelA)}
+                
                 </Grid>
                 <Grid item container direction="row" sm={12}>
                     <Grid item className={classes.espacamento} sm={3} >
@@ -285,10 +297,10 @@ const Conteiner = () => {
             <Grid container item sm={6} xl={12} align="center" >
                 <Grid item sm={12}  >
                     <Painel
-                        tamanhoX={Math.abs(tamanho_max_x_res - tamanho_min_x_res)*propocaoPainelB}
-                        tamanhoY={Math.abs(tamanho_max_y_res - tamanho_min_y_res)*propocaoPainelB}
-                        x={valor_x_res} y={valor_y_res} propocao={Math.abs(propocaoPainelB)}/>
-                {console.log(propocaoPainelA,"|",propocaoPainelA*valor_x,"|",propocaoPainelB,"|",propocaoPainelB*valor_x_res,"|")}
+                        tamanhoX={Math.abs(tamanho_max_x_res - tamanho_min_x_res)}
+                        tamanhoY={Math.abs(tamanho_max_y_res - tamanho_min_y_res)}
+                        x={valor_x_res} y={valor_y_res} propocao={conversaoPainelB}/>
+                {console.log((tamanho_max_x_res - tamanho_min_x_res)*conversaoPainelB,"|",conversaoPainelB,"|cod",valor_x_res*conversaoPainelB,"|painel",(tamanho_max_y_res - tamanho_min_y_res)*conversaoPainelB,"|",conversaoPainelB,"|cod",valor_y_res*conversaoPainelB)}
                 </Grid>
                 <Grid item container direction="row" sm={12} >
                     <Grid item className={classes.espacamento} sm={3} >
