@@ -44,21 +44,19 @@ const Operacoes = {
 }
 const Conteiner = () => {
     const classes = useStyles()
-    const [tamanho_min_x, setTamanho_min_x] = useState(10.3)
-    const [tamanho_max_x, setTamanho_max_x] = useState(20.3)
-    const [tamanho_min_y, setTamanho_min_y] = useState(10.3)
-    const [tamanho_max_y, setTamanho_max_y] = useState(20.3)
+    const [tamanho_min_x, setTamanho_min_x] = useState(0)
+    const [tamanho_max_x, setTamanho_max_x] = useState(500)
+    const [tamanho_min_y, setTamanho_min_y] = useState(0)
+    const [tamanho_max_y, setTamanho_max_y] = useState(500)
     const [tamanho_min_x_res, setTamanho_min_x_res] = useState(0)
-    const [tamanho_max_x_res, setTamanho_max_x_res] = useState(1)
+    const [tamanho_max_x_res, setTamanho_max_x_res] = useState(500)
     const [tamanho_min_y_res, setTamanho_min_y_res] = useState(0)
-    const [tamanho_max_y_res, setTamanho_max_y_res] = useState(1)
+    const [tamanho_max_y_res, setTamanho_max_y_res] = useState(500)
     const [valor_x, setValor_x] = useState(15.5)
     const [valor_y, setValor_y] = useState(15.5)
     const [valor_x_res, setValor_x_res] = useState(0)
     const [valor_y_res, setValor_y_res] = useState(0)
     const [selection, setSelection] = useState()
-    const [TAMANHO_CANVAS_A, setTAMANHO_CANVAS_A] = useState(1)
-    const [TAMANHO_CANVAS_B, setTAMANHO_CANVAS_B] = useState(1)
 
     const WD_para_NDC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
@@ -93,11 +91,12 @@ const Conteiner = () => {
         console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const WD_para_DC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
-        const resultadoX = (tamanho_max_x_res - tamanho_min_x_res - 1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
-        const resultadoY = (tamanho_max_y_res - tamanho_min_y_res - 1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+        const resultadoX = ((tamanho_max_x_res - tamanho_min_x_res) -1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = ((tamanho_max_y_res - tamanho_min_y_res) -1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
         setValor_x_res(Math.round(resultadoX))
         setValor_y_res(Math.round(resultadoY))
+        console.log('tipo',typeof resultadoX,'valor', resultadoX,'conversao',Math.round(resultadoX))
         console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const DC_para_WD = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
@@ -109,13 +108,27 @@ const Conteiner = () => {
         console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     //Calcular a conversao caso o numero for maior
-    const conversao = (tamanho_painel,variacaoX,variacaoY) => {
-        if(variacaoX>variacaoY){
-            return (tamanho_painel/variacaoX)
+    const conversao = (tamanho_painel, variacaoX, variacaoY) => {
+        if (variacaoX > variacaoY) {
+            console.log(tamanho_painel / variacaoX)
+            return (tamanho_painel / variacaoX)
         }
-        else{
-            return (tamanho_painel/variacaoY)
+        else {
+            return (tamanho_painel / variacaoY)
         }
+    }
+    const origem = (conversao, pontoX, pontoY) => {
+        if (pontoX > pontoY) {
+            if (Math.sign(pontoY)==-1) {
+                return conversao*pontoY
+            }
+        }
+        else {
+            if (Math.sign(pontoX)==-1) { 
+                return conversao*pontoX
+            }
+        }
+        return 0
     }
 
 
@@ -164,14 +177,11 @@ const Conteiner = () => {
         }
     }
 
-   // const razaoPainelB = razao((tamanho_max_x_res - tamanho_min_x_res), (tamanho_max_y_res - tamanho_min_y_res))
-    //const propocaoPainelA = propocao(razaoPainelA)
-   // const propocaoPainelB = propocao(razaoPainelB)
-    const conversaoPainelA = conversao(TAMANHO_CANVAS,(tamanho_max_x - tamanho_min_x),(tamanho_max_y - tamanho_min_y))
+    const conversaoPainelA = Math.abs(conversao(TAMANHO_CANVAS, (tamanho_max_x - tamanho_min_x), (tamanho_max_y - tamanho_min_y)))
 
-    const conversaoPainelB = conversao(TAMANHO_CANVAS,(tamanho_max_x_res - tamanho_min_x_res),(tamanho_max_y_res - tamanho_min_y_res))
+    const conversaoPainelB = Math.abs(conversao(TAMANHO_CANVAS, (tamanho_max_x_res - tamanho_min_x_res), (tamanho_max_y_res - tamanho_min_y_res)))
 
-   
+
     return (
         <Grid container direction="row" >
             <Grid container item
@@ -210,84 +220,92 @@ const Conteiner = () => {
             <Grid container item sm={6} xl={12} align="center">
                 <Grid item sm={12}   >
                     <Painel
-                       // tamanhoX={Math.abs((tamanho_max_x - tamanho_min_x))*propocaoPainelA}
-                        //tamanhoY={Math.abs((tamanho_max_y - tamanho_min_y))*propocaoPainelA}
-                         tamanhoX={(tamanho_max_x - tamanho_min_x)}
-                        tamanhoY={(tamanho_max_y - tamanho_min_y)}
+                        
+                        tamanhoX={Math.abs(tamanho_max_x - tamanho_min_x)}
+                        tamanhoY={Math.abs(tamanho_max_y - tamanho_min_y)}
                         x={valor_x} y={valor_y} propocao={conversaoPainelA} />
-                        {console.log((tamanho_max_x - tamanho_min_x)*conversaoPainelA,"|",conversaoPainelA,"|cod",valor_x*conversaoPainelA,"| painel",(tamanho_max_y - tamanho_min_y)*conversaoPainelA,"|",conversaoPainelA,"|cod",valor_y*conversaoPainelA)}
-                
+                                {console.log("Variacao",valor_x_res,"Vpro", conversaoPainelB,"res",valor_x_res * conversaoPainelB)}
+            
+                    {console.log("|Painel A", Math.abs(tamanho_max_x - tamanho_min_x) * conversaoPainelA, "|", conversaoPainelA, "|cod", valor_x * conversaoPainelA, "| painel Y", Math.abs(tamanho_max_y - tamanho_min_y) * conversaoPainelA, "|", conversaoPainelA, "|cod", valor_y * conversaoPainelA)}
+
                 </Grid>
                 <Grid item container direction="row" sm={12}>
                     <Grid item className={classes.espacamento} sm={3} >
                         <TextField
+                        //inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             id="x"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_min_x}
                             label="Minimo X"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_min_x(e.target.value)
+                                setTamanho_min_x(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3}>
                         <TextField
                             id="y"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_max_x}
                             label="Maximo X"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth 
                             onChange={e =>
-                                setTamanho_max_x(e.target.value)
+                                setTamanho_max_x(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3} >
                         <TextField
                             id="x"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_min_y}
                             label="Minimo Y"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_min_y(e.target.value)
+                                setTamanho_min_y(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3}>
                         <TextField
                             id="y"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_max_y}
                             label="Maximo Y"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_max_y(e.target.value)
+                                setTamanho_max_y(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={6} >
                         <TextField
                             id="x"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={valor_x}
                             label="Digite o X"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setValor_x(e.target.value)
+                                setValor_x(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={6}>
                         <TextField
                             id="y"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={valor_y}
                             label="Digite o Y"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setValor_y(e.target.value)
+                                setValor_y(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
@@ -299,61 +317,67 @@ const Conteiner = () => {
                     <Painel
                         tamanhoX={Math.abs(tamanho_max_x_res - tamanho_min_x_res)}
                         tamanhoY={Math.abs(tamanho_max_y_res - tamanho_min_y_res)}
-                        x={valor_x_res} y={valor_y_res} propocao={conversaoPainelB}/>
-                {console.log((tamanho_max_x_res - tamanho_min_x_res)*conversaoPainelB,"|",conversaoPainelB,"|cod",valor_x_res*conversaoPainelB,"|painel",(tamanho_max_y_res - tamanho_min_y_res)*conversaoPainelB,"|",conversaoPainelB,"|cod",valor_y_res*conversaoPainelB)}
+                        x={valor_x_res} y={valor_y_res} propocao={conversaoPainelB} />
+                
+                    {console.log("|Painel B", Math.abs(tamanho_max_x_res - tamanho_min_x_res) * conversaoPainelB, "|", conversaoPainelB, "|cod", valor_x_res * conversaoPainelB, "|painel Y", Math.abs(tamanho_max_y_res - tamanho_min_y_res) * conversaoPainelB, "|", conversaoPainelB, "|cod", valor_y_res * conversaoPainelB)}
                 </Grid>
                 <Grid item container direction="row" sm={12} >
                     <Grid item className={classes.espacamento} sm={3} >
                         <TextField
                             id="x"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_min_x_res}
                             label="Minimo X"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_min_x_res(e.target.value)
+                                setTamanho_min_x_res(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3}>
                         <TextField
                             id="y"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_max_x_res}
                             label="Maximo X"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_max_x_res(e.target.value)
+                                setTamanho_max_x_res(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3} >
                         <TextField
                             id="x"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_min_y_res}
                             label="Minimo Y"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_min_y_res(e.target.value)
+                                setTamanho_min_y_res(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3}>
                         <TextField
                             id="y"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={tamanho_max_y_res}
                             label="Maximo Y"
                             variant="standard"
-                            fullWidth type="number"
+                            fullWidth
                             onChange={e =>
-                                setTamanho_max_y_res(e.target.value)
+                                setTamanho_max_y_res(parseFloat(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={6} >
                         <TextField
                             id="x"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={valor_x_res}
                             label="O resultado X"
                             variant="standard"
@@ -363,7 +387,9 @@ const Conteiner = () => {
                     </Grid>
                     <Grid item className={classes.espacamento} sm={6}>
                         <TextField
+                        
                             id="y"
+                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             value={valor_y_res}
                             label="O resultado Y"
                             variant="standard"

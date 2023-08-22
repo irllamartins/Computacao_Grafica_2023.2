@@ -19,10 +19,10 @@ const Transformacoes = ({ tamanhoX,tamanhoY, x, y, propocao }) => {
     // Define a cor do círculo
     ctx.fillStyle = 'orange'    
 
-   //  DesenharLimite(ctx,canvas)
+    DesenharLimite(ctx,canvas)
 
     // Desenha o pixel na posição (x, y) = (250, 250)(falta saber a distancia que seria o ponto 0)
-    ctx.fillRect(x*propocao, y*propocao, propocao, propocao);
+    ctx.fillRect(Math.abs(x*propocao), Math.abs(y*propocao), propocao, propocao);
 
 
 
