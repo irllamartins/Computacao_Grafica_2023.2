@@ -34,8 +34,8 @@ const Conteiner = () => {
     const classes = useStyles()
     const [inicio_x, setInicio_x] = useState(0)
     const [inicio_y, setInicio_y] = useState(0)
-    const [fim_x, setFim_x] = useState(-100)
-    const [fim_y, setFim_y] = useState(-100)
+    const [fim_x, setFim_x] = useState(0)
+    const [fim_y, setFim_y] = useState(0)
     const [algoritmo, setAlgoritmo] = useState("DDA")
 
     return (
