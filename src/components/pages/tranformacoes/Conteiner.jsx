@@ -46,24 +46,17 @@ const Conteiner = () => {
     const classes = useStyles()
     const [tamanho_min_x, setTamanho_min_x] = useState(0)
     const [tamanho_max_x, setTamanho_max_x] = useState(500)
-    const [tamanho_min_y, setTamanho_min_y] = useState(0)
+    const [tamanho_min_y, setTamanho_min_y] = useState(-100)
     const [tamanho_max_y, setTamanho_max_y] = useState(500)
     const [tamanho_min_x_res, setTamanho_min_x_res] = useState(0)
-    const [tamanho_max_x_res, setTamanho_max_x_res] = useState(500)
+    const [tamanho_max_x_res, setTamanho_max_x_res] = useState(600)
     const [tamanho_min_y_res, setTamanho_min_y_res] = useState(0)
-    const [tamanho_max_y_res, setTamanho_max_y_res] = useState(500)
+    const [tamanho_max_y_res, setTamanho_max_y_res] = useState(600)
     const [valor_x, setValor_x] = useState(0)
     const [valor_y, setValor_y] = useState(0)
     const [valor_x_res, setValor_x_res] = useState(0)
     const [valor_y_res, setValor_y_res] = useState(0)
     const [selection, setSelection] = useState()
-
-
-    //Propocao do pixel
-    // const conversaoPainelA = Math.abs(conversao(TAMANHO_CANVAS, (tamanho_max_x - tamanho_min_x), (tamanho_max_y - tamanho_min_y)))
-    // const conversaoPainelB = Math.abs(conversao(TAMANHO_CANVAS, (tamanho_max_x_res - tamanho_min_x_res), (tamanho_max_y_res - tamanho_min_y_res)))
-    const conversaoPainelA = 2
-    const conversaoPainelB = 2
 
     const WD_para_NDC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
@@ -98,8 +91,8 @@ const Conteiner = () => {
         console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const WD_para_DC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
-        const resultadoX = ((tamanho_max_x_res - tamanho_min_x_res) -1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
-        const resultadoY = ((tamanho_max_y_res - tamanho_min_y_res) -1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
+        const resultadoX = ((tamanho_max_x_res - tamanho_min_x_res) - 1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
+        const resultadoY = ((tamanho_max_y_res - tamanho_min_y_res) - 1) * ((valor_y - tamanho_min_y) / (tamanho_max_y - tamanho_min_y)) + tamanho_min_y_res
 
         setValor_x_res(Math.round(resultadoX))
         setValor_y_res(Math.round(resultadoY))
@@ -118,12 +111,17 @@ const Conteiner = () => {
     const conversao = (tamanho_painel, variacaoX, variacaoY) => {
         if (variacaoX > variacaoY) {
             console.log(tamanho_painel / variacaoX)
-            return (tamanho_painel / variacaoX)
+            return Math.abs(tamanho_painel / variacaoX)
         }
         else {
-            return (tamanho_painel / variacaoY)
+            return Math.abs(tamanho_painel / variacaoY)
         }
     }
+    //Propocao do pixel
+    const conversaoPainelA = conversao(TAMANHO_CANVAS, (tamanho_max_x - tamanho_min_x), (tamanho_max_y - tamanho_min_y))
+    const conversaoPainelB = conversao(TAMANHO_CANVAS, (tamanho_max_x_res - tamanho_min_x_res), (tamanho_max_y_res - tamanho_min_y_res))
+    //const conversaoPainelA = 2
+    //const conversaoPainelB = 2
 
     const conversoes = [
         // metrica do mundo para normalização
@@ -169,7 +167,11 @@ const Conteiner = () => {
                 return "Operação não encontrada"
         }
     }
-
+    const tratamentoNegativo = (pontoMin, ponto) => {
+        const t = pontoMin < 0 ? Math.abs(pontoMin) + ponto : ponto
+       // console.log("t", t)
+        return t
+    }
     return (
         <Grid container direction="row" >
             <Grid container item
@@ -210,24 +212,26 @@ const Conteiner = () => {
                     <Painel
                         tamanhoX={Math.abs(TAMANHO_CANVAS)}
                         tamanhoY={Math.abs(TAMANHO_CANVAS)}
-                        x={valor_x} y={valor_y} propocao={conversaoPainelA} />
-            
-                    {console.log("|Painel A", Math.abs(tamanho_max_x - tamanho_min_x) , "|", conversaoPainelA, "|cod", valor_x , "| painel Y", Math.abs(tamanho_max_y - tamanho_min_y), "|", conversaoPainelA, "|cod", valor_y)}
+                        x={tratamentoNegativo(tamanho_min_x, valor_x)} y={tratamentoNegativo(tamanho_min_y, valor_y)} propocao={conversaoPainelA} />
+
+                    {console.log("|Painel A", Math.abs(tamanho_max_x - tamanho_min_x), "|", conversaoPainelA, "|cod", valor_x, "| painel Y", Math.abs(tamanho_max_y - tamanho_min_y), "|", conversaoPainelA, "|cod", valor_y)}
 
                 </Grid>
                 <Grid item container direction="row" sm={12}>
                     <Grid item className={classes.espacamento} sm={3} >
                         <TextField
-                        //inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                            //inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             id="x"
-                            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                            inputProps={{ inputMode: "numeric", pattern: "-?[0-9]+" }}
                             value={tamanho_min_x}
                             label="Minimo X"
                             variant="standard"
-                            fullWidth type="number"
-                            onChange={e =>
+                            fullWidth 
+                          //  type="text"
+                           type="number"
+                            onChange={e =>{
                                 setTamanho_min_x(parseFloat(e.target.value))
-                            }
+                            }}
                         />
                     </Grid>
                     <Grid item className={classes.espacamento} sm={3}>
@@ -303,9 +307,9 @@ const Conteiner = () => {
                     <Painel
                         tamanhoX={Math.abs(TAMANHO_CANVAS)}
                         tamanhoY={Math.abs(TAMANHO_CANVAS)}
-                        x={valor_x_res} y={valor_y_res} propocao={conversaoPainelB} />
-                
-                    {console.log("|Painel B", Math.abs(tamanho_max_x_res - tamanho_min_x_res) , "|", conversaoPainelB, "|cod", valor_x_res, "|painel Y", Math.abs(tamanho_max_y_res - tamanho_min_y_res), "|", conversaoPainelB, "|cod", valor_y_res)}
+                        x={tratamentoNegativo(tamanho_min_x_res, valor_x_res)} y={tratamentoNegativo(tamanho_min_y_res, valor_y_res)} propocao={conversaoPainelB} />
+
+                    {console.log("|Painel B", Math.abs(tamanho_max_x_res - tamanho_min_x_res), "|", conversaoPainelB, "|cod", valor_x_res, "|painel Y", Math.abs(tamanho_max_y_res - tamanho_min_y_res), "|", conversaoPainelB, "|cod", valor_y_res)}
                 </Grid>
                 <Grid item container direction="row" sm={12} >
                     <Grid item className={classes.espacamento} sm={3} >
@@ -341,7 +345,7 @@ const Conteiner = () => {
                             value={tamanho_min_y_res}
                             label="Minimo Y"
                             variant="standard"
-                            fullWidth 
+                            fullWidth
                             onChange={e =>
                                 setTamanho_min_y_res(parseFloat(e.target.value))
                             }

@@ -17,7 +17,7 @@ const useStyles = makeStyles({
         backgroundColor: "gray"
     },
 })
-const TAMANHO_CANVAS= 500
+const TAMANHO_CANVAS= 501
 
 const Conteiner = () => {
     const classes = useStyles()

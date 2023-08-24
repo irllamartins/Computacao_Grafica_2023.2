@@ -117,7 +117,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false);
 
-  const [pagesNumber, setPagesNumber] = React.useState(1);
+  const [pagesNumber, setPagesNumber] = React.useState(0);
 
   const handleDrawerOpen = () => {
     setOpen(true);
