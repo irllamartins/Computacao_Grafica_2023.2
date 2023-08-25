@@ -96,11 +96,10 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
     if (Math.abs(maxX) >= height || Math.abs(maxY) >= width) {
         console.log("Pontos fora da area do plano cartesiano estabelecido");
     }
-    else if((pontoInicialX|| pontoInicialY|| pontoFinalX || pontoFinalY) ===undefined){
+    else if ((pontoInicialX || pontoInicialY || pontoFinalX || pontoFinalY) === undefined) {
         console.log("Contem valores inexistente ");
     }
     else {
-        console.log("Bresenham: x [",pontoInicialX,",", pontoInicialY,"] y[", pontoFinalX,",", pontoFinalY,"]")
 
         //captura de dados do painel
         let lagura = (width / 2);
@@ -110,95 +109,106 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
         //calcula a variacao
         const dx = Math.round(Math.abs(pontoFinalX - pontoInicialX));
         const dy = Math.round(Math.abs(pontoFinalY - pontoInicialY));
-        let inclinacao = parseFloat(dy) / dx
+        let inclinacao = Math.abs(parseFloat(dy) / dx)
+        console.log("Bresenham: x [", pontoInicialX, ",", pontoInicialY, "] y[", pontoFinalX, ",", pontoFinalY, "] inclinacao: ",inclinacao)
 
         // x1<x2
+        if (dx >= 0) {
+            // Octante 1
+            //1>=m>=0
 
-        // Octante 1
-        //1>=m>=0
-    
-        if (1 >= inclinacao && inclinacao >= 0 && dx > 0 && dy > 0) {
-            x0 = pontoInicialX
-            y0 = pontoInicialY
-            x1 = pontoFinalX
-            y1 = pontoFinalY
-        }
-        // Octante 8
-        // 0>m>=-1
-        else if (0 > inclinacao && inclinacao >= -1 && dx > 0 && dy < 0) {
-            x0 = pontoInicialX
-            y0 = pontoInicialY * (-1)
-            x1 = pontoFinalX
-            y1 = pontoFinalY * (-1)
+            if (1 >= inclinacao && inclinacao >= 0 && dy >= 0 && dx>=dy) {
+                x0 = pontoInicialX
+                y0 = pontoInicialY
+                x1 = pontoFinalX
+                y1 = pontoFinalY
+                console.log("Octante 1")
+            }
+            // Octante 8
+            // 0>m>=-1
+            else {
+                x0 = pontoInicialX
+                y0 = pontoInicialY * (-1)
+                x1 = pontoFinalX
+                y1 = pontoFinalY * (-1)
+                console.log("Octante 8")
 
+            }
         }
         // x2<x1
-
-        // Octante 5
-        //1>=m>=0
-        else if (1 >= inclinacao && inclinacao >= 0 && dx < 0 && dy < 0) {
-            x0 = pontoInicialX * (-1)
-            y0 = pontoInicialY * (-1)
-            x1 = pontoFinalX * (-1)
-            y1 = pontoFinalY * (-1)
+        if (dx < 0) {
+            // Octante 5
+            //1>=m>=0
+            if (1 >= inclinacao && inclinacao >= 0 && dy < 0 && dx>=dy) {
+                x0 = pontoInicialX * (-1)
+                y0 = pontoInicialY * (-1)
+                x1 = pontoFinalX * (-1)
+                y1 = pontoFinalY * (-1)
+                console.log("Octante 5")
+            }
+            // Octante 4
+            // 0>m>=-1
+            else {
+                x0 = pontoInicialX * (-1)
+                y0 = pontoInicialY
+                x1 = pontoFinalX * (-1)
+                y1 = pontoFinalY
+                console.log("Octante 4")
+            }
         }
-        // Octante 4
-        // 0>m>=-1
-        else if (0 >= inclinacao && inclinacao >= -1 && dx < 0 && dy > 0) {
-            x0 = pontoInicialX * (-1)
-            y0 = pontoInicialY
-            x1 = pontoFinalX * (-1)
-            y1 = pontoFinalY
-        }
-
         // y2>y1
-
-        // Octante 2
-        //1>=m>=0
-        else if (1 >= inclinacao && inclinacao >= 0 && dx < 0 && dy < 0 ) {
-            y0 = pontoInicialX
-            x0 = pontoInicialY
-            y1 = pontoFinalX
-            x1 = pontoFinalY
+        if (dy > 0) {
+            // Octante 2
+            //1>=m>=0
+            if (1 >= inclinacao && inclinacao >= 0 && dx > 0) {
+                y0 = pontoInicialX
+                x0 = pontoInicialY
+                y1 = pontoFinalX
+                x1 = pontoFinalY
+                console.log("Octante 2")
+            }
+            // Octante 3
+            // 0>m>=-1
+            else {
+                y0 = pontoInicialX * (-1)
+                x0 = pontoInicialY
+                y1 = pontoFinalX * (-1)
+                x1 = pontoFinalY
+                console.log("Octante 3")
+            }
         }
-        // Octante 3
-        // 0>m>=-1
-        else if (0 > inclinacao && inclinacao >= -1 && dx < 0 && dy > 0) {
-            y0 = pontoInicialX * (-1)
-            x0 = pontoInicialY
-            y1 = pontoFinalX * (-1)
-            x1 = pontoFinalY
+        // y2<y1
+        if (dy < 0) {
+            // Octante 7
+            //1>=m>=0
+            if (1 >= inclinacao && inclinacao >= 0 && dx > 0 ) {
+                y0 = pontoInicialX
+                x0 = pontoInicialY * (-1)
+                y1 = pontoFinalX
+                x1 = pontoFinalY * (-1)
+                console.log("Octante 7")
+
+            }
+            // Octante 6
+            // 0>m>=-1
+            else {
+                y0 = pontoInicialX * (-1)
+                x0 = pontoInicialY * (-1)
+                y1 = pontoFinalX * (-1)
+                x1 = pontoFinalY * (-1)
+                console.log("Octante 6")
+            }
         }
-
-        // Octante 7
-        //1>=m>=0
-        else if (1 >= inclinacao && inclinacao >= 0 && dx > 0 && dy < 0) {
-            y0 = pontoInicialX
-            x0 = pontoInicialY * (-1)
-            y1 = pontoFinalX
-            x1 = pontoFinalY * (-1)
-
-        }
-        // Octante 6
-        // 0>m>=-1
-        else if (1 >= inclinacao && inclinacao >= 0 && dx < 0 && dy < 0) {
-            y0 = pontoInicialX * (-1)
-            x0 = pontoInicialY * (-1)
-            y1 = pontoFinalX * (-1)
-            x1 = pontoFinalY * (-1)
-
-        }
-
         // tendendo ao infinito
-      
-       // console.log(typeof x0, typeof y0, typeof x1, typeof y1)
-       console.log("algoritmo: x [",x0,",", y0,"] y[", x1,",",  y1,"]")
+
+        // console.log(typeof x0, typeof y0, typeof x1, typeof y1)
+        console.log("algoritmo: x [", x0, ",", y0, "] y[", x1, ",", y1, "]")
         algoritmoBresenhamX(x0, y0, x1, y1, Math.abs(x1 - x0), Math.abs(y1 - y0), ctx, height, width);
     }
 }
 const algoritmoBresenhamX = (x0, y0, xEnd, yEnd, dx, dy, ctx, height, width) => {
 
-    console.log("algoritmoBresenhamX: x [",x0,",", y0,"] y[", xEnd,",",  yEnd,"]")
+    console.log("algoritmoBresenhamX: x [", x0, ",", y0, "] y[", xEnd, ",", yEnd, "]")
 
 
     //captura de dados do painel
@@ -236,9 +246,9 @@ const algoritmoBresenhamX = (x0, y0, xEnd, yEnd, dx, dy, ctx, height, width) => 
         }
 
 
-        // setPixel (round (x), round (y));
-        ctx.fillRect(lagura + x, altura - y, 1, 1);
-        console.log("ponto [", x, ",", y, "] = ", ds)
+        // setPixel (round (x), round (y));   
+        ctx.fillRect(lagura + x, altura - y, 1, 1);   
+      //  console.log("ponto [", x, ",", y, "] = ", ds)
 
     }
 }

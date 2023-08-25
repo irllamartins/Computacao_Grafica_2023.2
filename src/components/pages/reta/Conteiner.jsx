@@ -92,11 +92,11 @@ const Conteiner = () => {
                         Pontos fora da area do plano cartesiano estabelecido. Valor maximo suportado <b>{TAMANHO_CANVAS / 2}</b>
                     </Alert>
                 </Grid> : undefined}
-                {/*vazio? <Grid item sm={12} className={classes.espacamento}>
+                {(inicio_x || inicio_y || fim_x || fim_y) === undefined? <Grid item sm={12} className={classes.espacamento}>
                     <Alert variant="outlined" severity="warning">
                         Contem valores inexistente 
                     </Alert>
-                        </Grid> : undefined*/}
+                        </Grid> : undefined}
                 <Grid item container sm={12} >
                     <Grid item className={classes.espacamento} sm={6} >
                         <TextField
