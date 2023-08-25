@@ -90,70 +90,116 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
 
     const maxX = Math.round(pontoFinalX + (height / 2))
     const maxY = Math.round(pontoFinalY + (width / 2))
-    let aux
+    let x0, y0, x1, y1
 
     // validar erro de ultrapassar painel
     if (Math.abs(maxX) >= height || Math.abs(maxY) >= width) {
         console.log("Pontos fora da area do plano cartesiano estabelecido");
     }
+    else if((pontoInicialX|| pontoInicialY|| pontoFinalX || pontoFinalY) ===undefined){
+        console.log("Contem valores inexistente ");
+    }
     else {
+        console.log("Bresenham: x [",pontoInicialX,",", pontoInicialY,"] y[", pontoFinalX,",", pontoFinalY,"]")
 
         //captura de dados do painel
         let lagura = (width / 2);
         let altura = (height / 2);
+        ctx.fillRect(lagura + pontoInicialX, altura - pontoInicialY, 1, 1);
 
         //calcula a variacao
         const dx = Math.round(Math.abs(pontoFinalX - pontoInicialX));
         const dy = Math.round(Math.abs(pontoFinalY - pontoInicialY));
-        let inclinacao = Math.abs(parseFloat(dy) / dx)
+        let inclinacao = parseFloat(dy) / dx
 
         // x1<x2
-        if (dx > 0) {
-            // Quadrante 1
-            //1>=m>=0
-            if (1 >= inclinacao && inclinacao >= 0) {
-                algoritmoBresenhamX(Math.round(pontoInicialX), Math.round(pontoInicialY), Math.round(pontoFinalX),
-                    Math.round(pontoFinalY), dx, dy, ctx, height, width);
-            }
-            // Quadrante 8
-            // 0>m>=-1
-            else {
-                algoritmoBresenhamX(Math.round(pontoInicialY), Math.round(pontoInicialX),
-                    Math.round(pontoFinalY), Math.round(pontoFinalX), dx, dy, ctx, height, width);
-            }
+
+        // Octante 1
+        //1>=m>=0
+    
+        if (1 >= inclinacao && inclinacao >= 0 && dx > 0 && dy > 0) {
+            x0 = pontoInicialX
+            y0 = pontoInicialY
+            x1 = pontoFinalX
+            y1 = pontoFinalY
+        }
+        // Octante 8
+        // 0>m>=-1
+        else if (0 > inclinacao && inclinacao >= -1 && dx > 0 && dy < 0) {
+            x0 = pontoInicialX
+            y0 = pontoInicialY * (-1)
+            x1 = pontoFinalX
+            y1 = pontoFinalY * (-1)
+
         }
         // x2<x1
-        if (dx < 0) {
-            // Quadrante 5
-            //1>=m>=0
-            if (1 >= inclinacao && inclinacao >= 0) {
-                algoritmoBresenhamX(Math.round(pontoInicialY),Math.round(pontoInicialX),   Math.round(pontoFinalY), Math.round(pontoFinalX),
-                   dx, dy, ctx, height, width);
-            }
-            // Quadrante 4
-            // 0>m>=-1
-            else {
-                algoritmoBresenhamX(Math.round(pontoInicialY), Math.round(pontoInicialX),
-                    Math.round(pontoFinalY), Math.round(pontoFinalX), dx, dy, ctx, height, width);
-            }
+
+        // Octante 5
+        //1>=m>=0
+        else if (1 >= inclinacao && inclinacao >= 0 && dx < 0 && dy < 0) {
+            x0 = pontoInicialX * (-1)
+            y0 = pontoInicialY * (-1)
+            x1 = pontoFinalX * (-1)
+            y1 = pontoFinalY * (-1)
         }
-        if(dy>0){
-            // Quadrante 2
-            //1>=m>=0
-            if (1 >= inclinacao && inclinacao >= 0) {
-                algoritmoBresenhamX(Math.round(pontoInicialY),Math.round(pontoInicialX),   Math.round(pontoFinalY), Math.round(pontoFinalX),
-                   dx, dy, ctx, height, width);
-            }
-            // Quadrante 4
-            // 0>m>=-1
-            else {
-                algoritmoBresenhamX(Math.round(pontoInicialY), Math.round(pontoInicialX),
-                    Math.round(pontoFinalY), Math.round(pontoFinalX), dx, dy, ctx, height, width);
-            } 
+        // Octante 4
+        // 0>m>=-1
+        else if (0 >= inclinacao && inclinacao >= -1 && dx < 0 && dy > 0) {
+            x0 = pontoInicialX * (-1)
+            y0 = pontoInicialY
+            x1 = pontoFinalX * (-1)
+            y1 = pontoFinalY
         }
+
+        // y2>y1
+
+        // Octante 2
+        //1>=m>=0
+        else if (1 >= inclinacao && inclinacao >= 0 && dx < 0 && dy < 0 ) {
+            y0 = pontoInicialX
+            x0 = pontoInicialY
+            y1 = pontoFinalX
+            x1 = pontoFinalY
+        }
+        // Octante 3
+        // 0>m>=-1
+        else if (0 > inclinacao && inclinacao >= -1 && dx < 0 && dy > 0) {
+            y0 = pontoInicialX * (-1)
+            x0 = pontoInicialY
+            y1 = pontoFinalX * (-1)
+            x1 = pontoFinalY
+        }
+
+        // Octante 7
+        //1>=m>=0
+        else if (1 >= inclinacao && inclinacao >= 0 && dx > 0 && dy < 0) {
+            y0 = pontoInicialX
+            x0 = pontoInicialY * (-1)
+            y1 = pontoFinalX
+            x1 = pontoFinalY * (-1)
+
+        }
+        // Octante 6
+        // 0>m>=-1
+        else if (1 >= inclinacao && inclinacao >= 0 && dx < 0 && dy < 0) {
+            y0 = pontoInicialX * (-1)
+            x0 = pontoInicialY * (-1)
+            y1 = pontoFinalX * (-1)
+            x1 = pontoFinalY * (-1)
+
+        }
+
+        // tendendo ao infinito
+      
+       // console.log(typeof x0, typeof y0, typeof x1, typeof y1)
+       console.log("algoritmo: x [",x0,",", y0,"] y[", x1,",",  y1,"]")
+        algoritmoBresenhamX(x0, y0, x1, y1, Math.abs(x1 - x0), Math.abs(y1 - y0), ctx, height, width);
     }
 }
 const algoritmoBresenhamX = (x0, y0, xEnd, yEnd, dx, dy, ctx, height, width) => {
+
+    console.log("algoritmoBresenhamX: x [",x0,",", y0,"] y[", xEnd,",",  yEnd,"]")
+
 
     //captura de dados do painel
     let lagura = (width / 2);
@@ -178,6 +224,7 @@ const algoritmoBresenhamX = (x0, y0, xEnd, yEnd, dx, dy, ctx, height, width) => 
 
     // desenha o primeiro ponto
     ctx.fillRect(x, y, 1, 1);
+    console.log("ponto [", x, ",", y, "] ")
 
     while (x < xEnd) {
         x++;
@@ -191,6 +238,7 @@ const algoritmoBresenhamX = (x0, y0, xEnd, yEnd, dx, dy, ctx, height, width) => 
 
         // setPixel (round (x), round (y));
         ctx.fillRect(lagura + x, altura - y, 1, 1);
+        console.log("ponto [", x, ",", y, "] = ", ds)
 
     }
 }

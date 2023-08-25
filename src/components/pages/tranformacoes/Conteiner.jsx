@@ -64,7 +64,7 @@ const Conteiner = () => {
 
         setValor_x_res(Math.round(resultadoX * 100) / 100)
         setValor_y_res(Math.round(resultadoY * 100) / 100)
-        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
+       //  console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const NDC_para_WD = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
@@ -72,7 +72,7 @@ const Conteiner = () => {
 
         setValor_x_res(Math.round(resultadoX * 100) / 100)
         setValor_y_res(Math.round(resultadoY * 100) / 100)
-        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
+       //  console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const NDC_para_DC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res - 1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
@@ -80,7 +80,7 @@ const Conteiner = () => {
 
         setValor_x_res(Math.round(resultadoX))
         setValor_y_res(Math.round(resultadoY))
-        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
+        // console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const DC_para_NDC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x - 1)) + tamanho_min_x_res
@@ -88,7 +88,7 @@ const Conteiner = () => {
 
         setValor_x_res(Math.round(resultadoX * 100) / 100)
         setValor_y_res(Math.round(resultadoY * 100) / 100)
-        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
+       // console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const WD_para_DC = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = ((tamanho_max_x_res - tamanho_min_x_res) - 1) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x)) + tamanho_min_x_res
@@ -97,7 +97,7 @@ const Conteiner = () => {
         setValor_x_res(Math.round(resultadoX))
         setValor_y_res(Math.round(resultadoY))
         //console.log('tipo',typeof resultadoX,'valor', resultadoX,'conversao',Math.round(resultadoX))
-        console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
+      //  console.log("x", resultadoX, "y", resultadoY, "teste", valor_x, "|", valor_y)
     }
     const DC_para_WD = (valor_x, valor_y, tamanho_min_x_res, tamanho_max_x_res, tamanho_min_y_res, tamanho_max_y_res) => {
         const resultadoX = (tamanho_max_x_res - tamanho_min_x_res) * ((valor_x - tamanho_min_x) / (tamanho_max_x - tamanho_min_x - 1)) + tamanho_min_x_res
@@ -110,7 +110,7 @@ const Conteiner = () => {
     //Calcular a conversao da tela
     const conversao = (tamanho_painel, variacaoX, variacaoY) => {
         if (variacaoX > variacaoY) {
-            console.log(tamanho_painel / variacaoX)
+         //   console.log(tamanho_painel / variacaoX)
             return Math.abs(tamanho_painel / variacaoX)
         }
         else {

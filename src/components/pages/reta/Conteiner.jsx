@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { makeStyles } from '@mui/styles';
 import Reta from './Reta';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 const useStyles = makeStyles({
     espacamento: {
@@ -36,7 +36,14 @@ const Conteiner = () => {
     const [inicio_y, setInicio_y] = useState(0)
     const [fim_x, setFim_x] = useState(0)
     const [fim_y, setFim_y] = useState(0)
-    const [algoritmo, setAlgoritmo] = useState("DDA")
+    const [algoritmo, setAlgoritmo] = useState("Bresenham")
+    const [vazio, setVazio] = useState(true)
+
+    /*useEffect(() => {
+        const validacao =(inicio_x || inicio_y || fim_x || fim_y) === undefined?true:false
+        console.log("t",validacao)
+        setVazio(validacao)
+    }),[inicio_x,inicio_y,fim_x,fim_y]*/
 
     return (
         <Grid container direction="row" >
@@ -85,6 +92,11 @@ const Conteiner = () => {
                         Pontos fora da area do plano cartesiano estabelecido. Valor maximo suportado <b>{TAMANHO_CANVAS / 2}</b>
                     </Alert>
                 </Grid> : undefined}
+                {/*vazio? <Grid item sm={12} className={classes.espacamento}>
+                    <Alert variant="outlined" severity="warning">
+                        Contem valores inexistente 
+                    </Alert>
+                        </Grid> : undefined*/}
                 <Grid item container sm={12} >
                     <Grid item className={classes.espacamento} sm={6} >
                         <TextField

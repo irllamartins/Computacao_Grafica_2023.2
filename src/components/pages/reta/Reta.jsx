@@ -6,7 +6,7 @@ import Bresenham from './Bresenham'
 
 const Reta = ({ tamanhoX, tamanhoY, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, opcao }) => {
   const canvasRef = useRef(null)
-
+console.log("painel : x [",pontoInicialX,",", pontoInicialY,"] y[", pontoFinalX,",", pontoFinalY,"]")
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
