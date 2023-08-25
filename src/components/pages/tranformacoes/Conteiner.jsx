@@ -214,7 +214,7 @@ const Conteiner = () => {
                         tamanhoY={Math.abs(TAMANHO_CANVAS)}
                         x={tratamentoNegativo(tamanho_min_x, valor_x)} y={tratamentoNegativo(tamanho_min_y, valor_y)} propocao={conversaoPainelA} />
 
-                    {console.log("|Painel A", Math.abs(tamanho_max_x - tamanho_min_x), "|", conversaoPainelA, "|cod", valor_x, "| painel Y", Math.abs(tamanho_max_y - tamanho_min_y), "|", conversaoPainelA, "|cod", valor_y)}
+                    {/*console.log("|Painel A", Math.abs(tamanho_max_x - tamanho_min_x), "|", conversaoPainelA, "|cod", valor_x, "| painel Y", Math.abs(tamanho_max_y - tamanho_min_y), "|", conversaoPainelA, "|cod", valor_y)*/}
 
                 </Grid>
                 <Grid item container direction="row" sm={12}>
@@ -309,7 +309,7 @@ const Conteiner = () => {
                         tamanhoY={Math.abs(TAMANHO_CANVAS)}
                         x={tratamentoNegativo(tamanho_min_x_res, valor_x_res)} y={tratamentoNegativo(tamanho_min_y_res, valor_y_res)} propocao={conversaoPainelB} />
 
-                    {console.log("|Painel B", Math.abs(tamanho_max_x_res - tamanho_min_x_res), "|", conversaoPainelB, "|cod", valor_x_res, "|painel Y", Math.abs(tamanho_max_y_res - tamanho_min_y_res), "|", conversaoPainelB, "|cod", valor_y_res)}
+                    {/*console.log("|Painel B", Math.abs(tamanho_max_x_res - tamanho_min_x_res), "|", conversaoPainelB, "|cod", valor_x_res, "|painel Y", Math.abs(tamanho_max_y_res - tamanho_min_y_res), "|", conversaoPainelB, "|cod", valor_y_res)*/}
                 </Grid>
                 <Grid item container direction="row" sm={12} >
                     <Grid item className={classes.espacamento} sm={3} >
