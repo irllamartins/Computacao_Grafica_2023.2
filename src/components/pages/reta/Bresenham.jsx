@@ -117,7 +117,7 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
             // Octante 1
             //1>=m>=0
 
-            if (1 >= inclinacao && inclinacao >= 0 && dy >= 0 && dx>=dy) {
+            if (1 >= inclinacao && inclinacao >= 0 /*&& dy >= 0*/ && dx>=dy) {
                 x0 = pontoInicialX
                 y0 = pontoInicialY
                 x1 = pontoFinalX
@@ -139,7 +139,7 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
         if (dx < 0) {
             // Octante 5
             //1>=m>=0
-            if (1 >= inclinacao && inclinacao >= 0 && dy < 0 && dx>=dy) {
+            if (1 >= inclinacao && inclinacao >= 0/* && dy < 0 && dx>=dy*/) {
                 x0 = pontoInicialX * (-1)
                 y0 = pontoInicialY * (-1)
                 x1 = pontoFinalX * (-1)
@@ -157,10 +157,10 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
             }
         }
         // y2>y1
-        if (dy > 0) {
+        else if (dy > 0) {
             // Octante 2
             //1>=m>=0
-            if (1 >= inclinacao && inclinacao >= 0 && dx > 0) {
+            if (1 <= inclinacao /*&& inclinacao >= 0*/ && dy<dx) {
                 y0 = pontoInicialX
                 x0 = pontoInicialY
                 y1 = pontoFinalX
@@ -181,7 +181,7 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
         if (dy < 0) {
             // Octante 7
             //1>=m>=0
-            if (1 >= inclinacao && inclinacao >= 0 && dx > 0 ) {
+            if (-1 > inclinacao /*&& inclinacao >= 0*/ && dx > dy ) {
                 y0 = pontoInicialX
                 x0 = pontoInicialY * (-1)
                 y1 = pontoFinalX
@@ -199,7 +199,6 @@ const Bresenham = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, 
                 console.log("Octante 6")
             }
         }
-        // tendendo ao infinito
 
         // console.log(typeof x0, typeof y0, typeof x1, typeof y1)
         console.log("algoritmo: x [", x0, ",", y0, "] y[", x1, ",", y1, "]")

@@ -1,10 +1,17 @@
 import {
     TextField,
-    Grid
+    Grid,
+    Typography,
+    FormControl,
+    FormLabel,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+    Alert,
 } from '@mui/material'
 import { makeStyles } from '@mui/styles';
-import Circuferencia from './Circuferencia'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Circuferencia from './Circuferencia';
 
 const useStyles = makeStyles({
     espacamento: {
@@ -17,64 +24,104 @@ const useStyles = makeStyles({
         backgroundColor: "gray"
     },
 })
-const TAMANHO_CANVAS= 501
+const TAMANHO_CANVAS = 500
 
+export const AlgoritimosTipos = {
+    EXPLICITA: "Forma explicita",
+    TRIGONOMETRICA: "Forma trigonometrica",
+    MEDIO: "Ponto médio"
+}
 const Conteiner = () => {
     const classes = useStyles()
-    const [valor_x, setValor_x] = useState(0)
-    const [valor_y, setValor_y] = useState(0)
+    const [x, setX] = useState(0)
+    const [y, setY] = useState(0)
     const [raio, setRaio] = useState(0)
+    const [algoritmo, setAlgoritmo] = useState("Forma explicita")
 
+    const altura = (TAMANHO_CANVAS / 2) - y
+    const largura = (TAMANHO_CANVAS / 2) + x
 
     return (
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Grid item sm={10}  >
-                <Circuferencia tamanho={TAMANHO_CANVAS} raio={raio} x={valor_x} y={valor_y}/>
-            </Grid>
-            <Grid item container direction="column" sm={2} >
-                <Grid item className={classes.espacamento}>
-                    <TextField
-                        id="x"
-                        value={valor_x}
-                        label="Digite o X"
-                        variant="standard"
-                        fullWidth type="number"
-                        onChange={e =>
-                            setValor_x(e.target.value)
-                        }
-                    />
+        <Grid container direction="row" >
+            <Grid container item sm={6} xl={12} align="center" marginTop={5}>
+                <Grid item sm={12}   >
+                    { /* tamanho,raio, x,y, opcao*/}
+                    <Circuferencia
+                        tamanho={TAMANHO_CANVAS}
+                        altura={altura}
+                        largura={largura}
+                        raio={raio}
+                        opcao={algoritmo} />
                 </Grid>
-                <Grid item className={classes.espacamento}>
-                    <TextField
-                        id="y"
-                        value={valor_y}
-                        label="Digite o Y"
-                        variant="standard"
-                        fullWidth type="number"
-                        onChange={e =>
-                            setValor_y(e.target.value)
-                        }
-                    />
-                </Grid>
-                <Grid item className={classes.espacamento}>
-                    <TextField
-                        id="raio"
-                        value={raio}
-                        label="Digite o raio"
-                        variant="standard"
-                        fullWidth type="number"
-                        onChange={e =>
-                            setRaio(e.target.value)
-                        }
-                    />
-                </Grid>
-            </Grid>
 
+            </Grid>
+            <Grid container item sm={6} xl={12} align="center" >
+                <Grid item sm={12} xl={12} p={2}>
+                    <Typography variant="h5">Circuferencia</Typography>
+                </Grid>
+                <Grid item sm={12}>
+                    <FormControl >
+                        <FormLabel >Algoritmos</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="algoritmo-label"
+                            name="algoritmo-group"
+                            value={algoritmo}
+                            onChange={e => setAlgoritmo(e.target.value)}
+                        >
+                            {
+                                Object.values(AlgoritimosTipos).map((item, index) =>
+                                    <FormControlLabel key={index} value={item} control={<Radio />} label={item} />
+                                )
+                            }
+                        </RadioGroup>
+                    </FormControl>
+
+                </Grid>
+                {(Math.abs(x) + raio > TAMANHO_CANVAS / 2 || Math.abs(y) + raio > TAMANHO_CANVAS / 2) && <Grid item sm={12} className={classes.espacamento}>
+                    <Alert variant="outlined" severity="warning">
+                        Pontos fora da area do plano cartesiano estabelecido. Valor maximo suportado <b>{TAMANHO_CANVAS / 2}</b>
+                    </Alert>
+                </Grid>}
+                <Grid item container sm={12} >
+                    <Grid item className={classes.espacamento} sm={4} >
+                        <TextField
+                            id="raio"
+                            value={raio}
+                            label="Raio"
+                            variant="standard"
+                            fullWidth type="number"
+                            onChange={e =>
+                                setRaio(Number(e.target.value))
+                            }
+                        />
+                    </Grid>
+                    <Grid item className={classes.espacamento} sm={4} >
+                        <TextField
+                            id="x"
+                            value={x}
+                            label="Ponto X"
+                            variant="standard"
+                            fullWidth type="number"
+                            onChange={e =>
+                                setX(Number(e.target.value))
+                            }
+                        />
+                    </Grid>
+                    <Grid item className={classes.espacamento} sm={4}>
+                        <TextField
+                            id="y"
+                            value={y}
+                            label="Ponto Y"
+                            variant="standard"
+                            fullWidth type="number"
+                            onChange={e =>
+                                setY(Number(e.target.value))
+                            }
+                        />
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
     )
 }

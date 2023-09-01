@@ -1,7 +1,12 @@
 import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
+import { AlgoritimosTipos } from './Conteiner'
+import PontoMedio from "./PontoMedio"
+import Trigonometrica from './FormaTrigonometrica'
+import Explicita from './FormaExplicita'
 
-const Circuferencia = ({ tamanho, raio, x, y }) => {
+
+const Circuferencia = ({ tamanho,altura,largura, raio, opcao }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -14,19 +19,26 @@ const Circuferencia = ({ tamanho, raio, x, y }) => {
 
     // Pinta o fundo do canvas
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-   
-
-    // Define a cor do círculo
-    ctx.fillStyle = 'red';
-
-    DesenharLimite(ctx,canvas)
-
-    // Desenha o pixel na posição (x, y) = (250, 250)
-    ctx.fillRect(x, y, 1, 1);
 
 
+    DesenharLimite(ctx, canvas)
 
-  }, [raio, x, y])
+    // Define a cor do ponto
+
+    ctx.fillStyle = 'red'
+   // console.log(AlgoritimosTipos.MEDIO,"op",opcao)
+    if (opcao === AlgoritimosTipos.MEDIO) {
+      PontoMedio(altura,largura,raio,ctx)
+    }
+    else if(opcao === AlgoritimosTipos.TRIGONOMETRICA){
+      Trigonometrica(altura,largura,raio,ctx)
+    }
+    else if(opcao === AlgoritimosTipos.EXPLICITA){
+      console.log("entrei")
+      Explicita(altura,largura,raio,ctx)
+    }
+  
+  }, [raio, largura, altura,opcao])
 
   return <canvas ref={canvasRef} width={tamanho} height={tamanho} />
 }

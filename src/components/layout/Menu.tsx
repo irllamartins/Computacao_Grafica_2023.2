@@ -25,7 +25,9 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   TransformSharp,
-  Timeline
+  Timeline,
+  ShapeLine,
+  Toll
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
@@ -39,9 +41,9 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles({
   ativo: {
-     backgroundColor: "#173c51"
+    backgroundColor: "#173c51"
   },
-  header:{
+  header: {
     backgroundColor: "#173c"
   }
 })
@@ -103,8 +105,8 @@ const pages = (value: number) => {
       return <Transformacoes />
     case 1:
       return <Retas />
-
-
+    case 2:
+      return <Circuferencia />
     default:
       return "Não encontrado"
 
@@ -117,7 +119,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false);
 
-  const [pagesNumber, setPagesNumber] = React.useState(1);
+  const [pagesNumber, setPagesNumber] = React.useState(2);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -128,8 +130,11 @@ export default function PersistentDrawerLeft() {
   };
 
   const titulo = [
-    { label: 'Transformações', icon: <TransformSharp /> },
+    { label: 'Normalizaçao', icon: <TransformSharp /> },
     { label: 'Reta', icon: <Timeline /> },
+    { label: 'Circuferencia', icon: <Toll /> },
+    { label: 'Transformações', icon: <ShapeLine /> }
+
   ]
 
   return (
