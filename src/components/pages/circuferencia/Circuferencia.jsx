@@ -4,6 +4,7 @@ import { AlgoritimosTipos } from './Conteiner'
 import PontoMedio from "./PontoMedio"
 import Trigonometrica from './FormaTrigonometrica'
 import Explicita from './FormaExplicita'
+import Elipse from './FormaElipse'
 
 
 const Circuferencia = ({ tamanho,altura,largura, raio, opcao }) => {
@@ -13,13 +14,11 @@ const Circuferencia = ({ tamanho,altura,largura, raio, opcao }) => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
-
     // Define a cor do fundo
     ctx.fillStyle = '#2b2b2b'
 
     // Pinta o fundo do canvas
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
 
     DesenharLimite(ctx, canvas)
 
@@ -36,6 +35,10 @@ const Circuferencia = ({ tamanho,altura,largura, raio, opcao }) => {
     else if(opcao === AlgoritimosTipos.EXPLICITA){
       console.log("entrei")
       Explicita(altura,largura,raio,ctx)
+    }
+    else if(opcao === AlgoritimosTipos.ELIPSE){
+      console.log("entrei")
+      Elipse(altura,largura,raio,ctx)
     }
   
   }, [raio, largura, altura,opcao])

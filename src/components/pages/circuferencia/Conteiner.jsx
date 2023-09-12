@@ -29,7 +29,8 @@ const TAMANHO_CANVAS = 500
 export const AlgoritimosTipos = {
     EXPLICITA: "Forma explicita",
     TRIGONOMETRICA: "Forma trigonometrica",
-    MEDIO: "Ponto médio"
+    MEDIO: "Ponto médio",
+    ELIPSE: "Elipse"
 }
 const Conteiner = () => {
     const classes = useStyles()

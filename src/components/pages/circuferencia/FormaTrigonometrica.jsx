@@ -1,10 +1,9 @@
-const Trigonometrica = (altura,largura,raio,ctx) =>{
-    let y 
-    for(let cont= -raio; cont<raio; cont++) {
-         y= Math.abs( Math.sqrt( Math.pow(raio, 2)-Math.pow(cont, 2),2));
-         ctx.fillRect( Math.abs(largura-cont), Math.abs(altura+y));
-         ctx.fillRect( Math.abs(largura+cont), Math.abs(altura-y));
+const Trigonometrica = (altura, largura, raio, ctx) => {
+    for (let cont = -raio; cont < raio; cont++) {
+        let y = Math.sqrt(Math.pow(raio, 2) - Math.pow(cont, 2));
+        /* Desenhando ponto */
+        ctx.fillRect(largura - cont, altura + y, 1, 1);
+        ctx.fillRect(largura + cont, altura - y, 1, 1);
     }
-
 }
-export default Trigonometrica 
+export default Trigonometrica
