@@ -7,7 +7,7 @@ import Explicita from './FormaExplicita'
 import Elipse from './FormaElipse'
 
 
-const Circuferencia = ({ tamanho,altura,largura, raio, opcao }) => {
+const Circuferencia = ({ tamanho,altura,largura, raio, raioX, raioY, opcao }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -33,15 +33,14 @@ const Circuferencia = ({ tamanho,altura,largura, raio, opcao }) => {
       Trigonometrica(altura,largura,raio,ctx)
     }
     else if(opcao === AlgoritimosTipos.EXPLICITA){
-      console.log("entrei")
       Explicita(altura,largura,raio,ctx)
     }
     else if(opcao === AlgoritimosTipos.ELIPSE){
-      console.log("entrei")
-      Elipse(altura,largura,raio,ctx)
+      // console.log("entrei",raioX,raioY,ctx)
+       Elipse(altura,largura,raioX,raioY,ctx)
     }
   
-  }, [raio, largura, altura,opcao])
+  }, [raio, largura, altura,raio,raioX,raioY,opcao])
 
   return <canvas ref={canvasRef} width={tamanho} height={tamanho} />
 }

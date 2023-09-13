@@ -4,7 +4,7 @@ const Explicita = (altura, largura, raio, ctx) => {
     let i = 0; /*Auxiliar do laço while*/
     let x = 0
     let y = 0
-    console.log("explicita")
+    //console.log("explicita")
     while (i < numeroPonto) {
         let angulo = i * anguloPassos;
         /* Definindo a coordenada X */
@@ -12,7 +12,7 @@ const Explicita = (altura, largura, raio, ctx) => {
         /* Definindo a coordenada Y */
         y = Math.round(raio * Math.sin(angulo));
         /* Desenhando o ponto */
-        console.log("x", x, "y", y)
+        //console.log("x", x, "y", y)
         ctx.fillRect(largura - y, altura + x, 1, 1);
         i++;
     }

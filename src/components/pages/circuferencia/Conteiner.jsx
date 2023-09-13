@@ -37,6 +37,8 @@ const Conteiner = () => {
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
     const [raio, setRaio] = useState(0)
+    const [raioX, setRaioX] = useState(0)
+    const [raioY, setRaioY] = useState(0)
     const [algoritmo, setAlgoritmo] = useState("Forma explicita")
 
     const altura = (TAMANHO_CANVAS / 2) - y
@@ -52,6 +54,8 @@ const Conteiner = () => {
                         altura={altura}
                         largura={largura}
                         raio={raio}
+                        raioX={raioX}
+                        raioY={raioY}
                         opcao={algoritmo} />
                 </Grid>
 
@@ -85,6 +89,35 @@ const Conteiner = () => {
                     </Alert>
                 </Grid>}
                 <Grid item container sm={12} >
+                   { 
+                   algoritmo===AlgoritimosTipos.ELIPSE?
+                   <>
+                    <Grid item className={classes.espacamento} sm={4} >
+                    <TextField
+                            id="raioX"
+                            value={raioX}
+                            label="Raio em X"
+                            variant="standard"
+                            fullWidth type="number"
+                            onChange={e =>
+                                setRaioX(Number(e.target.value))
+                            }
+                        />
+                    </Grid>
+                    <Grid item className={classes.espacamento} sm={4} >
+                    <TextField
+                            id="raioY"
+                            value={raioY}
+                            label="Raio em Y"
+                            variant="standard"
+                            fullWidth type="number"
+                            onChange={e =>
+                                setRaioY(Number(e.target.value))
+                            }
+                        />
+                   </Grid>
+                   <Grid item className={classes.espacamento} sm={4} />
+                   </>:
                     <Grid item className={classes.espacamento} sm={4} >
                         <TextField
                             id="raio"
@@ -97,6 +130,7 @@ const Conteiner = () => {
                             }
                         />
                     </Grid>
+                    }
                     <Grid item className={classes.espacamento} sm={4} >
                         <TextField
                             id="x"
