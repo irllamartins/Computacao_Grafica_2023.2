@@ -32,8 +32,9 @@ import {
 import { makeStyles } from '@mui/styles';
 
 import Circuferencia from '../pages/circuferencia/Conteiner'
-import Transformacoes from '../pages/tranformacoes/Conteiner'
+import Transformacoes from '../pages/normalizacao/Conteiner'
 import Retas from '../pages/reta/Conteiner'
+import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
 
 import { TEMA_COR } from '../material.theme'
 const drawerWidth = 240;
@@ -107,6 +108,8 @@ const pages = (value: number) => {
       return <Retas />
     case 2:
       return <Circuferencia />
+    case 3:
+      return <TransformacoesObjeto/>
     default:
       return "Não encontrado"
 
@@ -119,7 +122,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false);
 
-  const [pagesNumber, setPagesNumber] = React.useState(2);
+  const [pagesNumber, setPagesNumber] = React.useState(3);
 
   const handleDrawerOpen = () => {
     setOpen(true);

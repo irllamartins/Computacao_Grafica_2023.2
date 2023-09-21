@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
 import { AlgoritimosTipos } from './Conteiner'
 import PontoMedio from "./PontoMedio"
-import Trigonometrica from './FormaTrigonometrica'
-import Explicita from './FormaExplicita'
+import Trigonometrica from './FormaExplicita'
+import Explicita from './FormaTrigonometrica'
 import Elipse from './FormaElipse'
 
 

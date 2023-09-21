@@ -1,9 +1,20 @@
 const Trigonometrica = (altura, largura, raio, ctx) => {
-    for (let cont = -raio; cont < raio; cont++) {
-        let y = Math.sqrt(Math.pow(raio, 2) - Math.pow(cont, 2));
-        /* Desenhando ponto */
-        ctx.fillRect(largura - cont, altura + y, 1, 1);
-        ctx.fillRect(largura + cont, altura - y, 1, 1);
+    let numeroPonto = 800;
+    let anguloPassos = (2 * Math.PI) / numeroPonto; /* Intervalo */
+    let i = 0; /*Auxiliar do laço while*/
+    let x = 0
+    let y = 0
+    //console.log("explicita")
+    while (i < numeroPonto) {
+        let angulo = i * anguloPassos;
+        /* Definindo a coordenada X */
+        x = Math.round(raio * Math.cos(angulo));
+        /* Definindo a coordenada Y */
+        y = Math.round(raio * Math.sin(angulo));
+        /* Desenhando o ponto */
+        //console.log("x", x, "y", y)
+        ctx.fillRect(largura - y, altura + x, 1, 1);
+        i++;
     }
 }
 export default Trigonometrica
