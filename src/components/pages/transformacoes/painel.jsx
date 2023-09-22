@@ -1,32 +1,33 @@
 import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
+import DesenharFigura from '../../util/DesenharFigura'
 
-const Transformacoes = ({ tamanhoX,tamanhoY, x, y,propocao}) => {
+const Transformacoes = ({ tamanho,altura,largura, x, y, figura }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
-
+    const cor = 'orange'
 
     // Define a cor do fundo
     ctx.fillStyle = '#2b2b2b'
 
     // Pinta o fundo do canvas
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-   
+
 
     // Define a cor do círculo
-    ctx.fillStyle = 'orange'    
+    ctx.fillStyle = cor
 
-     DesenharLimite(ctx,canvas)
+    DesenharLimite(ctx, canvas)
+    DesenharFigura(tamanho,figura, cor, ctx)
 
 
 
+  }, [tamanho,altura,largura, x, y, figura ])
 
-  }, [tamanhoX,tamanhoY, x, y,propocao])
-
-  return <canvas ref={canvasRef} width={tamanhoX+1} height={tamanhoY+1} />
+  return <canvas ref={canvasRef} width={tamanho} height={tamanho} />
 }
 
 export default Transformacoes  

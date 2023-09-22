@@ -55,7 +55,7 @@ function CustomTabPanel(props: TabPanelProps) {
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                    {children}
                 </Box>
             )}
         </div>
@@ -73,7 +73,8 @@ function a11yProps(index: number) {
 const TAMANHO_CANVAS = 500
 
 
-
+const matriz: number[][] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+const operarMatriz: number[][] = []
 
 enum TipoTransfomacoes {
     TRANSLACAO = "Translação",
@@ -96,6 +97,7 @@ const Operacoes = {
     // dispositivo de exibição para a metrica do mundo
     DC_WD: "D.C para W.D",
 }
+
 const Conteiner = () => {
     const classes = useStyles()
 
@@ -103,8 +105,14 @@ const Conteiner = () => {
     const [opcao, setOpcao] = useState("")
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
+    const [ponto_x, setPonto_x] = useState(0)
+    const [ponto_y, setPonto_y] = useState(0)
     const [grau, setGrau] = useState(0)
     const [alignment, setAlignment] = useState<string | null>('left');
+    const [figura, setFigura] = useState<number[][]>([]);
+
+    const altura = (TAMANHO_CANVAS / 2) - y
+    const largura = (TAMANHO_CANVAS / 2) + x
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
@@ -128,33 +136,39 @@ const Conteiner = () => {
         }
     }
 
+    const addPonto = (x: number, y: number, figura: any) => {
+        const newArray = [x, y];
+        setFigura(prevArrays => [...prevArrays, newArray]);
+        console.log(figura)
+    }
+
     const entradas = (opcao: string) => {
         switch (opcao) {
             case TipoTransfomacoes.CISALHAMENTO:
                 return <Grid item container sm={12} direction="row">
                     <Grid item sm={6}>
                         <TextField
-                            id="x"
-                            value={x}
+                            id="ponto_x"
+                            value={ponto_x}
                             label="Ponto X"
                             variant="standard"
                             fullWidth
                             type="number"
                             onChange={e =>
-                                setX(Number(e.target.value))
+                                setPonto_x(Number(e.target.value))
                             }
                         />
                     </Grid>
                     <Grid item sm={6}>
                         <TextField
-                            id="y"
-                            value={y}
+                            id="ponto_y"
+                            value={ponto_y}
                             label="Ponto Y"
                             variant="standard"
                             fullWidth
                             type="number"
                             onChange={e =>
-                                setY(Number(e.target.value))
+                                setPonto_y(Number(e.target.value))
                             }
                         />
                     </Grid>
@@ -181,7 +195,7 @@ const Conteiner = () => {
                 ) => {
                     setAlignment(newAlignment);
                 };
-                return <Grid item sm={12}>
+                return <Grid item container sm={12}>
                     <ToggleButtonGroup
                         value={alignment}
                         exclusive
@@ -205,7 +219,7 @@ const Conteiner = () => {
                         </ToggleButton>
                     </ToggleButtonGroup>
                     {
-                        alignment === "funcao" && <Grid item container sm={12} direction="row">
+                        alignment === "funcao" && <Grid item sm={12} direction="row">
                             <Grid item sm={6}>
                                 <TextField
                                     id="x"
@@ -288,14 +302,19 @@ const Conteiner = () => {
     return (
         <Grid container direction="row" >
             <Grid item sm={6} xl={12} marginTop={5} >
-                <Painel tamanhoX={TAMANHO_CANVAS} tamanhoY={TAMANHO_CANVAS} x={0} y={0} propocao={1} />
+                <Painel
+                    tamanho={TAMANHO_CANVAS}
+                    altura={altura}
+                    largura={largura}
+                    x={0} y={0}
+                    figura={figura} />
             </Grid>
             <Grid item sm={6} xl={12}>
                 <Grid item sm={12} xl={12} p={2}>
                     <Typography variant="h5" align='center'>Transformações</Typography>
                 </Grid>
                 <Grid item sm={12} xl={12} p={2}>
-                    <Grid sm={12} sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value}
                             onChange={handleChange}
                             aria-label="basic tabs example"
@@ -305,16 +324,45 @@ const Conteiner = () => {
                             <Tab label="Adicionar modificação" {...a11yProps(1)} />
                             <Tab label="Historico" {...a11yProps(2)} />
                         </Tabs>
-                    </Grid>
+                    </Box>
                     <CustomTabPanel value={value} index={0}>
-                        Desenhar figura
+                        <Grid container direction="row" >
+                            <Grid item sm={6}>
+                                <TextField
+                                    id="x"
+                                    value={x}
+                                    label="Ponto X"
+                                    variant="standard"
+                                    fullWidth
+                                    type="number"
+                                    onChange={e =>
+                                        setX(Number(e.target.value))
+                                    }
+                                />
+                            </Grid>
+                            <Grid item sm={6}>
+                                <TextField
+                                    id="y"
+                                    value={y}
+                                    label="Ponto Y"
+                                    variant="standard"
+                                    fullWidth
+                                    type="number"
+                                    onChange={e =>
+                                        setY(Number(e.target.value))
+                                    }
+                                />
+                            </Grid>
+                            <Grid item sm={12} bottom="5%" position="absolute" >
+                                <Button variant="contained" fullWidth onClick={() => addPonto(x, y, figura)}>Adicionar Ponto</Button>
+                            </Grid>
+                        </Grid>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
                         <Grid
                             container
                             alignItems="center"
                             justifyContent="space-around"
-                            sm={12}
 
                         >
                             <Grid item sm={12}>
@@ -338,10 +386,10 @@ const Conteiner = () => {
 
                             {entradas(opcao)}
                             <Grid item sm={12} bottom="5%" position="absolute" >
-                            <Button variant="contained" fullWidth onClick={calcular}>Adicionar transformação</Button>
+                                <Button variant="contained" fullWidth onClick={calcular}>Adicionar transformação</Button>
                             </Grid>
                         </Grid>
-                    </CustomTabPanel>   
+                    </CustomTabPanel>
                     <CustomTabPanel value={value} index={3}>
                         Item Two
                     </CustomTabPanel>
