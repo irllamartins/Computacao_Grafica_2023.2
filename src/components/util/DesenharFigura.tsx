@@ -1,5 +1,4 @@
 const DesenharFigura = (tamanho: number, pontos: number[][], cor: string, ctx: any) => {
-  console.log(pontos, "|", cor)
 
   const novo_tamanho = tamanho / 2
   // Define a cor das linhas
