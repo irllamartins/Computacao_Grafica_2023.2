@@ -27,7 +27,14 @@ import {
   TransformSharp,
   Timeline,
   ShapeLine,
-  Toll
+  Toll,
+  AspectRatio,
+  RecentActors,
+  Pets,
+  PermMedia,
+  NaturePeople,
+  Iso,
+  BarChart
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
@@ -35,6 +42,7 @@ import Circuferencia from '../pages/circuferencia/Conteiner'
 import Transformacoes from '../pages/normalizacao/Conteiner'
 import Retas from '../pages/reta/Conteiner'
 import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
+import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 
 import { TEMA_COR } from '../material.theme'
 const drawerWidth = 240;
@@ -88,7 +96,7 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}));
+}))
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -97,7 +105,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
-}));
+}))
 
 
 const pages = (value: number) => {
@@ -109,7 +117,9 @@ const pages = (value: number) => {
     case 2:
       return <Circuferencia />
     case 3:
-      return <TransformacoesObjeto/>
+      return <TransformacoesObjeto />
+    case 4:
+      return <CohenSuterland />
     default:
       return "Não encontrado"
 
@@ -120,9 +130,9 @@ export default function PersistentDrawerLeft() {
   const theme = useTheme()
   const classes = useStyles()
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(3);
+  const [pagesNumber, setPagesNumber] = React.useState(4)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -136,8 +146,13 @@ export default function PersistentDrawerLeft() {
     { label: 'Normalizaçao', icon: <TransformSharp /> },
     { label: 'Reta', icon: <Timeline /> },
     { label: 'Circuferencia', icon: <Toll /> },
-    { label: 'Transformações', icon: <ShapeLine /> }
-
+    { label: 'Transformações', icon: <ShapeLine /> },
+    { label: 'Perspectiva', icon: <NaturePeople /> },
+    { label: 'Cohen Surterland', icon: <AspectRatio /> },
+    { label: 'Filtros', icon: <RecentActors /> },
+    { label: 'Gato', icon: <Pets /> },
+    { label: 'Histograma', icon: <BarChart /> },
+    { label: 'Operação de imagem', icon: <Iso /> },
   ]
 
   return (

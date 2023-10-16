@@ -114,7 +114,7 @@ const Conteiner = () => {
     const [ponto_y, setPonto_y] = React.useState<number>(10)
     const [grau, setGrau] = React.useState(5)
     const [alignment, setAlignment] = React.useState<string | null>()
-    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 1], [0, 100, 1], [100, 0, 1], [0, 0, 1]])
+    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 1, 1], [0, 100, 1, 1], [100, 0, 1, 1], [0, 0, 1, 1]])
     const [operarMatriz, setOperarMatriz] = React.useState<Transformacao[]>([])
 
     const altura = (TAMANHO_CANVAS / 2) - y
@@ -123,6 +123,7 @@ const Conteiner = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
+
     const tratamentoEntrada = (texto: any, setEntrada: any) => {
 
         if (texto === "") {
@@ -176,11 +177,38 @@ const Conteiner = () => {
                     })
                 }
                 if (alignment === TipoReflexao.FUNCAO) {
+                    const sen = (ponto_x) / Math.sqrt((Math.pow(ponto_x, 2) + 1))
+                    const cos = 1 / Math.sqrt((Math.pow(ponto_x, 2) + 1))
                     operarMatriz.push({
-                        nome: "Reflexão em função",
+                        nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
                         x: 0,
                         y: 0,
-                        matriz: [[0, 1, 0], [1, 0, 0], [0, 0, 1]]
+                        matriz: [[1, 0, 0 * -1], [0, 1, 0 * -1], [0, 0, 1]]
+                    })
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[cos, sen * -1, 0], [sen, cos, 0], [0, 0, 1]]
+                    })
+
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.REFLEXAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[cos, sen * -1, 0], [sen, cos, 0], [0, 0, 1]]
+                    })
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[cos, sen, 0], [sen * -1, cos, 0], [0, 0, 1]]
+                    })
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
                     })
                 }
                 break
@@ -356,8 +384,11 @@ const Conteiner = () => {
                                 <TextField
                                     id="x"
                                     value={ponto_x}
-                                    label="Ponto X"
+                                    label="Variavel M"
                                     variant="standard"
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">X</InputAdornment>
+                                    }}
                                     fullWidth
                                     onChange={e => tratamentoEntrada(e.target.value, setPonto_x)}
                                 />
@@ -366,7 +397,7 @@ const Conteiner = () => {
                                 <TextField
                                     id="y"
                                     value={ponto_y}
-                                    label="Ponto Y"
+                                    label="Variavel B"
                                     variant="standard"
                                     fullWidth
                                     onChange={e => tratamentoEntrada(e.target.value, setPonto_y)}
@@ -526,7 +557,6 @@ const Conteiner = () => {
                             container
                             alignItems="center"
                             justifyContent="space-around"
-
                         >
                             <Grid item sm={12}>
                                 <FormControl >

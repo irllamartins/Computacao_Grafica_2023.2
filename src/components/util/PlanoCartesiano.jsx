@@ -2,7 +2,7 @@
 
 const DesenharLimite = (ctx,canvas) => { 
   // Define a cor das linhas
-ctx.strokeStyle = "#b2b2b2";
+ctx.strokeStyle = 0xeeeeee
 
   // Define a largura das linhas
   ctx.lineWidth = 0.5;
