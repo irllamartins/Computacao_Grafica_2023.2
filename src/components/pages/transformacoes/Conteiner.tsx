@@ -25,7 +25,7 @@ import {
     IconButton
 } from '@mui/material'
 import { makeStyles } from '@mui/styles';
-import Painel from './painel'
+import Painel from './Painel'
 import React, { useEffect, useState } from 'react';
 import { Add, Delete } from '@mui/icons-material';
 

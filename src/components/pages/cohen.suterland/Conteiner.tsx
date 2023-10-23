@@ -15,12 +15,11 @@ import {
     DialogContent,
     DialogActions
 } from '@mui/material'
-import { makeStyles } from '@mui/styles';
-import Painel from './painelMundo'
+import { makeStyles } from '@mui/styles'
 import React, { useEffect, useState } from 'react';
 import { Add, Delete, DesignServices } from '@mui/icons-material';
-import PainelMundo from './painelMundo';
-import PainelRecorte from './painelRecorte';
+import PainelMundo from './PainelMundo'
+import PainelRecorte from './PainelRecorte'
 
 const useStyles = makeStyles({
     espacamento: {

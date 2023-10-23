@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
 import DesenharFigura from '../../util/DesenharFigura'
 import DesenharReta from '../../util/DesenharReta'
-import DesenhaTela from './desenharTela'
+import DesenhaTela from './DesenharTela'
 
 const PainelMundo = ({ tamanho, figura, xInicial, yInicial, xFinal, yFinal }) => {
   const canvasRef = useRef(null)

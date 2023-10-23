@@ -3,7 +3,7 @@ import DesenharLimite from '../../util/PlanoCartesiano'
 
 const Transformacoes = ({ tamanhoX,tamanhoY, x, y,propocao}) => {
   const canvasRef = useRef(null)
-console.log("x:",x,"y:",y)
+
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
