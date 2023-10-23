@@ -45,6 +45,7 @@ const aplicacaoMascaraMultiplicacao = (imagemB: number[][], mascara: number[][])
             array.push(imagem[k + inicio_x][l + inicio_y])
 
         }
+        //console.log("for mini"+k, array)
         miniImagem.push(array)
     }
 
@@ -70,9 +71,11 @@ const multiplicacao = (imagem: number[][], mascara: number[][]) => {
     return resultado
 }
 export const  aplicacaoMascaraMediana = (imagemOriginal:number[][]) =>{
-    let mascara:number[][]= []
-    let imagemB:number[][] = adicionarBorda(imagemOriginal);
+    let mascara:number[][]= Array(3).fill(Array(3).fill(0))
+    let imagemB:number[][] = adicionarBorda(imagemOriginal)
     let resultado:number[][] = []
+
+    // console.log(mascara)
     
     for (let i = 0; i < imagemB[0].length-2; i++) {
         let array = []
@@ -84,15 +87,17 @@ export const  aplicacaoMascaraMediana = (imagemOriginal:number[][]) =>{
     return resultado;
 }
 const  mediana = (imagem:number[][], mascara:number[][])=> {
-    let resultado=0, cont=0;
     let lista:number[]= []
     for (let i = 0; i < mascara.length; i++) {
         for (let j = 0; j < mascara[0].length; j++) {
             lista.push(imagem[i][j]) 
+            
         }
     }
-    sortArray(lista);
-    resultado=lista[lista.length/2];
+    //console.log("antes",lista)
+    sortArray(lista)
+    //console.log("sort",lista)
+    let resultado=lista[5]
     if(resultado>255) {
         resultado=255;
     }
