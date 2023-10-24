@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react"
 
 import readline from 'readline'
 import { AddAPhoto, Cached, CloudUpload, ContactlessOutlined } from "@mui/icons-material"
-import { Box, Button, CircularProgress, Grid, IconButton, Input, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
+import { Box, Button, CircularProgress, Grid, IconButton, Input, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material"
 import sharp from "sharp"
 import GeraImagem from "./GeraImagem"
 import _, { forEach } from 'lodash';
@@ -13,7 +13,7 @@ import { green } from "@mui/material/colors"
 const Transformacoes: { [key: string]: any[][] } = {
     "Media": [[0.111, 0.111, 0.111], [0.111, 0.111, 0.111], [0.111, 0.111, 0.111]],
     "Mediana": [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]],
-    "Alto Reforco": [[-1, -1, -1], [-1,"x", -1], [-1, -1, -1]],
+    "Alto Reforco": [[-1, -1, -1], [-1, "x", -1], [-1, -1, -1]],
     "Passa Alta Basica": [[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]],
     "Robert X": [[0, 0, 0], [0, 1, 0], [0, -1, 0]],
     "Robert Y": [[0, 0, 0], [0, 1, -1], [0, 0, 0]],
@@ -46,7 +46,6 @@ const Container = () => {
     const [imagemTransformada, setImagemTransformada] = useState<number[][]>([])
     const [opcao, setOpcao] = useState<string>(TiposTransformacao.MEDIA)
     const [reforco, setReforco] = useState<number>(0)
-    const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const timer = useRef<number>();
 
@@ -54,6 +53,7 @@ const Container = () => {
         switch (label) {
             case TiposTransformacao.MEDIA:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.MEDIA]))
+              
                 break
             case TiposTransformacao.MEDIANA:
                 setImagemTransformada(aplicacaoMascaraMediana(imagem))
@@ -160,6 +160,9 @@ const Container = () => {
      }
  */
     return <Grid container>
+        <Grid item sm={12} xl={12} p={2}>
+            <Typography variant="h5" align="center">Aplicação de filtros em imagem</Typography>
+        </Grid>
         <Grid item container sm={5} sx={{ direction: "row", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Grid item sm={6}>
                 <input
@@ -170,6 +173,7 @@ const Container = () => {
                     onChange={e => {
                         GeraMatriz(e).then(matriz => {
                             setImagem(matriz as number[][])
+
                         }).catch(error => {
                             console.error(error)
                         })
@@ -192,7 +196,7 @@ const Container = () => {
                 <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
             </Grid>
         </Grid>
-        <Grid item sm={2}>
+        <Grid item sm={2} sx={{ alignSelf: "center", justifySelf: "center" }}>
             <TextField
                 inputProps={{ style: { textAlign: 'center' } }}
                 select
@@ -249,22 +253,14 @@ const Container = () => {
                 variant="contained"
                 size="small"
                 fullWidth
-                disabled={loading}
+                disabled={!(imagem.length>0?true:false)}
                 onClick={() => {
                     calcular(opcao)
-                    if (!loading) {
-                        setSuccess(false);
-                        setLoading(true);
-                        timer.current = window.setTimeout(() => {
-                            setSuccess(true);
-                            setLoading(false);
-                        }, 2000);
-                    }
                 }}
                 startIcon={<Cached />}>
                 Transformar
 
-                {loading && (
+                {success && (imagem.length==0?true:false) && (
                     <CircularProgress
                         size={24}
                         sx={{

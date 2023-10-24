@@ -44,6 +44,7 @@ import Retas from '../pages/reta/Conteiner'
 import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
 import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
+import OperacaoImagem from '../pages/operacao.imagem/Container'
 
 import { TEMA_COR } from '../material.theme'
 const drawerWidth = 240;
@@ -121,8 +122,10 @@ const pages = (value: number) => {
       return <TransformacoesObjeto />
     case 4:
       return <CohenSuterland />
-      case 7:
-        return <Filtros />
+    case 6:
+      return <Filtros />
+    case 9:
+      return <OperacaoImagem />
     default:
       return "Não encontrado"
 
@@ -135,7 +138,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(7)
+  const [pagesNumber, setPagesNumber] = React.useState(9)
 
   const handleDrawerOpen = () => {
     setOpen(true);
