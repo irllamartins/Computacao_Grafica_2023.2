@@ -99,16 +99,28 @@ export const or = (imagemA: number[][], imagemB: number[][], maximoCor: number) 
     let binario = []
     for (let i = 0; i < imagemA.length; i++) {
         let array = []
-        
+
         for (let j = 0; j < imagemA[0].length; j++) {
-            let operacao = 0
-            const binario1 = imagemA[i][j] > Math.round(maximoCor / 2) ? true : false
-            const binario2 = imagemB[i][j] > Math.round(maximoCor / 2) ? true : false
-            // trunca valores
-            if (binario1||binario2) {
-                operacao = maximoCor
+            let binario1 = imagemA[i][j].toString(2)
+            let binario2 = imagemB[i][j].toString(2)
+
+            const maxLength = Math.max(binario1.length, binario2.length);
+
+            // Adicione zeros à esquerda para igualar o comprimento das representações binárias
+            binario1 = binario1.padStart(maxLength, '0')
+            binario2 = binario2.padStart(maxLength, '0')
+
+            let resultado = ''
+
+            for (let i = 0; i < maxLength; i++) {
+                // Aplicar a operação AND bit a bit
+                const digito1 = binario1[i]
+                const digito2 = binario2[i]
+                const xor = (digito1 === '1' || digito2 === '1') ? '1' : '0'
+                resultado += xor
             }
-            array.push(operacao)
+
+            array.push(parseInt(resultado, 2))
         }
         binario.push(array)
     }
@@ -123,14 +135,27 @@ export const xor = (imagemA: number[][], imagemB: number[][], maximoCor: number)
     for (let i = 0; i < imagemA.length; i++) {
         let array = []
         for (let j = 0; j < imagemA[0].length; j++) {
-            let operacao = 0
-            // trunca valores
-            const binario1 = imagemA[i][j] > Math.round(maximoCor / 2) ? true : false
-            const binario2 = imagemB[i][j] > Math.round(maximoCor / 2) ? true : false
-            if ((binario1 || binario2) && binario1 !== binario2) {
-                operacao = maximoCor
+          
+            let binario1 = imagemA[i][j].toString(2)
+            let binario2 = imagemB[i][j].toString(2)
+
+            const maxLength = Math.max(binario1.length, binario2.length);
+
+            // Adicione zeros à esquerda para igualar o comprimento das representações binárias
+            binario1 = binario1.padStart(maxLength, '0')
+            binario2 = binario2.padStart(maxLength, '0')
+
+            let resultado = ''
+
+            for (let i = 0; i < maxLength; i++) {
+                // Aplicar a operação AND bit a bit
+                const digito1 = binario1[i]
+                const digito2 = binario2[i]
+                const xor = ((digito1 === '1' || digito2 === '1') && digito1 !== digito2) ? '1' : '0'
+                resultado += xor
             }
-            array.push(operacao)
+
+            array.push(parseInt(resultado, 2))
         }
         binario.push(array)
     }
@@ -143,14 +168,27 @@ export const and = (imagemA: number[][], imagemB: number[][], maximoCor: number)
     for (let i = 0; i < imagemA.length; i++) {
         let array = []
         for (let j = 0; j < imagemA[0].length; j++) {
-            let operacao = 0
-            // trunca valores
-            const binario1 = imagemA[i][j] > Math.round(maximoCor / 2) ? true : false
-            const binario2 = imagemB[i][j] > Math.round(maximoCor / 2) ? true : false
-            if ( binario1 === binario2) {
-                operacao = maximoCor
+
+            let binario1 = imagemA[i][j].toString(2)
+            let binario2 = imagemB[i][j].toString(2)
+
+            const maxLength = Math.max(binario1.length, binario2.length);
+
+            // Adicione zeros à esquerda para igualar o comprimento das representações binárias
+            binario1 = binario1.padStart(maxLength, '0')
+            binario2 = binario2.padStart(maxLength, '0')
+
+            let resultado = ''
+
+            for (let i = 0; i < maxLength; i++) {
+                // Aplicar a operação AND bit a bit
+                const digito1 = binario1[i]
+                const digito2 = binario2[i]
+                const and = digito1 === '1' && digito2 === '1' ? '1' : '0'
+                resultado += and
             }
-            array.push(operacao)
+
+            array.push(parseInt(resultado, 2))
         }
         binario.push(array)
     }
