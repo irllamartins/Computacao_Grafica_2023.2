@@ -43,6 +43,7 @@ import Circuferencia from '../pages/circuferencia/Conteiner'
 import Transformacoes from '../pages/normalizacao/Conteiner'
 import Retas from '../pages/reta/Conteiner'
 import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
+import Transformacoes3D from '../pages/transformacoes3D/Conteiner'
 import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
@@ -52,6 +53,12 @@ const drawerWidth = 240;
 
 
 const useStyles = makeStyles((theme: Theme) => ({
+  /* ativo: {
+     backgroundColor: `${theme.palette.background.default}`
+   },
+   header: {
+     backgroundColor:  `${theme.palette.primary.main}`
+   }*/
   /* ativo: {
      backgroundColor: `${theme.palette.background.default}`
    },
@@ -122,8 +129,10 @@ const pages = (value: number) => {
     case 3:
       return <TransformacoesObjeto />
     case 4:
+      return <Transformacoes3D />
+    case 5:
       return <CohenSuterland />
-    case 6:
+    case 7:
       return <Filtros />
     case 8:
       return <Histograma />
@@ -141,7 +150,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(8)
+  const [pagesNumber, setPagesNumber] = React.useState(9)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,6 +165,7 @@ export default function PersistentDrawerLeft() {
     { label: 'Reta', icon: <Timeline /> },
     { label: 'Circuferencia', icon: <Toll /> },
     { label: 'Transformações', icon: <ShapeLine /> },
+    { label: 'Transformações3D', icon: <ShapeLine /> },
     { label: 'Perspectiva', icon: <NaturePeople /> },
     { label: 'Cohen Surterland', icon: <AspectRatio /> },
     { label: 'Filtros', icon: <RecentActors /> },

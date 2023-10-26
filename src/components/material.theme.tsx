@@ -19,7 +19,7 @@ export const DefaultTheme = {
             main: colorMainSecondary,
             dark: alpha(colorBaseSecondary, 0.9),
             light: alpha(colorBaseSecondary, 0.5),
-            contrastText: getContrastRatio(colorMainSecondary, '#fff') < 4.5 ? '#fff' : '#111',
+            contrastText: getContrastRatio(colorMainSecondary, '#fff') > 4.5 ? '#fff' : '#111',
         },
         background: {
             paper: '#ffffff',
