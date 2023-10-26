@@ -46,17 +46,18 @@ import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
 import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
+import Histograma from '../pages/histograma/Container'
 
 const drawerWidth = 240;
 
 
 const useStyles = makeStyles((theme: Theme) => ({
- /* ativo: {
-    backgroundColor: `${theme.palette.background.default}`
-  },
-  header: {
-    backgroundColor:  `${theme.palette.primary.main}`
-  }*/
+  /* ativo: {
+     backgroundColor: `${theme.palette.background.default}`
+   },
+   header: {
+     backgroundColor:  `${theme.palette.primary.main}`
+   }*/
 }))
 
 
@@ -124,6 +125,8 @@ const pages = (value: number) => {
       return <CohenSuterland />
     case 6:
       return <Filtros />
+    case 8:
+      return <Histograma />
     case 9:
       return <OperacaoImagem />
     default:
@@ -138,7 +141,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(9)
+  const [pagesNumber, setPagesNumber] = React.useState(8)
 
   const handleDrawerOpen = () => {
     setOpen(true);
