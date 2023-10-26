@@ -6,13 +6,24 @@ import {
     CircularProgress,
     Grid, MenuItem,
     TextField,
+    Theme,
     Typography
 } from "@mui/material"
 import GeraImagem from "./GeraImagem"
 import _, { forEach } from 'lodash';
 import GeraMatriz from "./GeraMatriz"
 import { adicao, and, divisao, multiplicacao, or, subtracao, xor } from "./Operacao"
+import { makeStyles } from "@mui/styles";
 
+
+const useStyles = makeStyles((theme: Theme) => ({
+    imagemGrupo: {       
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin:"2%",   
+    }
+}))
 
 enum TiposTransformacao {
     ADICAO = "Adição",
@@ -30,6 +41,8 @@ export interface ObjetoImagem {
 }
 
 const Container = () => {
+    const classes = useStyles()
+
     const [imagem1, setImagem1] = useState<number[][]>([])
     const [imagem2, setImagem2] = useState<number[][]>([])
     const [maximoCor, setMaximoCor] = useState<number>(0)
@@ -69,72 +82,74 @@ const Container = () => {
         <Grid item sm={12} xl={12} p={2}>
             <Typography variant="h5" align="center">Operações com imagem</Typography>
         </Grid>
-        <Grid item container sm={3} sx={{ direction: "row", display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-            <input
-                accept=".pgm"
-                style={{ display: 'none' }}
-                id="imagem_1"
-                type="file"
-                onChange={e => {
-                    GeraMatriz(e).then((matriz: ObjetoImagem) => {
-                        setImagem1(matriz.matriz)
-                        setMaximoCor(matriz.maximoCor)
-                        setSuccess({ ...success, imagem1: true })
-                    }).catch(error => {
-                        console.error(error)
-                    })
-                }
-                }
-            />
-            <label htmlFor="imagem_1">
-                <Button
-                    variant="contained"
-                    color="primary"
-                    component="span"
-                    fullWidth
-                    size="small"
-                    startIcon={<AddAPhoto />}
-                    sx={{ margin: "1%" }}>
-                    Adicionar imagem 1
-                </Button>
-            </label>
-
-            <GeraImagem matriz={imagem1} altura={imagem1[0]?.length || 1} largura={imagem1?.length || 1} />
-
+        <Grid item container sm={3} className={classes.imagemGrupo}>
+            <Grid item >
+                <input
+                    accept=".pgm"
+                    style={{ display: 'none' }}
+                    id="imagem_1"
+                    type="file"
+                    onChange={e => {
+                        GeraMatriz(e).then((matriz: ObjetoImagem) => {
+                            setImagem1(matriz.matriz)
+                            setMaximoCor(matriz.maximoCor)
+                            setSuccess({ ...success, imagem1: true })
+                        }).catch(error => {
+                            console.error(error)
+                        })
+                    }
+                    }
+                />
+                <label htmlFor="imagem_1">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        component="span"
+                        fullWidth
+                        size="small"
+                        startIcon={<AddAPhoto />}
+                        sx={{ margin: "1%" }}>
+                        Adicionar imagem 1
+                    </Button>
+                </label>
+            </Grid>
+            <Grid item>
+                <GeraImagem matriz={imagem1} altura={imagem1[0]?.length || 1} largura={imagem1?.length || 1} />
+            </Grid>
         </Grid>
-        <Grid item container sm={3} sx={{ direction: "row", display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-            <input
-                accept=".pgm"
-                style={{ display: 'none' }}
-                id="imagem_2"
-                type="file"
-                onChange={e => {
-                    GeraMatriz(e).then(matriz => {
-                        setImagem2(matriz.matriz as number[][])
-                        setSuccess({ ...success, imagem2: true })
-                    }).catch(error => {
-                        console.error(error)
-                    })
-                }
-                }
-            />
-            <label htmlFor="imagem_2">
-                <Button
-                    variant="contained"
-                    color="primary"
-                    component="span"
-                    fullWidth
-                    size="small"
-                    startIcon={<AddAPhoto />}
-                    sx={{ margin: "1%" }}>
-                    Adicionar imagem 2
-                </Button>
-            </label>
-
-            <GeraImagem matriz={imagem2} altura={imagem2[0]?.length || 1} largura={imagem2?.length || 1} />
-
+        <Grid item container sm={3} className={classes.imagemGrupo}>
+            <Grid item>
+                <input
+                    accept=".pgm"
+                    style={{ display: 'none' }}
+                    id="imagem_2"
+                    type="file"
+                    onChange={e => {
+                        GeraMatriz(e).then(matriz => {
+                            setImagem2(matriz.matriz as number[][])
+                            setSuccess({ ...success, imagem2: true })
+                        }).catch(error => {
+                            console.error(error)
+                        })
+                    }
+                    }
+                />
+                <label htmlFor="imagem_2">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        component="span"
+                        fullWidth
+                        size="small"
+                        startIcon={<AddAPhoto />}
+                        sx={{ margin: "1%" }}>
+                        Adicionar imagem 2
+                    </Button>
+                </label>
+            </Grid>
+            <Grid item>
+                <GeraImagem matriz={imagem2} altura={imagem2[0]?.length || 1} largura={imagem2?.length || 1} />
+            </Grid>
         </Grid>
         <Grid item sm={2} sx={{ alignSelf: "center", justifySelf: "center" }}>
             <TextField
@@ -163,14 +178,14 @@ const Container = () => {
                 variant="contained"
                 size="small"
                 fullWidth
-                disabled={!(success.imagem1&&success.imagem2)}
+                disabled={!(success.imagem1 && success.imagem2)}
                 onClick={() => {
                     calcular(opcao)
                 }}
                 startIcon={<Cached />}>
                 Transformar
 
-                {!(success.imagem1===success.imagem2)&& (
+                {!(success.imagem1 === success.imagem2) && (
                     <CircularProgress
                         size={24}
                         sx={{

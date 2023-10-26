@@ -6,7 +6,7 @@ import {
     Button
 } from '@mui/material'
 import { makeStyles } from '@mui/styles';
-import Painel from './painel'
+import Painel from './Painel'
 import { useState } from 'react';
 
 const useStyles = makeStyles({

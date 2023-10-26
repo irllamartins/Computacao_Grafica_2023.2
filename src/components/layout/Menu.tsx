@@ -15,7 +15,8 @@ import {
   styled,
   useTheme,
   AppBarProps as MuiAppBarProps,
-  Paper
+  Paper,
+  Theme
 } from '@mui/material'
 import MuiAppBar from '@mui/material/AppBar'
 import {
@@ -46,18 +47,17 @@ import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
 
-import { TEMA_COR } from '../material.theme'
 const drawerWidth = 240;
 
 
-const useStyles = makeStyles({
-  ativo: {
-    backgroundColor: "#173c51"
+const useStyles = makeStyles((theme: Theme) => ({
+ /* ativo: {
+    backgroundColor: `${theme.palette.background.default}`
   },
   header: {
-    backgroundColor: "#173c"
-  }
-})
+    backgroundColor:  `${theme.palette.primary.main}`
+  }*/
+}))
 
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -165,7 +165,7 @@ export default function PersistentDrawerLeft() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open} >
-        <Toolbar className={classes.header}>
+        <Toolbar /*className={classes.header}*/>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -212,7 +212,7 @@ export default function PersistentDrawerLeft() {
           ))}
         </List>
       </Drawer>
-      <Main open={open} className={classes.ativo}>
+      <Main open={open} /*className={classes.ativo}*/>
         <DrawerHeader />
         <Paper>
           {pages(pagesNumber)}

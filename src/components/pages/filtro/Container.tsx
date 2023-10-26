@@ -1,14 +1,35 @@
 import { useRef, useEffect, useState } from "react"
-
-import readline from 'readline'
-import { AddAPhoto, Cached, CloudUpload, ContactlessOutlined } from "@mui/icons-material"
-import { Box, Button, CircularProgress, Grid, IconButton, Input, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material"
+import { AddAPhoto, Cached } from "@mui/icons-material"
+import {
+    Button,
+    CircularProgress,
+    Grid,
+    MenuItem,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField,
+    Theme,
+    Typography
+} from "@mui/material"
 import sharp from "sharp"
 import GeraImagem from "./GeraImagem"
 import _, { forEach } from 'lodash';
 import GeraMatriz from "./GeraMatriz"
 import Operacao, { aplicacaoMascaraMediana } from "./Operacao"
-import { green } from "@mui/material/colors"
+import { makeStyles } from "@mui/styles"
+
+const useStyles = makeStyles((theme: Theme) => ({
+    imagemGrupo: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "2%",
+    }
+}))
 
 const Transformacoes: { [key: string]: any[][] } = {
     "Media": [[0.111, 0.111, 0.111], [0.111, 0.111, 0.111], [0.111, 0.111, 0.111]],
@@ -42,6 +63,7 @@ enum TiposTransformacao {
 
 
 const Container = () => {
+    const classes = useStyles()
     const [imagem, setImagem] = useState<number[][]>([])
     const [imagemTransformada, setImagemTransformada] = useState<number[][]>([])
     const [opcao, setOpcao] = useState<string>(TiposTransformacao.MEDIA)
@@ -53,7 +75,7 @@ const Container = () => {
         switch (label) {
             case TiposTransformacao.MEDIA:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.MEDIA]))
-              
+
                 break
             case TiposTransformacao.MEDIANA:
                 setImagemTransformada(aplicacaoMascaraMediana(imagem))
@@ -97,106 +119,42 @@ const Container = () => {
     }
 
 
-    /* const processarArquivo = (event: any) => {
-         // capturar o arquivo
-         const arquivo = event.target.files[0]
- 
-         // cria um arquivo
-         const reader = new FileReader()
- 
-         reader.onload = (event: any) => {
- 
-             // capturou o arquivo como string
-             const data = event.target.result
- 
-             // separou o tipo do arquivo, medições e o resto por quebra de linha
-             const linhas = data.split('\n')
- 
-             // tipo da imagem P2(preto e branco)
-             const tipo = linhas[0]
- 
-             // capturou medições
-             const [largura, altura] = linhas[1].split(' ').map(Number)
-             setLargura(parseInt(largura, 10))
-             setAltura(parseInt(altura, 10))
- 
-             // o maximo da cor
-             const valorMaximoCor = Number(linhas[2])
- 
-             // Com slice ler o quarto elemento ate o final e transforma para um array
-             const dadosImagem = linhas.slice(3).join(' ').split(' ').map(Number)
- 
-             // cria a matriz
-             let imagem = [];
-             for (let i = 0; i < altura; i++) {
-                 let linhaImagem = [];
-                 for (let j = 0; j < largura; j++) {
-                     linhaImagem.push(dadosImagem[i * largura + j])
-                 }
-                 imagem.push(linhaImagem)
-             }
-             setImagem(imagem)
-             adicionarBorda(imagem)
-         }
-         reader.readAsText(arquivo)
- 
-     }
-     const adicionarBorda = (matriz: number[][]) => {
-         const cloneMatriz =_.cloneDeep(matriz)
-         // Adiciona zeros no início e no final de cada linha
-         for (let i = 0; i < cloneMatriz?.length; i++) {
-             cloneMatriz[i].unshift(0);
-             cloneMatriz[i].push(0);
-         }
- 
-         // Cria uma linha de zeros
-         let linhaZeros = Array(cloneMatriz[0]?.length).fill(0);
- 
-         // Adiciona a linha de zeros no início e no final da matriz
-         cloneMatriz.unshift(linhaZeros);
-         cloneMatriz.push([...linhaZeros]);
-         console.log(matriz)
-         setImagemTransformada(cloneMatriz)
-     }
- */
     return <Grid container>
         <Grid item sm={12} xl={12} p={2}>
             <Typography variant="h5" align="center">Aplicação de filtros em imagem</Typography>
         </Grid>
-        <Grid item container sm={5} sx={{ direction: "row", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Grid item sm={6}>
-                <input
-                    accept=".pgm"
-                    style={{ display: 'none' }}
-                    id="contained-button-file"
-                    type="file"
-                    onChange={e => {
-                        GeraMatriz(e).then(matriz => {
-                            setImagem(matriz as number[][])
+        <Grid item container sm={4} className={classes.imagemGrupo}>
+            <input
+                accept=".pgm"
+                style={{ display: 'none' }}
+                id="contained-button-file"
+                type="file"
+                onChange={e => {
+                    GeraMatriz(e).then(matriz => {
+                        setImagem(matriz as number[][])
 
-                        }).catch(error => {
-                            console.error(error)
-                        })
-                    }
-                    }
-                />
-                <label htmlFor="contained-button-file">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        component="span"
-                        fullWidth
-                        size="small"
-                        startIcon={<AddAPhoto />}
-                        sx={{ margin: "1%" }}>
-                        Adicionar imagem
-                    </Button>
-                </label>
+                    }).catch(error => {
+                        console.error(error)
+                    })
+                }
+                }
+            />
+            <label htmlFor="contained-button-file">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    fullWidth
+                    size="small"
+                    startIcon={<AddAPhoto />}
+                    sx={{ margin: "1%" }}>
+                    Adicionar imagem
+                </Button>
+            </label>
 
-                <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
-            </Grid>
+            <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
         </Grid>
-        <Grid item sm={2} sx={{ alignSelf: "center", justifySelf: "center" }}>
+        <Grid item sm={4} sx={{ alignSelf: "center", justifySelf: "center" }}>
             <TextField
                 inputProps={{ style: { textAlign: 'center' } }}
                 select
@@ -253,14 +211,14 @@ const Container = () => {
                 variant="contained"
                 size="small"
                 fullWidth
-                disabled={!(imagem.length>0?true:false)}
+                disabled={!(imagem.length > 0 ? true : false)}
                 onClick={() => {
                     calcular(opcao)
                 }}
                 startIcon={<Cached />}>
                 Transformar
 
-                {success && (imagem.length==0?true:false) && (
+                {success && (imagem.length == 0 ? true : false) && (
                     <CircularProgress
                         size={24}
                         sx={{
@@ -271,7 +229,7 @@ const Container = () => {
                 )}
             </Button>
         </Grid>
-        <Grid item sm={5} sx={{ direction: "row", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Grid item sm={4} className={classes.imagemGrupo}>
             <GeraImagem matriz={imagemTransformada} altura={imagemTransformada[0]?.length || 1} largura={imagemTransformada?.length || 1} />
         </Grid>
     </Grid>
