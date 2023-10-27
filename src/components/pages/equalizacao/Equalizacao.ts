@@ -1,10 +1,5 @@
 const criarEscala = ( escala:number) =>{
     let cores = Array(escala+1).fill(0)
-    for (let i = 0; i < escala; i++) {
-        cores[i] = 0;
-
-    }
-   
     return cores;
 }
 
@@ -13,10 +8,7 @@ export const frequencia = (matriz: number[][], escala: number): number[] => {
     let cores: number[] = criarEscala(escala)
     for (let i = 0; i < matriz.length; i++) {
         for (let j = 0; j < matriz[0].length; j++) {
-             /* let color = matriz[i][j];
-            let rgb = Math.round(color / 3);
-            cores[rgb]++;*/
-          cores[matriz[i][j]]++;
+          cores[Math.round(matriz[i][j])]++;
         }
     }
     return cores
@@ -27,7 +19,6 @@ const acumulado = (cores: number[]) => {
     resultado.push(cores[0])
     for (let i = 1; i < cores.length; i++) {
         resultado.push(resultado[i - 1] + cores[i])
-      //  console.log( resultado[i],"| a1:",resultado[i - 1],"| a2:",cores[i] )
 
     }
     return resultado

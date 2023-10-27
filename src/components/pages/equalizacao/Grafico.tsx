@@ -1,12 +1,11 @@
 import ReactECharts from 'echarts-for-react'
 
 const Grafico = (props: any) => {
-    const { titulo,dados,maximoCor } = props
-   // console.log(dados)
+    const { titulo, dados, maximoCor } = props
     let legendaX: number[] = []
-    for (var i = 0; i < maximoCor ; i++) {
+    for (var i = 0; i < maximoCor; i++) {
         legendaX.push(i)
-      }
+    }
     const option = {
         title: {
             text: titulo
@@ -28,12 +27,33 @@ const Grafico = (props: any) => {
         },
         tooltip: {},
         xAxis: {
+            // name:"Escala de cinza",
             data: legendaX,
             splitLine: {
                 show: false
             }
         },
-        yAxis: {},
+        yAxis: {
+            name: "Quantidade de pixel",
+            splitLine: {
+                show: false
+            }
+        },
+        visualMap: {
+            show: true,
+            left: 'center',
+            // text: ['Escala Cinza'],
+            itemHeight: 400,
+            min: 0, // Valor mínimo dos dados
+            max: maximoCor, // Valor máximo dos dados
+            inRange: {
+               color: ['white', 'black'], // Cores de branco a preto
+            },
+            orient: 'horizontal',
+            bottom: 20, // Distância da parte inferior do gráfico
+        },
+        color: ['green'],
+
         series: [
             {
                 name: "Cor",
@@ -42,16 +62,13 @@ const Grafico = (props: any) => {
                 emphasis: {
                     focus: 'series'
                 },
-                /*animationDelay: function (idx) {
-                  return idx * 10;
-                }*/
+            },
+            {
+                label: { show: true, fontSize: 16 },
             }
         ],
         animationEasing: 'elasticOut',
-        /*animationDelayUpdate: function (idx) {
-          return idx * 5;
-        }*/
-    };
+    }
     return <ReactECharts option={option} theme={"primary"}
     />
 }

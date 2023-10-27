@@ -26,10 +26,9 @@ const Equalizacao = () => {
     const [imagem, setImagem] = useState<number[][]>([])
     const [imagemTransfomada, setImagemTransfomada] = useState<number[][]>([])
     const [maximoCor, setMaximoCor] = useState<number>(0)
-     const [frequenciaT, setFrequenciaT] = useState<number[]>([])
     const [success, setSuccess] = useState(false)
 
-    const data = [123, 123, 123, 123, 123, 123, 23, 453, 34, 34, 23, 345, 45, 23, 123, 6, 7, 34, 45, 54, 2, 3, 23, 3, 45, 2, 4, 43]
+
     return <Grid container direction="row" alignContent="center" alignItems="center">
         <Grid item sm={12} xl={12} p={2}>
             <Typography variant="h5" align="center">Equalização de imagem</Typography>
@@ -60,8 +59,8 @@ const Equalizacao = () => {
                         fullWidth
                         size="small"
                         startIcon={<AddAPhoto />}
-                        sx={{ margin: "1%" }}>
-                        Adicionar imagem 1
+                        sx={{ margin: "2%" }}>
+                        Adicionar imagem
                     </Button>
                 </label>
             </Grid>
@@ -69,28 +68,29 @@ const Equalizacao = () => {
                 <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
             </Grid>
         </Grid>
-        <Grid item sm={6} direction="column" className={classes.imagemGrupo}>
+        <Grid item container sm={6} direction="column" className={classes.imagemGrupo}>
             <Grid item>
                 <Button
                     variant="contained"
                     fullWidth
+                    disabled={!success}
                     size="small"
                     startIcon={<Balance />}
+                    sx={{ margin: "2%" }}
                     onClick={() => {
                         const resultado = equalizacao(imagem, maximoCor)
-                        setFrequenciaT(resultado.frequencia)
                         setImagemTransfomada(resultado.matriz)
                     }}>Equalizar</Button>
-            </Grid>
+            </Grid>     
             <Grid item>
                 <GeraImagem matriz={imagemTransfomada} altura={imagemTransfomada[0]?.length || 1} largura={imagemTransfomada?.length || 1} />
             </Grid>
         </Grid>
-        <Grid item sm={6}>
-            <Grafico titulo={"histograma imagem original"} dados={frequencia(imagem,maximoCor)} maximoCor={maximoCor} />
+        <Grid item xs={12} sm={6}>
+            <Grafico titulo={"Histograma imagem original"} dados={frequencia(imagem,maximoCor)} maximoCor={maximoCor} />
         </Grid>
-        <Grid item sm={6}>
-            <Grafico titulo={"histograma imagem tratada"} dados={frequenciaT} maximoCor={maximoCor} />
+        <Grid item xs={12} sm={6}>
+            <Grafico titulo={"Histograma imagem tratada"} dados={frequencia(imagemTransfomada,maximoCor)} maximoCor={maximoCor} />
         </Grid>
     </Grid>
 }
