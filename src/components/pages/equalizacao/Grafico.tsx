@@ -36,7 +36,7 @@ const Grafico = (props: any) => {
         yAxis: {},
         series: [
             {
-                name: 'bar',
+                name: "Cor",
                 type: 'bar',
                 data: dados,
                 emphasis: {

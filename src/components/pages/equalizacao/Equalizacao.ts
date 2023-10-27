@@ -9,7 +9,7 @@ const criarEscala = ( escala:number) =>{
 }
 
 
-const frequencia = (matriz: number[][], escala: number): number[] => {
+export const frequencia = (matriz: number[][], escala: number): number[] => {
     let cores: number[] = criarEscala(escala)
     for (let i = 0; i < matriz.length; i++) {
         for (let j = 0; j < matriz[0].length; j++) {
@@ -60,14 +60,10 @@ const equalizacao = ( matriz:number[][], escala:number) => {
     for (let  y = 0; y < matriz.length ; y++) {
         let array = []    
         for (let x = 0; x < matriz[0].length; x++) {
-           // const novaCor = matriz[x][y]
-           // let red = mapearCor[(novaCor >> 16) & 255]
-            //let blue = mapearCor[(novaCor >> 8) & 255]
-            // let green = mapearCor[novaCor& 255]
             array.push(mapaDeCores[matriz[y][x]])
         }
         matrizTransfomada.push(array)
     }
-    return matrizTransfomada
+    return {matriz:matrizTransfomada,frequencia:histograma}
 }
 export default equalizacao

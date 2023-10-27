@@ -5,7 +5,7 @@ import Grafico from "./Grafico"
 import { AddAPhoto, Balance } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
-import equalizacao from "./Equalizacao"
+import equalizacao, { frequencia } from "./Equalizacao"
 
 const useStyles = makeStyles((theme: Theme) => ({
     imagemGrupo: {
@@ -26,6 +26,7 @@ const Equalizacao = () => {
     const [imagem, setImagem] = useState<number[][]>([])
     const [imagemTransfomada, setImagemTransfomada] = useState<number[][]>([])
     const [maximoCor, setMaximoCor] = useState<number>(0)
+     const [frequenciaT, setFrequenciaT] = useState<number[]>([])
     const [success, setSuccess] = useState(false)
 
     const data = [123, 123, 123, 123, 123, 123, 23, 453, 34, 34, 23, 345, 45, 23, 123, 6, 7, 34, 45, 54, 2, 3, 23, 3, 45, 2, 4, 43]
@@ -68,25 +69,29 @@ const Equalizacao = () => {
                 <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
             </Grid>
         </Grid>
-        <Grid item sm={6} direction="column"  className={classes.imagemGrupo}>
+        <Grid item sm={6} direction="column" className={classes.imagemGrupo}>
             <Grid item>
                 <Button
                     variant="contained"
                     fullWidth
                     size="small"
                     startIcon={<Balance />}
-                    onClick={() => setImagemTransfomada(equalizacao(imagem, maximoCor))}>Equalizar</Button>
+                    onClick={() => {
+                        const resultado = equalizacao(imagem, maximoCor)
+                        setFrequenciaT(resultado.frequencia)
+                        setImagemTransfomada(resultado.matriz)
+                    }}>Equalizar</Button>
             </Grid>
             <Grid item>
                 <GeraImagem matriz={imagemTransfomada} altura={imagemTransfomada[0]?.length || 1} largura={imagemTransfomada?.length || 1} />
             </Grid>
         </Grid>
         <Grid item sm={6}>
-            <Grafico titulo={"histograma imagem original"} dados={imagem} maximoCor={maximoCor}/>
+            <Grafico titulo={"histograma imagem original"} dados={frequencia(imagem,maximoCor)} maximoCor={maximoCor} />
         </Grid>
         <Grid item sm={6}>
-            <Grafico titulo={"histograma imagem tratada"} dados={imagemTransfomada} maximoCor={maximoCor}/>
+            <Grafico titulo={"histograma imagem tratada"} dados={frequenciaT} maximoCor={maximoCor} />
         </Grid>
     </Grid>
 }
-export default Equalizacao
+export default Equalizacao      
