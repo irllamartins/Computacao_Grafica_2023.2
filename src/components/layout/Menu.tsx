@@ -35,12 +35,14 @@ import {
   PermMedia,
   NaturePeople,
   Iso,
-  BarChart
+  BarChart,
+  Equalizer,
+  Balance
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
 import Circuferencia from '../pages/circuferencia/Conteiner'
-import Transformacoes from '../pages/normalizacao/Conteiner'
+import Nomalizacao from '../pages/normalizacao/Conteiner'
 import Retas from '../pages/reta/Conteiner'
 import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
 import Transformacoes3D from '../pages/transformacoes3D/Conteiner'
@@ -48,9 +50,9 @@ import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
 import Histograma from '../pages/histograma/Container'
+import Equalizacao from '../pages/equalizacao/Container'
 
 const drawerWidth = 240;
-
 
 const useStyles = makeStyles((theme: Theme) => ({
   /* ativo: {
@@ -121,7 +123,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const pages = (value: number) => {
   switch (value) {
     case 0:
-      return <Transformacoes />
+      return <Nomalizacao />
     case 1:
       return <Retas />
     case 2:
@@ -131,12 +133,18 @@ const pages = (value: number) => {
     case 4:
       return <Transformacoes3D />
     case 5:
+      return "Pespectiva"
+    case 6:
       return <CohenSuterland />
     case 7:
       return <Filtros />
     case 8:
-      return <Histograma />
+      return "gato"
     case 9:
+      return <Histograma />
+    case 10:
+      return < Equalizacao />
+    case 11:
       return <OperacaoImagem />
     default:
       return "Não encontrado"
@@ -150,7 +158,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(9)
+  const [pagesNumber, setPagesNumber] = React.useState(10)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -171,6 +179,7 @@ export default function PersistentDrawerLeft() {
     { label: 'Filtros', icon: <RecentActors /> },
     { label: 'Gato', icon: <Pets /> },
     { label: 'Histograma', icon: <BarChart /> },
+    { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
   ]
 
