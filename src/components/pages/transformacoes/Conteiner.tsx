@@ -129,7 +129,7 @@ const Conteiner = () => {
         if (texto === "") {
             setEntrada(0);
         } else {
-            setEntrada(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.'))
+            setEntrada(Number(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.')))
         }
     }
 

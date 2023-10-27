@@ -104,6 +104,11 @@ enum TipoReflexao {
     ORIGEM = "origem",
     FUNCAO = "funcao"
 }
+enum TipoRotacao {
+    X = "x",
+    Y = "y",
+    Z = "z"
+}
 
 const Conteiner = () => {
     const classes = useStyles()
@@ -133,7 +138,7 @@ const Conteiner = () => {
         if (texto === "") {
             setEntrada(0);
         } else {
-            setEntrada(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.'))
+            setEntrada(Number(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.')))
         }
     }
 
@@ -177,7 +182,7 @@ const Conteiner = () => {
                     })
                 }if (alignment === TipoReflexao.Z) {
                     operarMatriz.push({
-                        nome: "Reflexão em Y",
+                        nome: "Reflexão em Z",
                         x: -1,
                         y: 1,
                         z: -1,
@@ -235,13 +240,41 @@ const Conteiner = () => {
                 }
                 break
             case TipoTransfomacoes.ROTACAO:
-                operarMatriz.push({
+                const sen = (ponto_x) / Math.sqrt((Math.pow(ponto_x, 2) + 1))
+                const cos = 1 / Math.sqrt((Math.pow(ponto_x, 2) + 1))
+                if (alignment === TipoRotacao.X) {
+                    operarMatriz.push({
+                        nome: "Rotacao em X",
+                        x: 1,
+                        y: 0,
+                        z: 1,
+                        matriz: [[x, 0, 0],[cos, sen * -1, 0],  [sen, cos, 0]]
+                    })
+                }
+                if (alignment === TipoRotacao.Y) {
+                    operarMatriz.push({
+                        nome: "Rotacao em Y",
+                        x: -1,
+                        y: 1,
+                        z: 1,
+                        matriz: [[cos, sen , 0], [0, 1, 0], [sen* -1, 0, cos]],
+                    })
+                }if (alignment === TipoRotacao.Z) {
+                    operarMatriz.push({
+                        nome: "Rotacao em Z",
+                        x: -1,
+                        y: 1,
+                        z: -1,
+                        matriz: [[cos, sen* -1 , 0], [sen, cos, 0], [0, 0, 1]],
+                    })
+                }
+                /*operarMatriz.push({
                     nome: TipoTransfomacoes.ROTACAO,
                     x: grau,
                     y: "",
                     z: 1,
                     matriz: [[Math.cos(grau), Math.sin(grau) * -1, 0], [Math.sin(grau), Math.cos(grau), 0], [0, 0, z]]
-                })
+                })*/
                 break
             case TipoTransfomacoes.TRANSLACAO:
                 operarMatriz.push({
@@ -258,7 +291,7 @@ const Conteiner = () => {
     }
 
     const addPonto = (x: number, y: number, z: number, figura: any) => {
-        const newArray = [x, y, z];
+        const newArray: number[] = [x, y, z];
         setFigura(prevArrays => [...prevArrays, newArray]);
         console.log("figura",figura)
     }
@@ -393,7 +426,7 @@ const Conteiner = () => {
                 </Grid>
             case TipoTransfomacoes.REFLEXAO:
 
-                const handleAlignment = (
+                const handleAlignmentREFLEXAO = (
                     event: React.MouseEvent<HTMLElement>,
                     newAlignment: string | null,
                 ) => {
@@ -407,7 +440,7 @@ const Conteiner = () => {
                             size='small'
                             fullWidth
                             color='primary'
-                            onChange={handleAlignment}
+                            onChange={handleAlignmentREFLEXAO}
                             aria-label="tipos de reflexão"
                         >
                             <ToggleButton value={TipoReflexao.X} aria-label={TipoReflexao.X}>
@@ -416,7 +449,7 @@ const Conteiner = () => {
                             <ToggleButton value={TipoReflexao.Y} aria-label={TipoReflexao.Y}>
                                 Eixo Y
                             </ToggleButton>
-                            <ToggleButton value={TipoReflexao.Y} aria-label={TipoReflexao.Z}>
+                            <ToggleButton value={TipoReflexao.Z} aria-label={TipoReflexao.Z}>
                                 Eixo Z
                             </ToggleButton>
                             <ToggleButton value={TipoReflexao.ORIGEM} aria-label={TipoReflexao.ORIGEM} >
@@ -458,7 +491,32 @@ const Conteiner = () => {
                 </Grid>
             //rotacionar em x, y, ou z
             case TipoTransfomacoes.ROTACAO:
+                const handleAlignmentROTACAO = (
+                    event: React.MouseEvent<HTMLElement>,
+                    newAlignment: string | null,
+                ) => {
+                    setAlignment(newAlignment)
+                }
                 return <Grid item sm={12}>
+                    <ToggleButtonGroup
+                            value={alignment}
+                            exclusive
+                            size='small'
+                            fullWidth
+                            color='primary'
+                            onChange={handleAlignmentROTACAO}
+                            aria-label="tipos de reflexão"
+                        >
+                            <ToggleButton value={TipoRotacao.X} aria-label={TipoRotacao.X}>
+                                Eixo X
+                            </ToggleButton>
+                            <ToggleButton value={TipoRotacao.Y} aria-label={TipoRotacao.Y}>
+                                Eixo Y
+                            </ToggleButton>
+                            <ToggleButton value={TipoRotacao.Z} aria-label={TipoRotacao.Z}>
+                                Eixo Z
+                            </ToggleButton>
+                        </ToggleButtonGroup>
                     <TextField
                         id="grau"
                         value={grau}
