@@ -19,7 +19,7 @@ import sharp from "sharp"
 import GeraImagem from "./GeraImagem"
 import _, { forEach } from 'lodash';
 import GeraMatriz from "./GeraMatriz"
-import Operacao, { aplicacaoMascaraMediana } from "./Operacao"
+import Operacao, { aplicacaoMascaraMediana, magnetude } from "./Operacao"
 import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -38,12 +38,16 @@ const Transformacoes: { [key: string]: any[][] } = {
     "Passa Alta Basica": [[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]],
     "Robert X": [[0, 0, 0], [0, 1, 0], [0, -1, 0]],
     "Robert Y": [[0, 0, 0], [0, 1, -1], [0, 0, 0]],
+    "Robert Magnetude": [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]],
     "Robert Cruzado x": [[0, 0, 0], [0, 1, 0], [0, 0, -1]],
     "Robert Cruzado Y": [[0, 0, 0], [0, 0, 1], [0, -1, 0]],
+    "Robert Cruzado Magnetude": [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]],
     "Prewitt X": [[-1, -1, -1], [0, 0, 0], [1, 1, 1]],
     "Prewitt Y": [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]],
+    "Prewitt Magnetude": [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]],
     "Sobel X": [[-1, -2, -1], [0, 0, 0], [1, 2, 1]],
     "Sobel Y": [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]],
+    "Sobel Magnetude": [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]],
 }
 enum TiposTransformacao {
     MEDIA = "Media",
@@ -52,12 +56,16 @@ enum TiposTransformacao {
     PASSA_ALTA_BASICA = "Passa Alta Basica",
     ROBERT_X = "Robert X",
     ROBERT_Y = "Robert Y",
+    ROBERT_MAGNETUDE = "Robert Magnetude",
     ROBERT_CRUZADO_X = "Robert Cruzado X",
     ROBERT_CRUZADO_Y = "Robert Cruzado Y",
+    ROBERT_CRUZADO_MAGNETUDE = "Robert Cruzado Magnetude",
     PREWITT_X = "Prewitt X",
     PREWITT_Y = "Prewitt Y",
+    PREWITT_MAGNETUDE = "Prewitt Magnetude",
     SOBEL_X = "Sobel X",
     SOBEL_Y = "Sobel Y",
+    SOBEL_MAGNETUDE = "Sobel Magnetude",
 
 }
 
@@ -89,11 +97,21 @@ const Container = () => {
             case TiposTransformacao.ROBERT_Y:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_Y]))
                 break
+            case TiposTransformacao.ROBERT_MAGNETUDE:
+                const robert_x = Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_X])
+                const robert_y = Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_Y])
+                setImagemTransformada(magnetude(robert_x,robert_y))
+                break
             case TiposTransformacao.ROBERT_CRUZADO_X:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_X]))
                 break
             case TiposTransformacao.ROBERT_CRUZADO_Y:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_Y]))
+                break
+            case TiposTransformacao.ROBERT_CRUZADO_MAGNETUDE:
+                const robert_cruzado_x=Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_X])
+                const robert_cruzado_y=Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_Y])
+                setImagemTransformada(magnetude(robert_cruzado_x,robert_cruzado_y))
                 break
             case TiposTransformacao.PREWITT_X:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_X]))
@@ -101,11 +119,21 @@ const Container = () => {
             case TiposTransformacao.PREWITT_Y:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_Y]))
                 break
+            case TiposTransformacao.PREWITT_MAGNETUDE:
+                const prewitt_x = Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_X])
+                const prewitt_y = Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_Y])
+                setImagemTransformada(magnetude( prewitt_x, prewitt_y))
+                break
             case TiposTransformacao.SOBEL_X:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_X]))
                 break
             case TiposTransformacao.SOBEL_Y:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_Y]))
+                break
+            case TiposTransformacao.SOBEL_MAGNETUDE:
+                const sobel_x = Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_Y])
+                const sobel_y = Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_Y])
+                setImagemTransformada(magnetude( sobel_x, sobel_y))
                 break
             case TiposTransformacao.ALTO_REFORCO:
                 const novaMatriz = Transformacoes[TiposTransformacao.ALTO_REFORCO]
