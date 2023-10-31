@@ -39,23 +39,24 @@ const Grafico = (props: any) => {
                 show: false
             }
         },
-        visualMap: {
-            show: true,
+       /* visualMap: {
+           // show: true,
             left: 'center',
             // text: ['Escala Cinza'],
             itemHeight: 400,
             min: 0, // Valor mínimo dos dados
             max: maximoCor, // Valor máximo dos dados
             inRange: {
-               color: ['white', 'black'], // Cores de branco a preto
+           //   color: [ 'black','white'], // Cores de branco a preto
             },
             orient: 'horizontal',
             bottom: 20, // Distância da parte inferior do gráfico
-        },
-        color: ['green'],
+        },*/
 
-        series: [
+        series: [ 
+    
             {
+                color: ['orange'],
                 name: "Cor",
                 type: 'bar',
                 data: dados,

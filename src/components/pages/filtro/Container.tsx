@@ -57,7 +57,7 @@ enum TiposTransformacao {
     ROBERT_X = "Robert X",
     ROBERT_Y = "Robert Y",
     ROBERT_MAGNETUDE = "Robert Magnetude",
-    ROBERT_CRUZADO_X = "Robert Cruzado X",
+    ROBERT_CRUZADO_X =  "Robert Cruzado x",
     ROBERT_CRUZADO_Y = "Robert Cruzado Y",
     ROBERT_CRUZADO_MAGNETUDE = "Robert Cruzado Magnetude",
     PREWITT_X = "Prewitt X",

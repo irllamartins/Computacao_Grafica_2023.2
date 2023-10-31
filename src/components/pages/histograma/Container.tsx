@@ -5,6 +5,8 @@ import Grafico from "./Grafico"
 import { AddAPhoto } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
+import Logaritmo from "./Logaritmo"
+import Frequencia from "./Frequencia"
 
 const useStyles = makeStyles((theme: Theme) => ({
     imagemGrupo: {
@@ -33,7 +35,6 @@ const Histograma = () => {
     const [maximoCor, setMaximoCor] = useState<number>(0)
     const [success, setSuccess] = useState(false)
 
-    const data = [123, 123, 123, 123, 123, 123, 23, 453, 34, 34, 23, 345, 45, 23, 123, 6, 7, 34, 45, 54, 2, 3, 23, 3, 45, 2, 4, 43]
     return <Grid container direction="row" alignContent="center" alignItems="center">
         <Grid item sm={12} xl={12} p={2}>
             <Typography variant="h5" align="center">Histograma</Typography>
@@ -84,9 +85,22 @@ const Histograma = () => {
                         size="small"
                         startIcon={<AddAPhoto />}
                         sx={{ margin: "1%" }}>
-                        Adicionar imagem 1
+                        Adicionar imagem
                     </Button>
                 </label>
+            </Grid>
+            <Grid item>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    fullWidth
+                    size="small"
+                    startIcon={<AddAPhoto />}
+                    sx={{ margin: "2%" }}
+                    onClick={()=>setImagemTransfomada(Logaritmo(imagem))}>
+                    Transfomar imagem
+                </Button>
             </Grid>
             <Grid item>
                 <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
@@ -102,10 +116,10 @@ const Histograma = () => {
             />
         </Grid>
         <Grid item sm={12}>
-            <Grafico titulo={"histograma imagem original"} dados={data} />
+            <Grafico titulo={"histograma imagem original"}dados={Frequencia(imagem, maximoCor)} maximoCor={maximoCor}/>
         </Grid>
         <Grid item sm={12}>
-            <Grafico titulo={"histograma imagem tratada"} dados={data} />
+            <Grafico titulo={"histograma imagem tratada"} dados={Frequencia(imagemTransfomada, maximoCor)} maximoCor={maximoCor} />
         </Grid>
     </Grid>
 }

@@ -1,6 +1,6 @@
 import { ObjetoImagem } from "../operacao.imagem/Container"
 
-const GeraMatriz = (event: any):Promise<ObjetoImagem> => {
+const GeraMatriz = (event: any): Promise<ObjetoImagem> => {
     return new Promise((resolve, reject) => {
         let matriz: number[][] = []
         // capturar o arquivo
@@ -40,7 +40,7 @@ const GeraMatriz = (event: any):Promise<ObjetoImagem> => {
                 imagem.push(linhaImagem)
             }
 
-            resolve( {matriz:imagem,maximoCor:valorMaximoCor} )
+            resolve({ matriz: imagem, maximoCor: valorMaximoCor })
 
         }
 

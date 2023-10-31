@@ -9,7 +9,7 @@ import { ObjetoImagem } from "../operacao.imagem/Container"
 
 
 
-const GeraMatriz = (event: any):Promise<ObjetoImagem> => {
+const GeraMatriz = (event: any): Promise<ObjetoImagem> => {
     // const [imagemTransformada, setImagemTransformada] = useState<number[][]>([])
     return new Promise((resolve, reject) => {
         let matriz: number[][] = []
@@ -50,9 +50,9 @@ const GeraMatriz = (event: any):Promise<ObjetoImagem> => {
                 imagem.push(linhaImagem)
             }
 
-          //  matriz = adicionarBorda(imagem)
-           // console.log( matriz )
-            resolve( {matriz:imagem,maximoCor:valorMaximoCor} )
+            //  matriz = adicionarBorda(imagem)
+            // console.log( matriz )
+            resolve({ matriz: imagem, maximoCor: valorMaximoCor })
 
         }
 

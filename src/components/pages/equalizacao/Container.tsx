@@ -64,6 +64,7 @@ const Equalizacao = () => {
                     </Button>
                 </label>
             </Grid>
+            
             <Grid item>
                 <GeraImagem matriz={imagem} altura={imagem[0]?.length || 1} largura={imagem?.length || 1} />
             </Grid>
@@ -81,16 +82,16 @@ const Equalizacao = () => {
                         const resultado = equalizacao(imagem, maximoCor)
                         setImagemTransfomada(resultado.matriz)
                     }}>Equalizar</Button>
-            </Grid>     
+            </Grid>
             <Grid item>
                 <GeraImagem matriz={imagemTransfomada} altura={imagemTransfomada[0]?.length || 1} largura={imagemTransfomada?.length || 1} />
             </Grid>
         </Grid>
         <Grid item xs={12} sm={6}>
-            <Grafico titulo={"Histograma imagem original"} dados={frequencia(imagem,maximoCor)} maximoCor={maximoCor} />
+            <Grafico titulo={"Histograma imagem original"} dados={frequencia(imagem, maximoCor)} maximoCor={maximoCor} />
         </Grid>
         <Grid item xs={12} sm={6}>
-            <Grafico titulo={"Histograma imagem tratada"} dados={frequencia(imagemTransfomada,maximoCor)} maximoCor={maximoCor} />
+            <Grafico titulo={"Histograma imagem tratada"} dados={frequencia(imagemTransfomada, maximoCor)} maximoCor={maximoCor} />
         </Grid>
     </Grid>
 }

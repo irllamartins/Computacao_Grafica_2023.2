@@ -1,18 +1,17 @@
 import ReactECharts from 'echarts-for-react'
 
 const Grafico = (props: any) => {
-    const { titulo,dados } = props
-    console.log(dados)
+    const { titulo, dados, maximoCor } = props
     let legendaX: number[] = []
-    for (var i = 0; i < 255; i++) {
+    for (var i = 0; i < maximoCor; i++) {
         legendaX.push(i)
-      }
+    }
     const option = {
         title: {
             text: titulo
         },
         legend: {
-            data: ['bar']
+            data: ['Pixel']
         },
         toolbox: {
             // y: 'bottom',
@@ -28,30 +27,49 @@ const Grafico = (props: any) => {
         },
         tooltip: {},
         xAxis: {
+            // name:"Escala de cinza",
             data: legendaX,
             splitLine: {
                 show: false
             }
         },
-        yAxis: {},
-        series: [
+        yAxis: {
+            name: "Quantidade de pixel",
+            splitLine: {
+                show: false
+            }
+        },
+       /* visualMap: {
+           // show: true,
+            left: 'center',
+            // text: ['Escala Cinza'],
+            itemHeight: 400,
+            min: 0, // Valor mínimo dos dados
+            max: maximoCor, // Valor máximo dos dados
+            inRange: {
+           //   color: [ 'black','white'], // Cores de branco a preto
+            },
+            orient: 'horizontal',
+            bottom: 20, // Distância da parte inferior do gráfico
+        },*/
+
+        series: [ 
+    
             {
-                name: 'bar',
+                color: ['orange'],
+                name: "Cor",
                 type: 'bar',
                 data: dados,
                 emphasis: {
                     focus: 'series'
                 },
-                /*animationDelay: function (idx) {
-                  return idx * 10;
-                }*/
+            },
+            {
+                label: { show: true, fontSize: 16 },
             }
         ],
         animationEasing: 'elasticOut',
-        /*animationDelayUpdate: function (idx) {
-          return idx * 5;
-        }*/
-    };
+    }
     return <ReactECharts option={option} theme={"primary"}
     />
 }
