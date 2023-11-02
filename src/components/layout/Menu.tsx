@@ -37,7 +37,8 @@ import {
   Iso,
   BarChart,
   Equalizer,
-  Balance
+  Balance,
+  AppRegistration
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
@@ -181,6 +182,7 @@ export default function PersistentDrawerLeft() {
     { label: 'Histograma', icon: <BarChart /> },
     { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
+    {label: 'operadores morfológicos',icon:<AppRegistration/>}
   ]
 
   return (

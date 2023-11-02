@@ -1,6 +1,6 @@
 import { alpha, getContrastRatio } from "@mui/material"
 
-const colorBasePrimary = "#0f6810c9"
+const colorBasePrimary = "#0f6810c8"
 const colorMainPrimary = alpha(colorBasePrimary, 0.7)
 
 const colorBaseSecondary = "#e26a1a53"
