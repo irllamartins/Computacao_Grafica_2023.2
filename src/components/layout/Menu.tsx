@@ -38,7 +38,8 @@ import {
   BarChart,
   Equalizer,
   Balance,
-  AppRegistration
+  AppRegistration,
+  MonitorHeartOutlined
 } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles';
 
@@ -52,6 +53,7 @@ import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
 import Histograma from '../pages/histograma/Container'
 import Equalizacao from '../pages/equalizacao/Container'
+import Batimentos from '../pages/batimentos/Conteiner';
 
 const drawerWidth = 240;
 
@@ -147,6 +149,8 @@ const pages = (value: number) => {
       return < Equalizacao />
     case 11:
       return <OperacaoImagem />
+    case 13:
+      return <Batimentos />
     default:
       return "Não encontrado"
 
@@ -159,7 +163,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(9)
+  const [pagesNumber, setPagesNumber] = React.useState(13)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -182,7 +186,8 @@ export default function PersistentDrawerLeft() {
     { label: 'Histograma', icon: <BarChart /> },
     { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
-    {label: 'operadores morfológicos',icon:<AppRegistration/>}
+    { label: 'operadores morfológicos', icon: <AppRegistration /> },  
+    { label: 'Batimentos Cardiacos', icon: <MonitorHeartOutlined/> }
   ]
 
   return (
