@@ -13,9 +13,9 @@ const Batimentos = () => {
             <Painel
                 tamanho={TAMANHO_CANVAS}
                 pontoInicialX={0}
-                pontoInicialY={0}
+                pontoInicialY={TAMANHO_CANVAS/2}
                 pontoFinalX={TAMANHO_CANVAS}
-                pontoFinalY={200}
+                pontoFinalY={TAMANHO_CANVAS/2}
                  />
         </Grid>
         <Grid item sm={4} xl={12} justifySelf="center" alignSelf="center">
