@@ -11,7 +11,6 @@ const GerarBatimentos = (pontoInicialX: number, pontoInicialY: number, pontoFina
         x += 90
         console.log("GerarBatida", x)
     }
-    return true
 }
 const geraPontosLinha = (x: number, y: number, ctx: any) => {
 

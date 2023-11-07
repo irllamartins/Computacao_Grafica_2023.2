@@ -3,6 +3,7 @@ import Painel from "./Painel"
 import { useState } from "react"
 
 const TAMANHO_CANVAS = 500
+const AUMENTO_LAGURA = 1.5
 const Batimentos = () => {
     const [tempo, setTempo] = useState(10)
     return <Grid container direction="row" >
@@ -12,9 +13,10 @@ const Batimentos = () => {
         <Grid item sm={8} xl={12} marginTop={5} >
             <Painel
                 tamanho={TAMANHO_CANVAS}
+                aumentoLagura = {AUMENTO_LAGURA}
                 pontoInicialX={0}
                 pontoInicialY={TAMANHO_CANVAS/2}
-                pontoFinalX={TAMANHO_CANVAS}
+                pontoFinalX={TAMANHO_CANVAS*AUMENTO_LAGURA}
                 pontoFinalY={TAMANHO_CANVAS/2}
                  />
         </Grid>

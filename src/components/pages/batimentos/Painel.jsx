@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
 import GerarBatimentos from './GerarBatimentos'
 
-const Painel = ({ tamanho, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY }) => {
+const Painel = ({ tamanho,aumentoLagura, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY }) => {
   const canvasRef = useRef(null)
   let mudou = false
   useEffect(() => {
@@ -18,11 +18,11 @@ const Painel = ({ tamanho, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinal
 
 
     ctx.strokeStyle = 'green'
-    mudou = GerarBatimentos(pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx)
+    GerarBatimentos(pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx)
 
-  }, [tamanho, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY,mudou])
+  }, [tamanho, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY,aumentoLagura])
 
-  return <canvas ref={canvasRef} width={tamanho} height={tamanho} />
+  return <canvas ref={canvasRef} width={tamanho*aumentoLagura} height={tamanho} />
 }
 
 export default Painel  
