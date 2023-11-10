@@ -1,6 +1,6 @@
 
 // cria reta com laço loop DDA: Digital Differential Analyzer (Método do Declive)
-const DDA = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, height, width) => {
+export const DDA = (pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY, ctx, height, width) => {
 
     // validar erro de ultrapassar painel
     const maxX = Math.round(pontoFinalX + (height / 2));

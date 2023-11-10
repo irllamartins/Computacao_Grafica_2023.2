@@ -1,4 +1,4 @@
-import { Reta } from "../pages/cohen.suterland/Conteiner";
+import { Reta } from "./Conteiner";
 
 export const DesenharReta = (tamanho: number, retas: Reta[],  ctx: any) => {
 
@@ -11,8 +11,8 @@ export const DesenharReta = (tamanho: number, retas: Reta[],  ctx: any) => {
     
     // onde começa o ponto do "lapis"
     ctx.beginPath();
-    ctx.moveTo(reta.xInicial, tamanho - reta.yInicial);
-    ctx.lineTo(reta.yInicial, tamanho - reta.yFinal);
+    ctx.moveTo(reta.xInicial, reta.yInicial);
+    ctx.lineTo(reta.xFinal,reta.yFinal);
     // Aplica o traço à linha
     ctx.stroke();
   });

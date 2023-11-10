@@ -5,7 +5,7 @@ import Grafico from "./Grafico"
 import { AddAPhoto, CircleNotifications, FlipCameraAndroidOutlined } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
-import { intencidadeGeral, linear, logaritmo, negativo } from "./Operacao"
+import { gamma, intencidadeGeral, linear, logaritmo, negativo } from "./Operacao"
 import Frequencia from "./Frequencia"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,7 +24,7 @@ const Info: { [key: string]: string } = {
     "Logaritma": "y = a*log(cinza + 1): Realça areas escuras da imagem",
     "Intecidade geral": "Realçar ou suavizar a imagem",
     "Negativo": "O negativo da imagem",
-    "Gamma": "",
+    "Gamma": "O 0< C <1",
     "Faixa dinamica": ""
 }
 enum AlgoritimosTipos {
@@ -32,7 +32,7 @@ enum AlgoritimosTipos {
     NEGATIVO = "Negativo",
     LOGARITMICA = "Logaritma",
     INTENCIDADE_GERAL = "Intecidade geral",
-    GAMMA ="Gamma",
+    GAMMA = "Gamma",
     FAIXA_DINAMICA = "Faixa dinamica"
 }
 export interface ObjetoImagem {
@@ -122,6 +122,19 @@ const Histograma = () => {
                             onChange={(e) => setEntrada3(Number(e.target.value))} />
                     </Grid>
                 </>
+                 case AlgoritimosTipos.GAMMA:
+                    return <>
+                        <Grid item sm={12} className={classes.espacamento}>
+                            <TextField
+                                id=""
+                                variant="standard"
+                                label="O 'C' da equação"
+                                size="small"
+                                fullWidth
+                                value={entrada1}
+                                onChange={(e) => setEntrada1(Number(e.target.value))} />
+                        </Grid>
+                    </>
         }
     }
     const calcular = (tipo: string, matriz: number[][], variavel1: number, variavel2: number, variavel3: number) => {
@@ -137,6 +150,9 @@ const Histograma = () => {
                 break
             case AlgoritimosTipos.INTENCIDADE_GERAL:
                 setImagemTransfomada(intencidadeGeral(matriz, variavel1, variavel2, variavel3))
+                break
+            case AlgoritimosTipos.GAMMA:
+                setImagemTransfomada(gamma(matriz, variavel1))
                 break
         }
     }

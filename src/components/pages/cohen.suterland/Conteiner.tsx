@@ -63,25 +63,22 @@ const Conteiner = () => {
     const [ponto_y_inicial, setPonto_y_inicial] = React.useState<number>(10)
     const [ponto_x_final, setPonto_x_final] = React.useState<number>(100)
     const [ponto_y_final, setPonto_y_final] = React.useState<number>(100)
-    const [figura, setFigura] = React.useState<Reta[]>([{ xInicial: 120, yInicial: 200, xFinal: 350, yFinal: 360, cor: "orange" }])
+    const [retas, setRetas] = React.useState<Reta[]>([{ xInicial: 120, yInicial: 200, xFinal: 350, yFinal: 360, cor: "orange" }])
     const [tamanho_min_x, setTamanho_min_x] = useState(100)
     const [tamanho_max_x, setTamanho_max_x] = useState(450)
     const [tamanho_min_y, setTamanho_min_y] = useState(150)
     const [tamanho_max_y, setTamanho_max_y] = useState(300)
-
-    const altura = (TAMANHO_CANVAS / 2) - y
-    const largura = (TAMANHO_CANVAS / 2) + x
 
     const tratamentoEntrada = (texto: any, setEntrada: any) => {
 
         if (texto === "") {
             setEntrada(0);
         } else {
-            setEntrada(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.'))
+            setEntrada(Number(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.')))
         }
     }
 
-    const addPonto = (ponto_x_inicial: number, ponto_y_inicial: number, ponto_x_final: number, ponto_y_final: number, figura: any) => {
+    const addPonto = (ponto_x_inicial: number, ponto_y_inicial: number, ponto_x_final: number, ponto_y_final: number, retas: any) => {
         // Gerar uma cor aleatória
         let corAleatorio
         do {
@@ -89,7 +86,7 @@ const Conteiner = () => {
         } while (parseInt(corAleatorio.substring(1), 16) < 0x333333 || parseInt(corAleatorio.substring(1), 16) > 0xeeeeee)
 
         const novaReta = { xInicial: ponto_x_inicial, yInicial: ponto_y_inicial, xFinal: ponto_x_final, yFinal: ponto_y_final, cor: corAleatorio }
-        setFigura([...figura, novaReta]);
+        setRetas([...retas, novaReta]);
     }
     const handleClickOpen = () => {
         setOpen(true)
@@ -104,7 +101,7 @@ const Conteiner = () => {
             <Grid container item sm={6} xl={6} justifyContent="center" alignContent="center" alignItems="center">
                 <Grid item sm={12}  >
                     <PainelMundo
-                        figura={figura}
+                        retas={retas}
                         tamanho={TAMANHO_CANVAS}
                         xInicial={tamanho_min_x}
                         yInicial={tamanho_min_y}
@@ -157,25 +154,25 @@ const Conteiner = () => {
                         />
                     </Grid>
                     <Grid item sm={2}>
-                        <Tooltip title="Adicionar figura">
+                        <Tooltip title="Adicionar retas">
                             <Button
                                 onClick={handleClickOpen}
                                 startIcon={<DesignServices />}
                             >
-                                Figura
+                                Retas
                             </Button>
                         </Tooltip>
                     </Grid>
                 </Grid>
 
-            </Grid>
+            </Grid>   
             <Grid container item sm={6} xl={6} alignContent="center" alignItems="center">
                 <Grid item sm={12}  >
                     <PainelRecorte
-                        figura={figura}
+                        retas={retas}
                         tamanho={TAMANHO_CANVAS}
-                        tamanhoHeight={tamanho_max_y - tamanho_min_y}
-                        tamanhoWidth={tamanho_max_x - tamanho_min_x}
+                        tamanhoHeight={500}
+                        tamanhoWidth={500}
                         xInicial={tamanho_min_x}
                         yInicial={tamanho_min_y}
                         xFinal={tamanho_max_x}
@@ -190,7 +187,7 @@ const Conteiner = () => {
                 onClose={handleClose}
             >
                 <DialogTitle >
-                    {"Criar figura"}
+                    {"Criar retas"}
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction="row" >
@@ -240,7 +237,7 @@ const Conteiner = () => {
                                 />
                             </Grid>
                             <Grid item sm={2} className={classes.espacamento}>
-                                <IconButton onClick={() => addPonto(ponto_x_inicial, ponto_y_inicial, ponto_x_final, ponto_y_final, figura)}>
+                                <IconButton onClick={() => addPonto(ponto_x_inicial, ponto_y_inicial, ponto_x_final, ponto_y_final, retas)}>
                                     <Add />
                                 </IconButton>
                             </Grid>
@@ -268,7 +265,7 @@ const Conteiner = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {Object.values(figura).map((ponto: Reta, index: number) =>
+                                        {Object.values(retas).map((ponto: Reta, index: number) =>
                                             <TableRow key={index}>
                                                 <TableCell align="center">{ponto.xInicial}</TableCell>
                                                 <TableCell align="center">{ponto.yInicial}</TableCell>
@@ -280,9 +277,9 @@ const Conteiner = () => {
                                                         aria-label="delete"
                                                         size="small"
                                                         onClick={() => {
-                                                            const newFigura = [...figura]
+                                                            const newFigura = [...retas]
                                                             newFigura.splice(index, 1)
-                                                            setFigura(newFigura)
+                                                            setRetas(newFigura)
                                                         }}
                                                     >
                                                         <Delete />

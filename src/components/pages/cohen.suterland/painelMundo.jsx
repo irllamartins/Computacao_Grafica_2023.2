@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
 import DesenharFigura from '../../util/DesenharFigura'
-import DesenharReta from '../../util/DesenharReta'
+import DesenharReta from './DesenharReta'
 import DesenhaTela from './DesenharTela'   
 
-const PainelMundo = ({ tamanho, figura, xInicial, yInicial, xFinal, yFinal }) => {
+const PainelMundo = ({ tamanho, retas, xInicial, yInicial, xFinal, yFinal }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -17,9 +17,10 @@ const PainelMundo = ({ tamanho, figura, xInicial, yInicial, xFinal, yFinal }) =>
     // Pinta o fundo do canvas
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    DesenharReta(tamanho, figura, ctx)
+    DesenharReta(tamanho, retas, ctx)
+    //Deseja o retangulo da tela
     DesenhaTela(tamanho, xInicial, yInicial, xFinal, yFinal, ctx)
-  }, [tamanho, figura, xInicial, yInicial, xFinal, yFinal])
+  }, [tamanho, retas, xInicial, yInicial, xFinal, yFinal])
 
   return <canvas ref={canvasRef} width={tamanho} height={tamanho} />
 }

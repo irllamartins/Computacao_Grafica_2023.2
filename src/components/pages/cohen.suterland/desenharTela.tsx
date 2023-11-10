@@ -10,11 +10,11 @@ const DesenhaTela = (tamanho: number, xInicial: number, yInicial: number, xFinal
 
     // onde começa o ponto do "lapis"
     ctx.beginPath();
-    ctx.moveTo(xInicial, tamanho - yInicial);
-    ctx.lineTo(xInicial, tamanho - yFinal);
-    ctx.lineTo(xFinal, tamanho - yFinal);
-    ctx.lineTo(xFinal, tamanho - yInicial);
-    ctx.lineTo(xInicial, tamanho - yInicial);
+    ctx.moveTo(xInicial, yInicial);
+    ctx.lineTo(xInicial, yFinal);
+    ctx.lineTo(xFinal, yFinal);
+    ctx.lineTo(xFinal, yInicial);
+    ctx.lineTo(xInicial, yInicial);
     ctx.stroke();
 }
 export default DesenhaTela 

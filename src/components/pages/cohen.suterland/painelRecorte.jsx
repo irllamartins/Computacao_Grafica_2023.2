@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
 import DesenharFigura from '../../util/DesenharFigura'
-import DesenharReta from '../../util/DesenharReta'
+import DesenharReta from './DesenharReta'
 import DesenhaTela from './DesenharTela'
 import Recorte from './Recorte'
 
-const PainelRecorte = ({ tamanho,tamanhoWidth,tamanhoHeight, figura, xInicial, yInicial, xFinal, yFinal }) => {
+const PainelRecorte = ({ tamanho, tamanhoWidth, tamanhoHeight, retas, xInicial, yInicial, xFinal, yFinal }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -18,8 +18,10 @@ const PainelRecorte = ({ tamanho,tamanhoWidth,tamanhoHeight, figura, xInicial, y
     // Pinta o fundo do canvas
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    Recorte(tamanho,tamanhoWidth,tamanhoHeight,figura, xInicial, yInicial, xFinal, yFinal, ctx)
-  }, [tamanho, figura, xInicial, yInicial, xFinal, yFinal])
+    //Deseja o retangulo da tela
+    DesenhaTela(tamanho, xInicial, yInicial, xFinal, yFinal, ctx)
+    Recorte(tamanho, tamanhoWidth, tamanhoHeight, retas, xInicial, yInicial, xFinal, yFinal, ctx)
+  }, [tamanho, retas, xInicial, yInicial, xFinal, yFinal])
 
   return <canvas ref={canvasRef} width={tamanhoWidth} height={tamanhoHeight} />
 }
