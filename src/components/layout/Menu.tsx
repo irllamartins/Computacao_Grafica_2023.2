@@ -53,7 +53,8 @@ import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
 import Histograma from '../pages/histograma/Container'
 import Equalizacao from '../pages/equalizacao/Container'
-import Batimentos from '../pages/batimentos/Conteiner';
+import Batimentos from '../pages/batimentos/Conteiner'
+import Gato from '../pages/gato/Container'
 
 const drawerWidth = 240;
 
@@ -142,7 +143,7 @@ const pages = (value: number) => {
     case 7:
       return <Filtros />
     case 8:
-      return "gato"
+      return <Gato/>
     case 9:
       return <Histograma />
     case 10:
@@ -163,7 +164,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(6)
+  const [pagesNumber, setPagesNumber] = React.useState(8)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -182,7 +183,7 @@ export default function PersistentDrawerLeft() {
     { label: 'Perspectiva', icon: <NaturePeople /> },
     { label: 'Cohen Surterland', icon: <AspectRatio /> },
     { label: 'Filtros', icon: <RecentActors /> },
-    { label: 'Gato', icon: <Pets /> },
+    { label: 'Gato de Arnold', icon: <Pets /> },
     { label: 'Histograma', icon: <BarChart /> },
     { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
