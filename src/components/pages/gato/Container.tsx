@@ -1,4 +1,4 @@
-import { Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Theme, Typography } from "@mui/material"
+import { Alert, Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Theme, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { useState } from "react"
 import GeraMatriz from "./GeraMatriz"
@@ -31,6 +31,9 @@ const Equalizacao = () => {
     return <Grid container direction="row" alignContent="center" alignItems="center">
         <Grid item sm={12} xl={12} p={2}>
             <Typography variant="h5" align="center">Gato de Arnold</Typography>
+        </Grid>
+        <Grid item sm={12} xl={12} p={2}>
+            <Alert severity="info">Funciona para imagem de escala de cinza e com a altura e largura do mesmo tamanho</Alert>
         </Grid>
         <Grid item container sm={6} direction="column" className={classes.imagemGrupo}>
             <Grid item >
@@ -80,27 +83,31 @@ const Equalizacao = () => {
                     sx={{ margin: "2%" }}
                     onClick={() => {
 
+                        setQuantidade(0)
                         let intervalId = setInterval(() => {
+                            setSuccess(false)
                             setImagemTransfomada((imagemTransfomadaAnterior: number[][]) => {
                                 const resultado = arnoldCat(imagemTransfomadaAnterior)
                                 if (arraysAreEqual(resultado.flat(), imagem.flat())) {
-                                     clearInterval(intervalId) 
+                                    setSuccess(true)
+                                    clearInterval(intervalId)
                                 }
-                                setQuantidade((anterior)=>anterior+1)
+                                setQuantidade((anterior) => anterior + 1)
                                 return resultado
                             });
 
                         }, 400)
+                       
                     }}>Executar</Button>
             </Grid>
-            <Grid item>
+            <Grid item >
                 <GeraImagem matriz={imagemTransfomada} altura={imagemTransfomada[0]?.length || 1} largura={imagemTransfomada?.length || 1} />
             </Grid>
-            <Grid item>
-                <Typography>Quantidade de execução: {quantidade}</Typography>
-            </Grid>
-        </Grid>
 
+        </Grid>
+        <Grid item sm={12} md={12} xs={12}>
+            <Typography align="center">Quantidade de execução: {quantidade}</Typography>
+        </Grid>
     </Grid>
 }
 export default Equalizacao      
