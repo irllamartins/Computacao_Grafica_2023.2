@@ -92,11 +92,16 @@ const Equalizacao = () => {
                                     setSuccess(true)
                                     clearInterval(intervalId)
                                 }
-                                setQuantidade((anterior) => anterior + 1)
+                               
+                                setQuantidade(
+                                    (anterior) =>{ 
+                                        console.log(anterior)
+                                        return anterior+1
+                                    })
                                 return resultado
                             });
 
-                        }, 400)
+                        }, 800)
                        
                     }}>Executar</Button>
             </Grid>

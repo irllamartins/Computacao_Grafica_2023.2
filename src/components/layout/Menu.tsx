@@ -55,6 +55,7 @@ import Histograma from '../pages/histograma/Container'
 import Equalizacao from '../pages/equalizacao/Container'
 import Batimentos from '../pages/batimentos/Conteiner'
 import Gato from '../pages/gato/Container'
+import Perspectiva from '../pages/perspectiva/Container'
 
 const drawerWidth = 240;
 
@@ -137,7 +138,7 @@ const pages = (value: number) => {
     case 4:
       return <Transformacoes3D />
     case 5:
-      return "Pespectiva"
+      return <Perspectiva/>
     case 6:
       return <CohenSuterland />
     case 7:
@@ -164,7 +165,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(8)
+  const [pagesNumber, setPagesNumber] = React.useState(5)
 
   const handleDrawerOpen = () => {
     setOpen(true);
