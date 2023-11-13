@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 
 
 
-const Painel = () => {
+const Painel = ({ vertices, cores, indices }) => {
 
   const canvasRef = useRef(null)
   useEffect(() => {
@@ -14,33 +14,11 @@ const Painel = () => {
       alert("Não suportado")
       return
     }
-    // Define a cor para preto totalmente opaca (sem transparência)
+    // Define a cor do fundo (R, G, B, A=1.0)
     ctx.clearColor(0.0, 0.0, 0.0, 1.0)
+
     // Limpa o buffer de cores com uma cor específica
     ctx.clear(ctx.COLOR_BUFFER_BIT)
-
-
-    const vertices = [
-      -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
-      -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
-      -1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1,
-      1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1,
-      -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1,
-      -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
-    ]
-    const colors = [
-      5, 3, 7, 5, 3, 7, 5, 3, 7, 5, 3, 7,
-      1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3,
-      0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-      1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
-      1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
-      0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
-    ];
-    const indices = [
-      0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7,
-      8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
-      16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
-    ]
 
     // Cria e armazena dados no buffer de vértice
     let vertex_buffer = ctx.createBuffer();
@@ -50,7 +28,7 @@ const Painel = () => {
     // Cria e armazena dados no buffer de cores
     let color_buffer = ctx.createBuffer();
     ctx.bindBuffer(ctx.ARRAY_BUFFER, color_buffer);
-    ctx.bufferData(ctx.ARRAY_BUFFER, new Float32Array(colors), ctx.STATIC_DRAW);
+    ctx.bufferData(ctx.ARRAY_BUFFER, new Float32Array(cores), ctx.STATIC_DRAW);
 
 
     // Cria e armazena dados no buffer de índice
@@ -59,7 +37,8 @@ const Painel = () => {
     ctx.bufferData(ctx.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), ctx.STATIC_DRAW);
 
     /*=================== Shaders =========================*/
-
+    
+    // os shaders (programas de sombreamento) 
     let vertCode = 'attribute vec3 position;' +
       'uniform mat4 Pmatrix;' +
       'uniform mat4 Vmatrix;' +
@@ -173,34 +152,33 @@ const Painel = () => {
       m[6] = c * m[6] - s * mv4
       m[10] = c * m[10] - s * mv8
     }
- /*================= Drawing ===========================*/
- let time_old = 0;
+    /*================= Drawing ===========================*/
+    let time_old = 0;
 
- let animate = (time) =>{
+    let animate = (time) => {
 
-    let dt = time-time_old;
-    rotateZ(mov_matrix, dt*0.005) // tempo
-    rotateY(mov_matrix, dt*0.002)
-    rotateX(mov_matrix, dt*0.003)
-    time_old = time
+      let dt = time - time_old;
+      rotateZ(mov_matrix, dt * 0.005) // tempo
+      rotateY(mov_matrix, dt * 0.002)
+      rotateX(mov_matrix, dt * 0.003)
+      time_old = time
 
-    ctx.enable(ctx.DEPTH_TEST)
-    ctx.depthFunc(ctx.LEQUAL)
-    ctx.clearColor(0.5, 0.5, 0.5, 0.9)
-    ctx.clearDepth(1.0)
+      ctx.enable(ctx.DEPTH_TEST)
+      ctx.depthFunc(ctx.LEQUAL)
+      ctx.clearDepth(1.0)
 
-    ctx.viewport(0.0, 0.0, canvas.width, canvas.height)
-    ctx.clear(ctx.COLOR_BUFFER_BIT | ctx.DEPTH_BUFFER_BIT)
-    ctx.uniformMatrix4fv(Pmatrix, false, proj_matrix)
-    ctx.uniformMatrix4fv(Vmatrix, false, view_matrix)
-    ctx.uniformMatrix4fv(Mmatrix, false, mov_matrix)
-    ctx.bindBuffer(ctx.ELEMENT_ARRAY_BUFFER, index_buffer)
-    ctx.drawElements(ctx.TRIANGLES, indices.length, ctx.UNSIGNED_SHORT, 0)
+      ctx.viewport(0.0, 0.0, canvas.width, canvas.height)
+      ctx.clear(ctx.COLOR_BUFFER_BIT | ctx.DEPTH_BUFFER_BIT)
+      ctx.uniformMatrix4fv(Pmatrix, false, proj_matrix)
+      ctx.uniformMatrix4fv(Vmatrix, false, view_matrix)
+      ctx.uniformMatrix4fv(Mmatrix, false, mov_matrix)
+      ctx.bindBuffer(ctx.ELEMENT_ARRAY_BUFFER, index_buffer)
+      ctx.drawElements(ctx.TRIANGLES, indices.length, ctx.UNSIGNED_SHORT, 0)
 
-    window.requestAnimationFrame(animate)
- }
- animate(0)
-  }, [])
+      window.requestAnimationFrame(animate)
+    }
+    animate(0)
+  }, [vertices, cores, indices])
 
   return <canvas ref={canvasRef} width={500} height={500} />
 }
