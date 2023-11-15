@@ -63,7 +63,11 @@ const Conteiner = () => {
     const [ponto_y_inicial, setPonto_y_inicial] = React.useState<number>(10)
     const [ponto_x_final, setPonto_x_final] = React.useState<number>(100)
     const [ponto_y_final, setPonto_y_final] = React.useState<number>(100)
-    const [retas, setRetas] = React.useState<Reta[]>([{ xInicial: 120, yInicial: 200, xFinal: 350, yFinal: 360, cor: "orange" }])
+    const [retas, setRetas] = React.useState<Reta[]>([
+        { xInicial: 120, yInicial: 200, xFinal: 350, yFinal: 360, cor: "orange" },
+        { xInicial: 10, yInicial: 100, xFinal: 100, yFinal: 100, cor: "red" },
+        { xInicial: 10, yInicial: 400, xFinal: 400, yFinal: 400, cor: "green" },
+    ])
     const [tamanho_min_x, setTamanho_min_x] = useState(100)
     const [tamanho_max_x, setTamanho_max_x] = useState(450)
     const [tamanho_min_y, setTamanho_min_y] = useState(150)

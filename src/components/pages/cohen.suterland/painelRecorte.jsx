@@ -20,7 +20,7 @@ const PainelRecorte = ({ tamanho, tamanhoWidth, tamanhoHeight, retas, xInicial, 
 
     //Deseja o retangulo da tela
     DesenhaTela(tamanho, xInicial, yInicial, xFinal, yFinal, ctx)
-    Recorte(tamanho, tamanhoWidth, tamanhoHeight, retas, xInicial, yInicial, xFinal, yFinal, ctx)
+    Recorte(tamanho, retas, xInicial, yInicial, xFinal, yFinal, ctx)
   }, [tamanho, retas, xInicial, yInicial, xFinal, yFinal])
 
   return <canvas ref={canvasRef} width={tamanhoWidth} height={tamanhoHeight} />

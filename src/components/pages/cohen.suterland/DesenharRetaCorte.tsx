@@ -1,6 +1,6 @@
 import { Reta } from "../cohen.suterland/Conteiner";
 
-export const DesenharRetaCorte = (tamanhoHeight: number,tamanhoWidth: number, reta: Reta,  ctx: any) => {
+export const DesenharRetaCorte = (tamanho: number, reta: Reta,  ctx: any) => {
 
   // Define a largura das linhas
   ctx.lineWidth = 2;
