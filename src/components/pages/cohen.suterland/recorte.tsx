@@ -3,73 +3,77 @@ import { Reta } from "./Conteiner"
 import _, { forEach } from 'lodash'
 import DesenharRetaCorte from "./DesenharRetaCorte"
 
+
+enum Bits{
+    DENTRO = 0, // 0000
+    ESQUERDA = 1,   // 0001
+    DIREITA = 2,  // 0010
+    BAIXO = 4, // 0100
+    CIMA = 8    // 1000
+}
 const Recorte = (tamanho: number, retas: Reta[], xmin: number, ymin: number, xmax: number, ymax: number, ctx: any) => {
     const retasNovas = _.cloneDeep(retas)
 
     retasNovas.forEach((reta) => {
        
-        const INSIDE = 0; // 0000
-        const LEFT = 1;   // 0001
-        const RIGHT = 2;  // 0010
-        const BOTTOM = 4; // 0100
-        const TOP = 8;    // 1000
+        
 
-        function calculateCode(x:number, y:number, xmin:number, xmax:number, ymin:number, ymax:number) {
-            let code = INSIDE;
+        function calcularBit(x:number, y:number, xmin:number, xmax:number, ymin:number, ymax:number) {
+            let bits = Bits.DENTRO
 
             if (x < xmin) {
-                code |= LEFT;
+                bits |= Bits.ESQUERDA
             } else if (x > xmax) {
-                code |= RIGHT;
+                bits |= Bits.DIREITA
             }
 
             if (y < ymin) {
-                code |= BOTTOM;
+                bits |= Bits.BAIXO
             } else if (y > ymax) {
-                code |= TOP;
+                bits |= Bits.CIMA
             }
 
-            return code;
+            return bits;
         }
 
         function cohenSutherland(x1:number, y1:number, x2:number, y2:number, xmin:number, xmax:number, ymin:number, ymax:number) {
-            let code1 = calculateCode(x1, y1, xmin, xmax, ymin, ymax);
-            let code2 = calculateCode(x2, y2, xmin, xmax, ymin, ymax);
+            let bits1 = calcularBit(x1, y1, xmin, xmax, ymin, ymax);
+            let bits2 = calcularBit(x2, y2, xmin, xmax, ymin, ymax);
 
             while (true) {
-                console.log("code",code1,"|",code2)
-                if ((code1 === 0) && (code2 === 0)) {
+                console.log("bits",bits1,"|",bits2)
+                if ((bits1 === 0) && (bits2 === 0)) {
                     return { xInicial: x1, yInicial: y1, xFinal: x2, yFinal: y2, cor: reta.cor }
-                } else if ((code1 & code2) !== 0) {
+                } else if ((bits1 & bits2) !== 0) {
                     return null
                 }
 
-                let code_out = code1 !== 0 ? code1 : code2;
+                let bitsAtual = bits1 !== 0 ? bits1 : bits2;
 
                 let x=0, y=0;
 
-                if (code_out & TOP) {
+                if (bitsAtual & Bits.CIMA) {
                     x = x1 + (x2 - x1) * (ymax - y1) / (y2 - y1);
                     y = ymax;
-                } else if (code_out & BOTTOM) {
+                } else if (bitsAtual & Bits.BAIXO) {
                     x = x1 + (x2 - x1) * (ymin - y1) / (y2 - y1);
                     y = ymin;
-                } else if (code_out & RIGHT) {
+                } else if (bitsAtual & Bits.DIREITA) {
                     y = y1 + (y2 - y1) * (xmax - x1) / (x2 - x1);
                     x = xmax;
-                } else if (code_out & LEFT) {
+                } else if (bitsAtual & Bits.ESQUERDA) {
                     y = y1 + (y2 - y1) * (xmin - x1) / (x2 - x1);
                     x = xmin
                 }
 
-                if (code_out === code1) {
+                if (bitsAtual === bits1) {
                     x1 = x
                     y1 = y
-                    code1 = calculateCode(x1, y1, xmin, xmax, ymin, ymax);
+                    bits1 = calcularBit(x1, y1, xmin, xmax, ymin, ymax);
                 } else {
                     x2 = x
                     y2 = y
-                    code2 = calculateCode(x2, y2, xmin, xmax, ymin, ymax);
+                    bits2 = calcularBit(x2, y2, xmin, xmax, ymin, ymax);
                 }
             }
         }

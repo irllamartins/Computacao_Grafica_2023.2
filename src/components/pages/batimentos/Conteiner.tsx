@@ -1,6 +1,7 @@
 import { Grid, TextField, Typography } from "@mui/material"
 import Painel from "./Painel"
 import { useState } from "react"
+import GerarBatimentos from "./GerarBatimentos"
 
 const TAMANHO_CANVAS = 500
 const AUMENTO_LAGURA = 1.5
@@ -11,14 +12,16 @@ const Batimentos = () => {
             <Typography variant="h6" align="center">Batimentos Cardiacos</Typography>
         </Grid>
         <Grid item sm={8} xl={12} marginTop={5} >
-            <Painel
+            {/* <Painel
                 tamanho={TAMANHO_CANVAS}
                 aumentoLagura = {AUMENTO_LAGURA}
                 pontoInicialX={0}
                 pontoInicialY={TAMANHO_CANVAS/2}
                 pontoFinalX={TAMANHO_CANVAS*AUMENTO_LAGURA}
                 pontoFinalY={TAMANHO_CANVAS/2}
-                 />
+/>*/
+                GerarBatimentos()}
+
         </Grid>
         <Grid item sm={4} xl={12} justifySelf="center" alignSelf="center">
             <TextField
