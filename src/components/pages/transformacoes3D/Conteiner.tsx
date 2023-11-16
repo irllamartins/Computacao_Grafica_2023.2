@@ -95,7 +95,8 @@ enum TipoTransfomacoes {
     ROTACAO = "Rotação",
     ESCALA = "Escala",
     CISALHAMENTO = "Cisalhamento",
-    REFLEXAO = "Reflexão"
+    REFLEXAO = "Reflexão",
+    ISOMETRICA = "Isometrica",
 }
 enum TipoReflexao {
     X = "x",
@@ -121,9 +122,10 @@ const Conteiner = () => {
     const [ponto_x, setPonto_x] = React.useState<number>(10)
     const [ponto_y, setPonto_y] = React.useState<number>(10)
     const [ponto_z, setPonto_z] = React.useState<number>(10)
-    const [grau, setGrau] = React.useState(5)
+    const [graux, setGraux] = React.useState(5)
+    const [grauy, setGrauy] = React.useState(5)
     const [alignment, setAlignment] = React.useState<string | null>()
-    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 1], [0, 100, 1], [100, 0, 1], [0, 0, 1]])
+    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 10], [20, 0, 10], [20, 30, 10], [0, 30, 10], [0, 0, 0], [20, 0, 0], [20, 30, 0], [0, 30, 0], [0, 0, 10]])
     const [operarMatriz, setOperarMatriz] = React.useState<Transformacao[]>([])
 
     const altura = (TAMANHO_CANVAS / 2) - y
@@ -159,7 +161,7 @@ const Conteiner = () => {
                     x: ponto_x,
                     y: ponto_y,
                     z: ponto_z,
-                    matriz: [[ponto_x, 0, 0], [0, ponto_y, 0], [0, 0,  ponto_z]]
+                    matriz: [[ponto_x, 0, 0, 0], [0, ponto_y, 0, 0], [0, 0, ponto_z, 0], [0, 0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.REFLEXAO:
@@ -180,7 +182,7 @@ const Conteiner = () => {
                         z: 1,
                         matriz: [[x, 0, 0], [0, y, 0], [0, 0, z]],
                     })
-                }if (alignment === TipoReflexao.Z) {
+                } if (alignment === TipoReflexao.Z) {
                     operarMatriz.push({
                         nome: "Reflexão em Z",
                         x: -1,
@@ -248,7 +250,7 @@ const Conteiner = () => {
                         x: 1,
                         y: 0,
                         z: 1,
-                        matriz: [[x, 0, 0],[cos, sen * -1, 0],  [sen, cos, 0]]
+                        matriz: [[x, 0, 0], [cos, sen * -1, 0], [sen, cos, 0]]
                     })
                 }
                 if (alignment === TipoRotacao.Y) {
@@ -257,15 +259,15 @@ const Conteiner = () => {
                         x: -1,
                         y: 1,
                         z: 1,
-                        matriz: [[cos, sen , 0], [0, 1, 0], [sen* -1, 0, cos]],
+                        matriz: [[cos, sen, 0], [0, 1, 0], [sen * -1, 0, cos]],
                     })
-                }if (alignment === TipoRotacao.Z) {
+                } if (alignment === TipoRotacao.Z) {
                     operarMatriz.push({
                         nome: "Rotacao em Z",
                         x: -1,
                         y: 1,
                         z: -1,
-                        matriz: [[cos, sen* -1 , 0], [sen, cos, 0], [0, 0, 1]],
+                        matriz: [[cos, sen * -1, 0, 0], [sen, cos, 0], [0, 0, 1]],
                     })
                 }
                 /*operarMatriz.push({
@@ -282,7 +284,18 @@ const Conteiner = () => {
                     x: ponto_x,
                     y: ponto_y,
                     z: ponto_z,
-                    matriz: [[1, 0, ponto_x], [0, 1, ponto_y], [0, 0,  ponto_z]]
+                    matriz: [[1, 0, 0, ponto_x], [0, 1, 0, ponto_y], [0, 0, 1, 0, ponto_z], [0, 0, 0, 0, 1]]
+                })
+                break
+            case TipoTransfomacoes.ISOMETRICA:
+                operarMatriz.push({
+                    nome: TipoTransfomacoes.ISOMETRICA,
+                    x: ponto_x,
+                    y: ponto_y,
+                    z: ponto_z,
+                   // matriz: [[Math.cos(graux), Math.sin(graux)*Math.sin(grauy), Math.sin(grauy)*Math.cos(graux), 0], [0, Math.cos(graux),Math.sin(graux)*-1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]]
+                    matriz: [[Math.sqrt(2/3), Math.sqrt(1/3)*(Math.sqrt(2)/2), Math.sqrt(1/3)*(Math.sqrt(2)/2), 0], [0, Math.sqrt(2)/2,(Math.sqrt(2)/2)*-1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]]
+
                 })
                 break
             default:
@@ -291,9 +304,9 @@ const Conteiner = () => {
     }
 
     const addPonto = (x: number, y: number, z: number, figura: any) => {
-        const newArray: number[] = [x, y, z];
+        const newArray: number[] = [x * 2 / 3, y * 2 / 3, z * 2 / 3];
         setFigura(prevArrays => [...prevArrays, newArray]);
-        console.log("figura",figura)
+        console.log("figura", figura)
     }
 
     // transforma linha para coluna e coluna para linha
@@ -362,7 +375,6 @@ const Conteiner = () => {
                             variant="standard"
                             fullWidth
                             onChange={e => tratamentoEntrada(e.target.value, setPonto_x)}
-
                         />
                     </Grid>
                     <Grid item sm={4} className={classes.espacamento}>
@@ -499,34 +511,52 @@ const Conteiner = () => {
                 }
                 return <Grid item sm={12}>
                     <ToggleButtonGroup
-                            value={alignment}
-                            exclusive
-                            size='small'
-                            fullWidth
-                            color='primary'
-                            onChange={handleAlignmentROTACAO}
-                            aria-label="tipos de reflexão"
-                        >
-                            <ToggleButton value={TipoRotacao.X} aria-label={TipoRotacao.X}>
-                                Eixo X
-                            </ToggleButton>
-                            <ToggleButton value={TipoRotacao.Y} aria-label={TipoRotacao.Y}>
-                                Eixo Y
-                            </ToggleButton>
-                            <ToggleButton value={TipoRotacao.Z} aria-label={TipoRotacao.Z}>
-                                Eixo Z
-                            </ToggleButton>
-                        </ToggleButtonGroup>
+                        value={alignment}
+                        exclusive
+                        size='small'
+                        fullWidth
+                        color='primary'
+                        onChange={handleAlignmentROTACAO}
+                        aria-label="tipos de reflexão"
+                    >
+                        <ToggleButton value={TipoRotacao.X} aria-label={TipoRotacao.X}>
+                            Eixo X
+                        </ToggleButton>
+                        <ToggleButton value={TipoRotacao.Y} aria-label={TipoRotacao.Y}>
+                            Eixo Y
+                        </ToggleButton>
+                        <ToggleButton value={TipoRotacao.Z} aria-label={TipoRotacao.Z}>
+                            Eixo Z
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                     <TextField
-                        id="grau"
-                        value={grau}
+                        id="grau X"
+                        value={graux}
                         variant="standard"
                         InputProps={{
                             endAdornment: <InputAdornment position="end">graus</InputAdornment>,
                         }}
                         fullWidth
-                        onChange={e => tratamentoEntrada(e.target.value, setGrau)}
+                        onChange={e => tratamentoEntrada(e.target.value, setGraux)}
                     />
+                     <TextField
+                        id="grau Y"
+                        value={grauy}
+                        variant="standard"
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">graus</InputAdornment>,
+                        }}
+                        fullWidth
+                        onChange={e => tratamentoEntrada(e.target.value, setGrauy)}
+                    /> <TextField
+                    id="grau Z"
+                    value={grauy}
+                    variant="standard"
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">graus</InputAdornment>,
+                    }}
+                    fullWidth
+                />
                 </Grid>
             case TipoTransfomacoes.TRANSLACAO:
                 return <Grid item container sm={12} direction="row">
@@ -653,7 +683,7 @@ const Conteiner = () => {
                                                 <TableCell align="center">X</TableCell>
                                                 <TableCell align="center">Y</TableCell>
                                                 <TableCell align="center">Z</TableCell>
-                                                <TableCell align="center"/>
+                                                <TableCell align="center" />
 
                                             </TableRow>
                                         </TableHead>

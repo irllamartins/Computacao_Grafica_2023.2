@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import DesenharLimite from '../../util/PlanoCartesiano'
+import DesenharLimite from './PlanoCartesiano'
 import DesenharFigura from './DesenharFigura'
 
 const Transformacoes = ({ tamanho,altura,largura, x, y, figura }) => {
@@ -17,7 +17,7 @@ const Transformacoes = ({ tamanho,altura,largura, x, y, figura }) => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 
-    // Define a cor do círculo
+    // Define a cor do objeto
     ctx.fillStyle = cor
 
     DesenharLimite(ctx, canvas)

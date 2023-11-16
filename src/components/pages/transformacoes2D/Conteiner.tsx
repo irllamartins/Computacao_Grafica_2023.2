@@ -133,7 +133,7 @@ const Conteiner = () => {
         }
     }
 
-    const calcular = (label: any, ponto_x: number, ponto_y: number) => {
+    const calcular = (label: any, ponto_x: number, ponto_y: number, grau: number) => {
         switch (label) {
             case TipoTransfomacoes.CISALHAMENTO:
                 operarMatriz.push({
@@ -177,8 +177,10 @@ const Conteiner = () => {
                     })
                 }
                 if (alignment === TipoReflexao.FUNCAO) {
-                    const sen = (ponto_x) / Math.sqrt((Math.pow(ponto_x, 2) + 1))
-                    const cos = 1 / Math.sqrt((Math.pow(ponto_x, 2) + 1))
+                    //  const sen = (ponto_x) / Math.sqrt((Math.pow(ponto_x, 2) + 1))
+                    const sen = Math.sin(grau)
+                    const cos = Math.cos(grau)
+                    // const cos = 1 / Math.sqrt((Math.pow(ponto_x, 2) + 1))
                     operarMatriz.push({
                         nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
                         x: 0,
@@ -217,7 +219,7 @@ const Conteiner = () => {
                     nome: TipoTransfomacoes.ROTACAO,
                     x: grau,
                     y: "",
-                    matriz: [[Math.cos(grau), Math.sin(grau) * -1, 0], [Math.sin(grau), Math.cos(grau), 0], [0, 0, 1]]
+                    matriz: [[Math.cos(Number(grau)), Math.sin(Number(grau)) * -1, 0], [Math.sin(Number(grau)), Math.cos(Number(grau)), 0], [0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.TRANSLACAO:
@@ -578,7 +580,7 @@ const Conteiner = () => {
                             </Grid>
                             {entradas(opcao)}
                             <Grid item sm={12} bottom="5%" position="absolute" >
-                                <Button variant="contained" fullWidth onClick={() => calcular(opcao, ponto_x, ponto_y)}>Adicionar transformação</Button>
+                                <Button variant="contained" fullWidth onClick={() => calcular(opcao, ponto_x, ponto_y, grau)}>Adicionar transformação</Button>
                             </Grid>
                         </Grid>
                     </CustomTabPanel>

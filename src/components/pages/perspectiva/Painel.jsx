@@ -157,10 +157,10 @@ const Painel = ({ vertices, cores, indices }) => {
 
     let animate = (time) => {
 
-      let dt = time - time_old;
-      rotateZ(mov_matrix, dt * 0.005) // tempo
-      rotateY(mov_matrix, dt * 0.002)
-      rotateX(mov_matrix, dt * 0.003)
+     // let dt = time - time_old;
+      rotateZ(mov_matrix,/* dt **/ 0.005) // tempo
+      rotateY(mov_matrix, /*dt * */0.002)
+      rotateX(mov_matrix, /*dt **/ 0.003)
       time_old = time
 
       ctx.enable(ctx.DEPTH_TEST)

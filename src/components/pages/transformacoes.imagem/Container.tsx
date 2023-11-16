@@ -5,7 +5,7 @@ import Grafico from "./Grafico"
 import { AddAPhoto, CircleNotifications, FlipCameraAndroidOutlined } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
-import { gamma, intencidadeGeral, linear, logaritmo, negativo } from "./Operacao"
+import { dinamica, gamma, intencidadeGeral, linear, logaritmo, negativo } from "./Operacao"
 import Frequencia from "./Frequencia"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,8 +24,8 @@ const Info: { [key: string]: string } = {
     "Logaritma": "y = a*log(cinza + 1): Realça areas escuras da imagem",
     "Intecidade geral": "Realçar ou suavizar a imagem",
     "Negativo": "O negativo da imagem",
-    "Gamma": "O 0< C <1",
-    "Faixa dinamica": ""
+    "Gamma": "S= cr^y. O C=1; 0< Y <1",
+    "Faixa dinamica": "Determina a faixa que a imagem vai ficar"
 }
 enum AlgoritimosTipos {
     LINEAR = "Linear",
@@ -50,6 +50,14 @@ const Histograma = () => {
     const [entrada1, setEntrada1] = useState<number>(1)
     const [entrada2, setEntrada2] = useState<number>(0)
     const [entrada3, setEntrada3] = useState<number>(0)
+
+    const tratamentoEntrada = (texto: any, setEntrada: any) => {
+        if (texto === "") {
+            setEntrada(0);
+        } else {
+            setEntrada(parseFloat(texto.replace(/[a-zA-Z]/g, '').replace(/,/g, '.')))
+        }
+    }
 
     const entradas = (tipo: string) => {
         switch (tipo) {
@@ -76,7 +84,7 @@ const Histograma = () => {
                             size="small"
                             fullWidth
                             value={entrada1}
-                            onChange={(e) => setEntrada1(Number(e.target.value))} />
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada1)} />
                     </Grid>
                     <Grid item sm={6} className={classes.espacamento}>
                         <TextField
@@ -86,7 +94,7 @@ const Histograma = () => {
                             size="small"
                             fullWidth
                             value={entrada2}
-                            onChange={(e) => setEntrada2(Number(e.target.value))} />
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada2)} />
                     </Grid>
                 </>
             case AlgoritimosTipos.INTENCIDADE_GERAL:
@@ -99,7 +107,7 @@ const Histograma = () => {
                             size="small"
                             fullWidth
                             value={entrada1}
-                            onChange={(e) => setEntrada1(Number(e.target.value))} />
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada1)} />
                     </Grid>
                     <Grid item sm={6} className={classes.espacamento}>
                         <TextField
@@ -109,7 +117,7 @@ const Histograma = () => {
                             size="small"
                             fullWidth
                             value={entrada2}
-                            onChange={(e) => setEntrada2(Number(e.target.value))} />
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada2)} />
                     </Grid>
                     <Grid item sm={6} className={classes.espacamento}>
                         <TextField
@@ -119,22 +127,45 @@ const Histograma = () => {
                             size="small"
                             fullWidth
                             value={entrada3}
-                            onChange={(e) => setEntrada3(Number(e.target.value))} />
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada3)} />
                     </Grid>
                 </>
-                 case AlgoritimosTipos.GAMMA:
-                    return <>
-                        <Grid item sm={12} className={classes.espacamento}>
-                            <TextField
-                                id=""
-                                variant="standard"
-                                label="O 'C' da equação"
-                                size="small"
-                                fullWidth
-                                value={entrada1}
-                                onChange={(e) => setEntrada1(Number(e.target.value))} />
-                        </Grid>
-                    </>
+            case AlgoritimosTipos.GAMMA:
+                return <>
+                    <Grid item sm={12} className={classes.espacamento}>
+                        <TextField
+                            id=""
+                            variant="standard"
+                            label="O 'C' da equação"
+                            size="small"
+                            fullWidth
+                            value={entrada1}
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada1)} />
+                    </Grid>
+                    <Grid item sm={12} className={classes.espacamento}>
+                        <TextField
+                            id=""
+                            variant="standard"
+                            label="O 'Y' da equação"
+                            size="small"
+                            fullWidth
+                            value={entrada2}
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada2)} />
+                    </Grid>
+                </>
+            case AlgoritimosTipos.FAIXA_DINAMICA:
+                return <>
+                    <Grid item sm={12} className={classes.espacamento}>
+                        <TextField
+                            id=""
+                            variant="standard"
+                            label="A faixa desejada"
+                            size="small"
+                            fullWidth
+                            value={entrada1}
+                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada1)} />
+                    </Grid>
+                </>
         }
     }
     const calcular = (tipo: string, matriz: number[][], variavel1: number, variavel2: number, variavel3: number) => {
@@ -152,13 +183,16 @@ const Histograma = () => {
                 setImagemTransfomada(intencidadeGeral(matriz, variavel1, variavel2, variavel3))
                 break
             case AlgoritimosTipos.GAMMA:
-                setImagemTransfomada(gamma(matriz, variavel1))
+                setImagemTransfomada(gamma(matriz, variavel1, variavel2))
+                break
+            case AlgoritimosTipos.FAIXA_DINAMICA:
+                setImagemTransfomada(dinamica(matriz, variavel1))
                 break
         }
     }
     return <Grid container direction="row"  >
         <Grid item sm={12} xl={12} p={2}>
-            <Typography variant="h5" align="center">Histogramas</Typography>
+            <Typography variant="h5" align="center">Transformações de imagem</Typography>
         </Grid>
 
         <Grid item sm={8} container direction="row" >
@@ -245,7 +279,7 @@ const Histograma = () => {
                         sx={{ padding: "4%" }}
                         disabled={!success}
                         onClick={() => {
-                            calcular(tipoTransfomacao, imagem, entrada1, entrada2, entrada3)
+                            calcular(tipoTransfomacao, imagem, entrada1 || 0, entrada2 || 0, entrada3 || 0)
                             setSuccess(true)
                         }}>
                         Transfomar img

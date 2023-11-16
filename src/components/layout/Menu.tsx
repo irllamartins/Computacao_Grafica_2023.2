@@ -46,12 +46,12 @@ import { makeStyles } from '@mui/styles';
 import Circuferencia from '../pages/circuferencia/Conteiner'
 import Nomalizacao from '../pages/normalizacao/Conteiner'
 import Retas from '../pages/reta/Conteiner'
-import TransformacoesObjeto from '../pages/transformacoes/Conteiner'
+import TransformacoesObjeto from '../pages/transformacoes2D/Conteiner'
 import Transformacoes3D from '../pages/transformacoes3D/Conteiner'
 import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
-import Histograma from '../pages/histograma/Container'
+import Histograma from '../pages/transformacoes.imagem/Container'
 import Equalizacao from '../pages/equalizacao/Container'
 import Batimentos from '../pages/batimentos/Conteiner'
 import Gato from '../pages/gato/Container'
@@ -165,7 +165,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(13)
+  const [pagesNumber, setPagesNumber] = React.useState(4)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -179,13 +179,13 @@ export default function PersistentDrawerLeft() {
     { label: 'Normalizaçao', icon: <TransformSharp /> },
     { label: 'Reta', icon: <Timeline /> },
     { label: 'Circuferencia', icon: <Toll /> },
-    { label: 'Transformações', icon: <ShapeLine /> },
+    { label: 'Transformações2D', icon: <ShapeLine /> },
     { label: 'Transformações3D', icon: <ShapeLine /> },
     { label: 'Perspectiva', icon: <NaturePeople /> },
     { label: 'Cohen Surterland', icon: <AspectRatio /> },
     { label: 'Filtros', icon: <RecentActors /> },
     { label: 'Gato de Arnold', icon: <Pets /> },
-    { label: 'Histograma', icon: <BarChart /> },
+    { label: 'Transformações imagem', icon: <BarChart /> },
     { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
     { label: 'operadores morfológicos', icon: <AppRegistration /> },  
