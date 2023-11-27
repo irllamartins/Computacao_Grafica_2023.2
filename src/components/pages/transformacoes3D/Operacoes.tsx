@@ -1,7 +1,7 @@
 // Rotação
 
 // m = mov_matriz 
-const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): number[] => {
+const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): number[][] => {
     const novoResultado: number[][] = []
 
     for (let i = 0; i < operacao.length; i++) {
@@ -15,9 +15,9 @@ const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): nu
             novoResultado[i].push(soma)
         }
     }
-    return novoResultado.flat()
+    return novoResultado
 }
-
+/*
 export const rotacaoX = (m: number[], angle: number) => {
     let cos = Math.cos(angle);
     let sen = Math.sin(angle);
@@ -120,49 +120,33 @@ export const rotateZR = (m: number[], angle: number) => {
     return m
 }*/
 
-export const translacao = (m: number[], tx: number, ty: number, tz: number) => {
+export const translacao = (m: number[][], tx: number, ty: number, tz: number) => {
     const base = [[1, 0, 0, tx], [0, 1, 0, ty], [0, 0, 1, tz], [0, 0, 0, 1]]
-    let matriz4x4 = [
-        [m[0], m[1], m[2], m[3]],
-        [m[4], m[5], m[6], m[7]],
-        [m[8], m[9], m[10], m[11]],
-        [m[12], m[13], m[14], m[15]]
-    ]
-
-    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+    const resultado = multiplicacaoOperacoes(m, base)
 
     for (let i = 0; i < m.length; i++) {
         m[i] = resultado[i];
     }
-    //console.log("base",base)
-    console.log("matriz",matriz4x4)
-   // console.log("restrans",resultado)
+    // console.log("base",base)
+    // console.log("matriz",m)
+    // console.log("restrans",resultado)
     return m;
 }
-export const escala = (m: number[], sx: number, sy: number, sz: number) => {
+export const escala = (m: number[][], sx: number, sy: number, sz: number) => {
     const base = [[sx, 0, 0, 0,], [0, sy, 0, 0], [0, 0, sz, 0], [0, 0, 0, 1]]
-    let matriz4x4 = [
-        [m[0], m[1], m[2], m[3]],
-        [m[4], m[5], m[6], m[7]],
-        [m[8], m[9], m[10], m[11]],
-        [m[12], m[13], m[14], m[15]]
-    ]
-    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+
+    const resultado = multiplicacaoOperacoes(m, base)
+    console.log("escala res", resultado)
     for (let i = 0; i < m.length; i++) {
         m[i] = resultado[i];
     }
     return m;
 }
 
-export const cizalhamento = (m: number[], shx: number, shy: number) => {
+export const cisalhamento = (m: number[][], shx: number, shy: number) => {
     const base = [[1, 0, shx, 0,], [0, 1, shy, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-    let matriz4x4 = [
-        [m[0], m[1], m[2], m[3]],
-        [m[4], m[5], m[6], m[7]],
-        [m[8], m[9], m[10], m[11]],
-        [m[12], m[13], m[14], m[15]]
-    ]
-    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+   
+    const resultado = multiplicacaoOperacoes(m, base)
 
     for (let i = 0; i < m.length; i++) {
         m[i] = resultado[i];
@@ -170,7 +154,7 @@ export const cizalhamento = (m: number[], shx: number, shy: number) => {
     return m;
 }
 
-export const reflexaoXY = (m: number[]) => {
+/*export const reflexaoXY = (m: number[]) => {
     const base = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]]
     let matriz4x4 = [
         [m[0], m[1], m[2], m[3]],
@@ -214,4 +198,4 @@ export const reflexaoXZ = (m: number[]) => {
         m[i] = resultado[i];
     }
     return m;
-}
+}*/

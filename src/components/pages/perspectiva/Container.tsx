@@ -485,7 +485,7 @@ const Trasformacao3D = () => {
       <Button onClick={() => { setMov_matriz(rotacaoX(mov_matrix, 1)) }}>Rotacionar no X</Button>
       <Button onClick={() => { setMov_matriz(rotacaoY(mov_matrix, 1)) }}>Rotacionar no Y</Button>
       <Button onClick={() => { setMov_matriz(rotacaoZ(mov_matrix, 1)) }}>Rotacionar no Z</Button>
-      <Button onClick={() => { setMov_matriz(translacao(mov_matrix, 1, 1, 0)) }}>Translação</Button>
+      <Button onClick={() => { setMov_matriz(translacao(mov_matrix, 1, 1, 1)) }}>Translação</Button>
       <Button onClick={() => { setMov_matriz(escala(mov_matrix, 1.2, 1.2, 1.2)) }}>Escala</Button>
       <Button onClick={() => { setMov_matriz(cizalhamento(mov_matrix, 1.2, 1.2)) }}>Escala</Button>
       <Grid item sm={12} xl={12} p={2}>

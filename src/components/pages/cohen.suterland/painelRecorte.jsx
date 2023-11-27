@@ -3,7 +3,7 @@ import DesenharLimite from '../../util/PlanoCartesiano'
 import DesenharFigura from '../../util/DesenharFigura'
 import DesenharReta from './DesenharReta'
 import DesenhaTela from './DesenharTela'
-import Recorte from './Recorte'
+import Recorte from './Recorte'        
 
 const PainelRecorte = ({ tamanho, tamanhoWidth, tamanhoHeight, retas, xInicial, yInicial, xFinal, yFinal }) => {
   const canvasRef = useRef(null)
