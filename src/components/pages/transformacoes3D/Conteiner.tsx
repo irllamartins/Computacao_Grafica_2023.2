@@ -28,7 +28,7 @@ import { makeStyles } from '@mui/styles';
 import Painel from './Painel'
 import React, { useEffect, useState } from 'react';
 import { Add, Delete } from '@mui/icons-material';
-import { cisalhamento, escala, translacao } from './Operacoes';
+import { cisalhamento, escala, reflexaoXY, reflexaoXZ, reflexaoYZ, rotacaoX, rotacaoY, rotacaoZ, translacao } from './Operacoes';
 
 const useStyles = makeStyles({
     espacamento: {
@@ -151,10 +151,6 @@ const Conteiner = () => {
     const [mov_matrix, setMov_matriz] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
     const [view_matrix, setView_matrix] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
 
-
-    const altura = (TAMANHO_CANVAS / 2) - y
-    const largura = (TAMANHO_CANVAS / 2) + x
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
@@ -189,25 +185,25 @@ const Conteiner = () => {
             case TipoTransfomacoes.REFLEXAO:
                 if (tipoReflexao === TipoReflexao.XY) {
                     operarMatriz.push({
-                        nome: "Reflexão em XY",
+                        nome: TipoTransfomacoes.REFLEXAO,
                         x: 1,
-                        y: -1,
-                        z: 1,
+                        y: 1,
+                        z: -1,
                     })
                 }
                 if (tipoReflexao === TipoReflexao.YZ) {
                     operarMatriz.push({
-                        nome: "Reflexão em YZ",
+                        nome: TipoTransfomacoes.REFLEXAO,
                         x: -1,
                         y: 1,
                         z: 1,
                     })
                 } if (tipoReflexao === TipoReflexao.XZ) {
                     operarMatriz.push({
-                        nome: "Reflexão em XZ",
-                        x: -1,
-                        y: 1,
-                        z: -1,
+                        nome: TipoTransfomacoes.REFLEXAO,
+                        x: 1,
+                        y: -1,
+                        z: 1,
 
                     })
                 }
@@ -261,28 +257,25 @@ const Conteiner = () => {
                 }
                 break
             case TipoTransfomacoes.ROTACAO:
-                let cos = Math.cos(angulo)
-                let sen = Math.sin(angulo)
+
                 if (tipoRotacao === TipoRotacao.X) {
                     operarMatriz.push({
-                        nome: "Rotacao em X",
+                        nome: TipoTransfomacoes.ROTACAO,
                         x: angulo,
                         y: 0,
                         z: 0,
-
                     })
                 }
                 if (tipoRotacao === TipoRotacao.Y) {
                     operarMatriz.push({
-                        nome: "Rotacao em Y",
+                        nome: TipoTransfomacoes.ROTACAO,
                         x: 0,
                         y: angulo,
                         z: 0,
-
                     })
                 } if (tipoRotacao === TipoRotacao.Z) {
                     operarMatriz.push({
-                        nome: "Rotacao em Z",
+                        nome: TipoTransfomacoes.ROTACAO,
                         x: 0,
                         y: 0,
                         z: angulo,
@@ -303,20 +296,20 @@ const Conteiner = () => {
     }
 
     // transforma linha para coluna e coluna para linha
-    const formataMatriz = (array: any) => {
-        let lista = []
-
-        for (let i = 0; i < array[0].length; i++) {
-            const ponto = []
-            for (let j = 0; j < array.length; j++) {
-                ponto.push(array[j][i])
-            }
-            lista.push(ponto)
-
-        }
-        // console.log("listasPontos", lista)
-        return lista
-    }
+    /*  const formataMatriz = (array: any) => {
+          let lista = []
+  
+          for (let i = 0; i < array[0].length; i++) {
+              const ponto = []
+              for (let j = 0; j < array.length; j++) {
+                  ponto.push(array[j][i])
+              }
+              lista.push(ponto)
+  
+          }
+          // console.log("listasPontos", lista)
+          return lista
+      }*/
 
     /*const calculaOperacao = (pontos: Array<number>, operarMatriz: Transformacao[]) => {
         const operacoes: Transformacao[] = [...operarMatriz]
@@ -340,6 +333,7 @@ const Conteiner = () => {
         console.log("matriz", resultado,"|",pontos)
         setMov_matriz(pontos)
     }*/
+
     const calculaOperacao = (pontos: Array<number>, operarMatriz: Transformacao[]) => {
         const operacoes: Transformacao[] = [...operarMatriz]
         let resultado: number[][] | undefined = [
@@ -348,10 +342,10 @@ const Conteiner = () => {
             [pontos[8], pontos[9], pontos[10], pontos[11]],
             [pontos[12], pontos[13], pontos[14], pontos[15]]
         ]
-        // console.log("pontos",pontos)
-        //console.log("matrizRes",resultado)
+
         while (operacoes.length > 0) {
             let operacaoAtual = operacoes.shift()
+
             switch (operacaoAtual?.nome) {
                 case TipoTransfomacoes.TRANSLACAO:
                     resultado = (operacaoAtual && resultado) && translacao(resultado, operacaoAtual.x, operacaoAtual.y, operacaoAtual.z)
@@ -362,6 +356,34 @@ const Conteiner = () => {
                 case TipoTransfomacoes.CISALHAMENTO:
                     resultado = (operacaoAtual && resultado) && cisalhamento(resultado, operacaoAtual.x, operacaoAtual.y)
                     break
+                case TipoTransfomacoes.ROTACAO:
+                    if (operacaoAtual.x !== 0) {
+                        resultado = (operacaoAtual && resultado) && rotacaoX(resultado, operacaoAtual.x)
+                    }
+                    else if (operacaoAtual.y !== 0) {
+                        resultado = (operacaoAtual && resultado) && rotacaoY(resultado, operacaoAtual.y)
+                    }
+                    else if (operacaoAtual.z !== 0) {
+                        resultado = (operacaoAtual && resultado) && rotacaoZ(resultado, operacaoAtual.z)
+                    }
+                    break
+                case TipoTransfomacoes.REFLEXAO:
+
+                    // plano yz
+                    if (operacaoAtual.x === -1) {
+                        resultado = (operacaoAtual && resultado) && reflexaoYZ(resultado)
+                    }
+                    // plano xz
+                    else if (operacaoAtual.y === -1) {
+                        resultado = (operacaoAtual && resultado) && reflexaoXZ(resultado)
+                    }
+                    // plano xy
+                    else if (operacaoAtual.z === -1) {
+                        resultado = (operacaoAtual && resultado) && reflexaoXY(resultado)
+                    }
+                    break
+                default:
+                    return "Operação não selecionada"
             }
         }
         const resultadoArray = resultado ? resultado.flat() : []
@@ -369,34 +391,8 @@ const Conteiner = () => {
         for (let i = 0; i < resultadoArray.length; i++) {
             pontos[i] = resultadoArray[i];
         }
-        // console.log("matriz", resultado, "|", pontos)
         setMov_matriz(pontos)
     }
-
-   /* const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): number[][] => {
-        const novoResultado: number[][] = []
-
-        console.log("operacao", operacao, "|resultado|", resultado)
-        for (let i = 0; i < operacao.length; i++) {
-            novoResultado[i] = [];
-
-            for (let j = 0; j < resultado.length; j++) {
-                let soma = 0;
-
-                for (let k = 0; k < operacao[0].length; k++) {
-                    // console.log("mult", resultado, "|", operacao)
-                    console.log("|", operacao[i][k], "|", resultado[j][k])
-                    soma += operacao[i][k] * resultado[j][k];
-                }
-                // console.log("soma", soma)
-                novoResultado[i][j] = soma;
-                //  console.log("matriz soma", novoResultado[i][j])
-            }
-
-        }
-        return formataMatriz(novoResultado)
-    }*/
-
     const entradas = (opcao: string) => {
         switch (opcao) {
             case TipoTransfomacoes.CISALHAMENTO:
@@ -672,23 +668,23 @@ const Conteiner = () => {
                             <Grid item sm={12} marginY={2}>
                                 <TableContainer sx={{ maxHeight: 250 }}>
                                     <Table stickyHeader size="small" aria-label="sticky table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell align="center" colSpan={2}>
+                                        <TableHead >
+                                            <TableRow >
+                                                <TableCell align="center" colSpan={2} sx={{ color: "white" }}>
                                                     Transformação
                                                 </TableCell>
-                                                <TableCell align="center" colSpan={3}>
+                                                <TableCell align="center" colSpan={3} sx={{ color: "white" }}>
                                                     Pontos
                                                 </TableCell>
-                                                <TableCell align="center" colSpan={5}>
+                                                <TableCell align="center" colSpan={5} sx={{ color: "white" }}>
                                                     Ação
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell align="center" colSpan={2} />
-                                                <TableCell align="center">X</TableCell>
-                                                <TableCell align="center">Y</TableCell>
-                                                <TableCell align="center">Z</TableCell>
+                                                <TableCell align="center" sx={{ color: "white" }}>X</TableCell>
+                                                <TableCell align="center" sx={{ color: "white" }}>Y</TableCell>
+                                                <TableCell align="center" sx={{ color: "white" }}>Z</TableCell>
                                                 <TableCell align="center" />
 
                                             </TableRow>
@@ -721,7 +717,6 @@ const Conteiner = () => {
                                 </TableContainer>
                             </Grid>
                             <Grid item sm={12} bottom="5%" position="absolute" >
-                                {/*onClick={() => calculaOperacao(mov_matrix, operarMatriz)*/}
                                 <Button variant="contained" fullWidth onClick={() => calculaOperacao(mov_matrix, operarMatriz)}>Fazer transformação</Button>
                             </Grid>
                         </Grid>

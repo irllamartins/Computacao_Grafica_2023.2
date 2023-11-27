@@ -126,7 +126,7 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
     animate(0)
   }, [vertices, cores, indices, mov_matrix ,view_matrix])
 
-  return <canvas ref={canvasRef} width={500} height={500} />
+  return <canvas ref={canvasRef} width={1000} height={500} />
 }
 
 export default Painel
