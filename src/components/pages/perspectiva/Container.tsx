@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles"
 import { useState } from "react"
 import { AddAPhoto, AutoFixHigh, Delete } from "@mui/icons-material"
 import Painel from "./Painel"
+import { isometrico, ortografica, rotacaoY } from "./Operacao"
 
 
 // Fonte base: https://webglfundamentals.org/webgl/lessons/webgl-3d-orthographic.html
@@ -45,6 +46,8 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+const LARGURA = 1000
+const ALTURA = 500
 const Trasformacao3D = () => {
   const classes = useStyles()
   const [opcao, setOpcao] = useState("")
@@ -78,11 +81,15 @@ const Trasformacao3D = () => {
     16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
   ])
   const [mov_matrix, setMov_matriz] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+  const [mov_matrixTransfomada, setMov_matrizTransfomada] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+
   const [view_matrix, setView_matrix] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
+
+
 
   return <Grid container direction="row" alignContent="center" alignItems="center">
     <Grid item sm={12} xl={12} p={2}>
@@ -102,14 +109,19 @@ const Trasformacao3D = () => {
             <Tab label="projeção paralela ortográfica" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
-          <Painel vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrix} view_matrix={view_matrix} />
+        <CustomTabPanel value={value} index={0} >
+
+          <Painel altura={ALTURA} largura={LARGURA} vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrixTransfomada} view_matrix={view_matrix} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Painel vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrix} view_matrix={view_matrix} />
+          <Button onClick={() => { setMov_matrizTransfomada(rotacaoY(mov_matrix, 5)) }}>Rotacionar no Y</Button>
+          <Button onClick={() => setMov_matrizTransfomada(isometrico(mov_matrix))}>Transformar</Button>
+          <Painel altura={ALTURA} largura={LARGURA} vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrixTransfomada} view_matrix={view_matrix} />
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <Painel vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrix} view_matrix={view_matrix} />
+        <CustomTabPanel value={value} index={2} >
+          <Button onClick={() => { setMov_matrizTransfomada(rotacaoY(mov_matrix, 5)) }}>Rotacionar no Y</Button>
+          <Button onClick={() => setMov_matrizTransfomada(ortografica(mov_matrix, ALTURA, LARGURA))}>Transformar</Button>
+          <Painel altura={ALTURA} largura={LARGURA} vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrixTransfomada} view_matrix={view_matrix} />
         </CustomTabPanel>
       </Grid>
     </Grid>
