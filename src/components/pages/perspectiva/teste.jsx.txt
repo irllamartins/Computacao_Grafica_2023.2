@@ -1,0 +1,79 @@
+import React, { useRef, useEffect } from 'react'
+
+export const Test = () => {
+
+  const canvasRef = useRef(null)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+        return;
+    }
+    const gl = canvas.getContext("webgl");
+
+// Defina os pontos do cubo e do plano cartesiano
+let vertices = new Float32Array([
+    // Cubo (6 faces, 2 triângulos por face)
+    -1.0, -1.0, -1.0,  1.0, -1.0, -1.0,  1.0,  1.0, -1.0,  -1.0,  1.0, -1.0, // Frente
+    -1.0, -1.0,  1.0,  1.0, -1.0,  1.0,  1.0,  1.0,  1.0,  -1.0,  1.0,  1.0, // Trás
+    -1.0, -1.0, -1.0, -1.0,  1.0, -1.0, -1.0,  1.0,  1.0,  -1.0, -1.0,  1.0, // Esquerda
+     1.0, -1.0, -1.0,  1.0,  1.0, -1.0,  1.0,  1.0,  1.0,   1.0, -1.0,  1.0, // Direita
+    -1.0, -1.0, -1.0,  1.0, -1.0, -1.0,  1.0, -1.0,  1.0,  -1.0, -1.0,  1.0, // Baixo
+    -1.0,  1.0, -1.0,  1.0,  1.0, -1.0,  1.0,  1.0,  1.0,  -1.0,  1.0,  1.0, // Cima
+
+    // Plano cartesiano (2 linhas)
+    -1.0,  0.0,  0.0,  1.0,  0.0,  0.0, // Linha X
+     0.0, -1.0,  0.0,  0.0,  1.0,  0.0, // Linha Y
+     0.0,  0.0, -1.0,  0.0,  0.0,  1.0  // Linha Z
+]);
+
+// Crie um buffer e passe os dados do vértice para o WebGL
+let buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+// Defina o shader de vértices
+let vertexShaderCode = `
+    attribute vec3 coordinates;
+    void main(void) {
+        gl_Position = vec4(coordinates, 1.0);
+    }
+`;
+let vertexShader = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vertexShader, vertexShaderCode);
+gl.compileShader(vertexShader);
+
+// Defina o shader de fragmentos
+let fragmentShaderCode = `
+    void main(void) {
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }
+`;
+let fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fragmentShader, fragmentShaderCode);
+gl.compileShader(fragmentShader);
+
+// Crie o programa shader e vincule os shaders
+let shaderProgram = gl.createProgram();
+gl.attachShader(shaderProgram, vertexShader);
+gl.attachShader(shaderProgram, fragmentShader);
+gl.linkProgram(shaderProgram);
+gl.useProgram(shaderProgram);
+
+// Vincule os dados do vértice ao programa shader
+let coordinates = gl.getAttribLocation(shaderProgram, 'coordinates');
+gl.vertexAttribPointer(coordinates, 3, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(coordinates);
+
+// Limpe a tela e desenhe o cubo e o plano cartesiano
+gl.clearColor(1.0, 1.0, 1.0, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT);
+gl.drawArrays(gl.TRIANGLES, 0, 36); // Desenhe o cubo
+gl.drawArrays(gl.LINES, 36, 6); // Desenhe o plano cartesiano
+
+ }, [])
+
+
+ return <canvas ref={canvasRef} width={500} height={500} />;
+}   
+
+export default Test

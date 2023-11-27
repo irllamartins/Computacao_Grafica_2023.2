@@ -1,7 +1,4 @@
 import React, { useRef, useEffect } from 'react'
-import { coodernada } from './Coordenada'
-
-
 
 const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
 
@@ -10,6 +7,7 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext("webgl");
 
+   // coodernada(500,500,canvas)
     // verifica a compatibilidade
     if (!ctx) {
       alert("Não suportado")
@@ -17,9 +15,9 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
     }
     // Define a cor do fundo (R, G, B, A=1.0)
     ctx.clearColor(0.0, 0.0, 0.0, 1.0)
+
     // Limpa o buffer de cores com uma cor específica
     ctx.clear(ctx.COLOR_BUFFER_BIT)
-   // coodernada(500,500, ctx)
 
     // Cria e armazena dados no buffer de vértice
     let vertex_buffer = ctx.createBuffer();
@@ -36,7 +34,7 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
     let index_buffer = ctx.createBuffer();
     ctx.bindBuffer(ctx.ELEMENT_ARRAY_BUFFER, index_buffer);
     ctx.bufferData(ctx.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), ctx.STATIC_DRAW);
-
+    
     /*=================== Shaders =========================*/
     
     // os shaders (programas de sombreamento) 
@@ -71,22 +69,22 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
     ctx.attachShader(shaderProgram, fragShader);
     ctx.linkProgram(shaderProgram);
 
-
     /* ====== Associating attributes to vertex shader =====*/
     let Pmatrix = ctx.getUniformLocation(shaderProgram, "Pmatrix");
     let Vmatrix = ctx.getUniformLocation(shaderProgram, "Vmatrix");
     let Mmatrix = ctx.getUniformLocation(shaderProgram, "Mmatrix");
+  
 
     ctx.bindBuffer(ctx.ARRAY_BUFFER, vertex_buffer);
     var position = ctx.getAttribLocation(shaderProgram, "position");
     ctx.vertexAttribPointer(position, 3, ctx.FLOAT, false, 0, 0);
-
+   
     // Position
     ctx.enableVertexAttribArray(position);
     ctx.bindBuffer(ctx.ARRAY_BUFFER, color_buffer);
     var color = ctx.getAttribLocation(shaderProgram, "color");
     ctx.vertexAttribPointer(color, 3, ctx.FLOAT, false, 0, 0);
-
+    
     // Color
     ctx.enableVertexAttribArray(color);
     ctx.useProgram(shaderProgram);
@@ -108,7 +106,7 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix}) => {
     view_matrix[14] = view_matrix[14] - 6;//zoom
 
     /*================= Drawing ===========================*/
- 
+
     let animate = (time) => {
 
       ctx.enable(ctx.DEPTH_TEST)

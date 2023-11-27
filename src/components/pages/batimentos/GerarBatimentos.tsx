@@ -1,7 +1,18 @@
 import _ from 'lodash'
-import Grafico from './Grafico';
 import * as echarts from 'echarts';
 
+const GerarBatimentos = (pontoInicialX: number, pontoInicialY: number, pontoFinalX: number, pontoFinalY: number, ctx: CanvasRenderingContext2D) => {
+    let x = pontoInicialX
+    let y = pontoInicialY
+    console.log("GerarBatida antes")
+    // while (x < pontoFinalX) {
+    ctx.fillRect(500, 500, 50, 50)
+    ctx.beginPath()
+    ctx.moveTo(50, 250)
+    ctx.lineTo(50, 250)
+    ctx.stroke()
+    // }
+}
 /*const GerarBatimentos = (pontoInicialX: number, pontoInicialY: number, pontoFinalX: number, pontoFinalY: number, ctx: any) => {
     let x = pontoInicialX
     let y = pontoInicialY
@@ -78,7 +89,7 @@ const geraPontosBatimento = (x: number, y: number, ctx: any) => {
 
 }
 */
-const GerarBatimentos = () => {
+/*const GerarBatimentos = () => {
     // Tempo em segundos
     let t = Array.from({length: 500}, (_, i) => i / 500);
     
@@ -92,7 +103,7 @@ const GerarBatimentos = () => {
     let onda = t.map((t: number) => Math.sin(2 * Math.PI * freq_Hz * t));
     
     return <Grafico t={t} dados={onda}/>
-}
+}*/
 
 
 export default GerarBatimentos

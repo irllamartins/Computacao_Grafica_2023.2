@@ -4,34 +4,24 @@ import { useState } from "react"
 import GerarBatimentos from "./GerarBatimentos"
 
 const TAMANHO_CANVAS = 500
-const AUMENTO_LAGURA = 1.5
+const AUMENTO_LAGURA = 1.8
 const Batimentos = () => {
-    const [tempo, setTempo] = useState(10)
     return <Grid container direction="row" >
         <Grid item sm={12}>
-            <Typography variant="h6" align="center">Batimentos Cardiacos</Typography>
+            <Typography variant="h6" align="center" >Batimentos Cardiacos</Typography>
         </Grid>
-        <Grid item sm={8} xl={12} marginTop={5} >
-            {/* <Painel
+        <Grid item sm={12} xl={12} marginTop={5} sx={{backgroundColor:"black"}}>
+            {<Painel
                 tamanho={TAMANHO_CANVAS}
-                aumentoLagura = {AUMENTO_LAGURA}
+                aumentoLagura={AUMENTO_LAGURA}
                 pontoInicialX={0}
-                pontoInicialY={TAMANHO_CANVAS/2}
-                pontoFinalX={TAMANHO_CANVAS*AUMENTO_LAGURA}
-                pontoFinalY={TAMANHO_CANVAS/2}
-/>*/
-                GerarBatimentos()}
+                pontoInicialY={TAMANHO_CANVAS / 2}
+                pontoFinalX={TAMANHO_CANVAS * AUMENTO_LAGURA}
+                pontoFinalY={TAMANHO_CANVAS / 2}
+            />
+            }
 
         </Grid>
-        <Grid item sm={4} xl={12} justifySelf="center" alignSelf="center">
-            <TextField
-                id="tempo"
-                label="Tempo"
-                value={tempo}
-                variant="standard"
-                onChange={e => setTempo(Number(e.target.value))}
-            />
-        </Grid >
     </Grid >
 }
 export default Batimentos

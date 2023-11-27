@@ -167,3 +167,49 @@ export const cizalhamento = (m: number[], shx: number, shy: number) => {
     }
     return m;
 }
+
+export const reflexaoXY = (m: number[]) => {
+    const base = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]]
+    let matriz4x4 = [
+        [m[0], m[1], m[2], m[3]],
+        [m[4], m[5], m[6], m[7]],
+        [m[8], m[9], m[10], m[11]],
+        [m[12], m[13], m[14], m[15]]
+    ];
+
+    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+    for (let i = 0; i < m.length; i++) {
+        m[i] = resultado[i];
+    }
+    return m;
+}
+export const reflexaoYZ = (m: number[]) => {
+    const base = [[-1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+    let matriz4x4 = [
+        [m[0], m[1], m[2], m[3]],
+        [m[4], m[5], m[6], m[7]],
+        [m[8], m[9], m[10], m[11]],
+        [m[12], m[13], m[14], m[15]]
+    ];
+
+    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+    for (let i = 0; i < m.length; i++) {
+        m[i] = resultado[i];
+    }
+    return m;
+}
+export const reflexaoXZ = (m: number[]) => {
+    const base = [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+    let matriz4x4 = [
+        [m[0], m[1], m[2], m[3]],
+        [m[4], m[5], m[6], m[7]],
+        [m[8], m[9], m[10], m[11]],
+        [m[12], m[13], m[14], m[15]]
+    ];
+
+    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+    for (let i = 0; i < m.length; i++) {
+        m[i] = resultado[i];
+    }
+    return m;
+}
