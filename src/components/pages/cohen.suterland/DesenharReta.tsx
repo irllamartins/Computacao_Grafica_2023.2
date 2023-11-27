@@ -12,8 +12,8 @@ export const DesenharReta = (tamanho: number, retas: Reta[],  ctx: any) => {
     
     // onde começa o ponto do "lapis"
     ctx.beginPath();
-    ctx.moveTo(reta.xInicial, reta.yInicial);
-    ctx.lineTo(reta.xFinal,reta.yFinal);
+    ctx.moveTo(reta.xInicial, tamanho -reta.yInicial);
+    ctx.lineTo(reta.xFinal,tamanho-reta.yFinal);
     // Aplica o traço à linha
     ctx.stroke();
   });

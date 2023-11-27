@@ -78,7 +78,7 @@ const Recorte = (tamanho: number, retas: Reta[], xmin: number, ymin: number, xma
             }
         }
 
-        let result = cohenSutherland(reta.xInicial, reta.yInicial,reta.xFinal,reta.yFinal, xmin, xmax, ymin, ymax)
+        let result = cohenSutherland(reta.xInicial, tamanho-reta.yInicial,reta.xFinal,tamanho-reta.yFinal, xmin, xmax, ymin, ymax)
 
         if (result) {
             DesenharRetaCorte(tamanho, result, ctx) 

@@ -4,7 +4,7 @@ import { useState } from "react"
 import GerarBatimentos from "./GerarBatimentos"
 
 const TAMANHO_CANVAS = 500
-const AUMENTO_LAGURA = 1.8
+const AUMENTO_LAGURA = 5
 const Batimentos = () => {
     return <Grid container direction="row" >
         <Grid item sm={12}>

@@ -10,7 +10,7 @@ export const DesenharRetaCorte = (tamanho: number, reta: Reta,  ctx: any) => {
     
     // onde começa o ponto do "lapis"
     ctx.beginPath();
-    ctx.moveTo(reta.xInicial, reta.yInicial);
+    ctx.moveTo(reta.xInicial,reta.yInicial);
     ctx.lineTo(reta.xFinal, reta.yFinal);
     // Aplica o traço à linha
     ctx.stroke();
