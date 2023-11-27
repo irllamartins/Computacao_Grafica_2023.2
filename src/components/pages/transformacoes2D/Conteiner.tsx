@@ -215,11 +215,12 @@ const Conteiner = () => {
                 }
                 break
             case TipoTransfomacoes.ROTACAO:
+                let radianos = grau * (Math.PI/180);
                 operarMatriz.push({
                     nome: TipoTransfomacoes.ROTACAO,
                     x: grau,
                     y: "",
-                    matriz: [[Math.cos(Number(grau)), Math.sin(Number(grau)) * -1, 0], [Math.sin(Number(grau)), Math.cos(Number(grau)), 0], [0, 0, 1]]
+                    matriz: [[Math.cos(radianos), Math.sin(radianos) * -1, 0], [Math.sin(radianos), Math.cos(radianos), 0], [0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.TRANSLACAO:
