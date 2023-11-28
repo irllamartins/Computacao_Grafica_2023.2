@@ -25,7 +25,6 @@ export const rotacaoX = (m: number[][], angulo: number) => {
     const base = [[1, 0, 0, 0], [0, cos, -sen, 0], [0, sen, cos, 0], [0, 0, 0, 1]];
 
     const resultado = multiplicacaoOperacoes(m, base);
-    console.log("rotX", resultado)
     for (let i = 0; i < m.length; i++) {
         m[i] = resultado[i];
     }
@@ -56,6 +55,23 @@ export const rotacaoZ = (m: number[][], angulo: number) => {
         m[i] = resultado[i];
     }
     return m;
+}
+
+export const rotacaoInversa = (m:number[][],thetaX:number,thetaY:number,thetaZ:number)=>{
+    let Rx = [[1, 0, 0],[0, Math.cos(thetaX), Math.sin(thetaX)],[0, -Math.sin(thetaX), Math.cos(thetaX)]]
+
+    let Ry = [ [Math.cos(thetaY), 0, -Math.sin(thetaY)], [0, 1, 0],[Math.sin(thetaY), 0, Math.cos(thetaY)]]
+
+    let Rz = [[Math.cos(thetaZ), Math.sin(thetaZ), 0], [-Math.sin(thetaZ), Math.cos(thetaZ), 0], [0, 0, 1]]
+
+    const base = multiplicacaoOperacoes(Rz, multiplicacaoOperacoes(Ry, Rx))
+    const resultado = multiplicacaoOperacoes(m, base)
+
+    for (let i = 0; i < resultado.length; i++) {
+        m[i] = resultado[i];
+    }
+    return m;
+
 }
 
 export const translacao = (m: number[][], tx: number, ty: number, tz: number) => {
@@ -111,6 +127,15 @@ export const reflexaoYZ = (m: number[][]) => {
 }
 export const reflexaoXZ = (m: number[][]) => {
     const base = [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+ 
+    const resultado = multiplicacaoOperacoes(m, base)
+    for (let i = 0; i < m.length; i++) {
+        m[i] = resultado[i];
+    }
+    return m;
+}
+export const reflexaoOrigem = (m: number[][]) => {
+    const base = [[-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
  
     const resultado = multiplicacaoOperacoes(m, base)
     for (let i = 0; i < m.length; i++) {

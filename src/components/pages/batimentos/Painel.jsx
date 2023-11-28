@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
-import GerarBatimentos from './GerarBatimentos'
+// import GerarBatimentos from './GerarBatimentos'
 
 const Painel = ({ tamanho, aumentoLagura, pontoInicialX, pontoInicialY, pontoFinalX, pontoFinalY}) => {
   const canvasRef = useRef(null)
@@ -22,7 +22,7 @@ const Painel = ({ tamanho, aumentoLagura, pontoInicialX, pontoInicialY, pontoFin
 
       // Aplica a interpolação linear para calcular y
       if ((x > 125 && x < 251)||(x > 376 && x < 504)) {   
-        y = (1 - a) * pontoInicialY + a * (tamanho / 2 + Math.sin(x / 20) * 80);
+        y = (1 - a) * pontoInicialY + a * (tamanho / 2 + Math.sin(x / 20) * 200);
       } else {
         y = tamanho / 2;
       }

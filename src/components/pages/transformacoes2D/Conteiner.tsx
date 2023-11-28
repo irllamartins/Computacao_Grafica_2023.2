@@ -28,6 +28,7 @@ import { makeStyles } from '@mui/styles';
 import Painel from './Painel'
 import React, { useEffect, useState } from 'react';
 import { Add, Delete } from '@mui/icons-material';
+import { cisalhamento, escala, reflexaoOrigem, reflexaoX, reflexaoY, rotacao, rotacaoInversa, translacao } from './Operacoes';
 
 const useStyles = makeStyles({
     espacamento: {
@@ -84,9 +85,9 @@ interface Transformacao {
     nome: string
     x: any
     y: any
-    matriz: Array<number[]>
+    // matriz: Array<number[]>
 }
-const matriz: number[][] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+// const matriz: number[][] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
 
 enum TipoTransfomacoes {
@@ -97,10 +98,10 @@ enum TipoTransfomacoes {
     REFLEXAO = "Reflexão"
 }
 enum TipoReflexao {
-    X = "x",
-    Y = "y",
-    ORIGEM = "origem",
-    FUNCAO = "funcao"
+    X = "Reflexão em X",
+    Y = "Reflexão em Y",
+    ORIGEM = "Reflexão na origem",
+    FUNCAO = "Reflexão em função"
 }
 
 const Conteiner = () => {
@@ -114,7 +115,7 @@ const Conteiner = () => {
     const [ponto_y, setPonto_y] = React.useState<number>(10)
     const [grau, setGrau] = React.useState(5)
     const [alignment, setAlignment] = React.useState<string | null>()
-    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 1, 1], [0, 100, 1, 1], [100, 0, 1, 1], [0, 0, 1, 1]])
+    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 1], [0, 100, 1], [100, 0, 1], [0, 0, 1]])
     const [operarMatriz, setOperarMatriz] = React.useState<Transformacao[]>([])
 
     const altura = (TAMANHO_CANVAS / 2) - y
@@ -140,7 +141,6 @@ const Conteiner = () => {
                     nome: TipoTransfomacoes.CISALHAMENTO,
                     x: ponto_x,
                     y: ponto_y,
-                    matriz: [[1, ponto_x, 0], [ponto_y, 1, 0], [0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.ESCALA:
@@ -148,79 +148,45 @@ const Conteiner = () => {
                     nome: TipoTransfomacoes.ESCALA,
                     x: ponto_x,
                     y: ponto_y,
-                    matriz: [[ponto_x, 0, 0], [0, ponto_y, 0], [0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.REFLEXAO:
                 if (alignment === TipoReflexao.X) {
                     operarMatriz.push({
-                        nome: "Reflexão em X",
+                        nome: TipoReflexao.X,
                         x: 1,
                         y: -1,
-                        matriz: [[1, 0, 0], [0, -1, 0], [0, 0, 1]]
                     })
                 }
                 if (alignment === TipoReflexao.Y) {
                     operarMatriz.push({
-                        nome: "Reflexão em Y",
+                        nome: TipoReflexao.Y,
                         x: -1,
                         y: 1,
-                        matriz: [[-1, 0, 0], [0, 1, 0], [0, 0, 1]],
                     })
                 }
                 if (alignment === TipoReflexao.ORIGEM) {
                     operarMatriz.push({
-                        nome: "Reflexão na origem",
+                        nome: TipoReflexao.ORIGEM,
                         x: -1,
                         y: -1,
-                        matriz: [[-1, 0, 0], [0, -1, 0], [0, 0, 1]]
                     })
                 }
                 if (alignment === TipoReflexao.FUNCAO) {
-                    //  const sen = (ponto_x) / Math.sqrt((Math.pow(ponto_x, 2) + 1))
-                    const sen = Math.sin(grau)
-                    const cos = Math.cos(grau)
-                    // const cos = 1 / Math.sqrt((Math.pow(ponto_x, 2) + 1))
                     operarMatriz.push({
-                        nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
-                        x: 0,
-                        y: 0,
-                        matriz: [[1, 0, 0 * -1], [0, 1, 0 * -1], [0, 0, 1]]
-                    })
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
-                        x: 0,
-                        y: 0,
-                        matriz: [[cos, sen * -1, 0], [sen, cos, 0], [0, 0, 1]]
+                        nome: TipoReflexao.FUNCAO,
+                        x: ponto_x,
+                        y: ponto_y,
                     })
 
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.REFLEXAO + "(Reflexão em função)",
-                        x: 0,
-                        y: 0,
-                        matriz: [[cos, sen * -1, 0], [sen, cos, 0], [0, 0, 1]]
-                    })
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
-                        x: 0,
-                        y: 0,
-                        matriz: [[cos, sen, 0], [sen * -1, cos, 0], [0, 0, 1]]
-                    })
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
-                        x: 0,
-                        y: 0,
-                        matriz: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-                    })
                 }
                 break
             case TipoTransfomacoes.ROTACAO:
-                let radianos = grau * (Math.PI/180);
+                let radiano = grau * (Math.PI / 180)
                 operarMatriz.push({
                     nome: TipoTransfomacoes.ROTACAO,
-                    x: grau,
-                    y: "",
-                    matriz: [[Math.cos(radianos), Math.sin(radianos) * -1, 0], [Math.sin(radianos), Math.cos(radianos), 0], [0, 0, 1]]
+                    x: radiano,
+                    y: 0,
                 })
                 break
             case TipoTransfomacoes.TRANSLACAO:
@@ -228,7 +194,6 @@ const Conteiner = () => {
                     nome: TipoTransfomacoes.TRANSLACAO,
                     x: ponto_x,
                     y: ponto_y,
-                    matriz: [[1, 0, ponto_x], [0, 1, ponto_y], [0, 0, 1]]
                 })
                 break
             default:
@@ -264,38 +229,84 @@ const Conteiner = () => {
 
         while (operacoes.length > 0) {
             let operacaoAtual = operacoes.shift()
-            console.log("matriz cap:", operacaoAtual)
-            resultado = (operacaoAtual?.matriz && resultado) ? multiplicacaoOperacoes(operacaoAtual?.matriz, resultado) : undefined
-        }
 
-        console.log("matriz", resultado)
-        setFigura(resultado ? resultado : [])
-    }
+            //  resultado = (operacaoAtual && resultado) ? multiplicacaoOperacoes(operacaoAtual?.matriz, resultado) : undefined
+            switch (operacaoAtual?.nome) {
+                case TipoTransfomacoes.TRANSLACAO:
+                    resultado = (operacaoAtual && resultado) && translacao(resultado, operacaoAtual.x, operacaoAtual.y)
+                    break
+                case TipoTransfomacoes.ESCALA:
+                    resultado = (operacaoAtual && resultado) && escala(resultado, operacaoAtual.x, operacaoAtual.y)
+                    break
+                case TipoTransfomacoes.CISALHAMENTO:
+                    resultado = (operacaoAtual && resultado) && cisalhamento(resultado, operacaoAtual.x, operacaoAtual.y)
+                    break
+                case TipoTransfomacoes.ROTACAO:
+                    resultado = (operacaoAtual && resultado) && rotacao(resultado, operacaoAtual.x)
+                    break
+                case TipoReflexao.X:
+                    resultado = (operacaoAtual && resultado) && reflexaoX(resultado)
+                    break
+                case TipoReflexao.Y:
+                    resultado = (operacaoAtual && resultado) && reflexaoY(resultado)
+                    break
+                case TipoReflexao.ORIGEM:
+                    resultado = (operacaoAtual && resultado) && reflexaoOrigem(resultado)
+                    break
+                case TipoReflexao.FUNCAO:
+                    resultado = (operacaoAtual && resultado) && translacao(resultado, 0, -operacaoAtual.y)
 
-    const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): number[][] => {
-        const novoResultado: number[][] = []
+                    let vTranslacaoX: number = resultado[0][1], vTranslacaoY: number = resultado[1][1]
+                 //   let vRotacao = Math.atan2(resultado[1][0], resultado[0][0])
+                   let vRotacao = Math.atan(operacaoAtual.x)
 
-        console.log("operacao", operacao, "|resultado|", resultado)
-        for (let i = 0; i < operacao.length; i++) {
-            novoResultado[i] = [];
+                    resultado = (operacaoAtual && resultado) && translacao(resultado, vTranslacaoX * -1, vTranslacaoY * -1)
+                        resultado = (operacaoAtual && resultado) && rotacaoInversa(resultado, vRotacao)
+                        //console.log("trnas1", resultado, vRotacao)
+                    
+                    resultado = (operacaoAtual && resultado) && reflexaoX(resultado)
+                    // desfazer
+                      // resultado = (operacaoAtual && resultado) && rotacaoInversa(resultado, vRotacao)
+                  //  resultado = (operacaoAtual && resultado) && rotacao(resultado, vRotacao)
 
-            for (let j = 0; j < resultado.length; j++) {
-                let soma = 0;
+                    resultado = (operacaoAtual && resultado) && translacao(resultado, vTranslacaoX, vTranslacaoY)
 
-                for (let k = 0; k < operacao[0].length; k++) {
-                    // console.log("mult", resultado, "|", operacao)
-                    console.log("|", operacao[i][k], "|", resultado[j][k])
-                    soma += operacao[i][k] * resultado[j][k];
-                }
-                // console.log("soma", soma)
-                novoResultado[i][j] = soma;
-                //  console.log("matriz soma", novoResultado[i][j])
+                    resultado = (operacaoAtual && resultado) && translacao(resultado, 0, operacaoAtual.y)
+                    break
+
+                default:
+                    return "Operação não selecionada"
             }
 
+            // console.log("matriz", resultado)
+            setFigura(resultado ? resultado : [])
         }
-        return formataMatriz(novoResultado)
     }
 
+    /*   const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): number[][] => {
+           const novoResultado: number[][] = []
+
+           console.log("operacao", operacao, "|resultado|", resultado)
+           for (let i = 0; i < operacao.length; i++) {
+               novoResultado[i] = [];
+
+               for (let j = 0; j < resultado.length; j++) {
+                   let soma = 0;
+
+                   for (let k = 0; k < operacao[0].length; k++) {
+                       // console.log("mult", resultado, "|", operacao)
+                       console.log("|", operacao[i][k], "|", resultado[j][k])
+                       soma += operacao[i][k] * resultado[j][k];
+                   }
+                   // console.log("soma", soma)
+                   novoResultado[i][j] = soma;
+                   //  console.log("matriz soma", novoResultado[i][j])
+               }
+
+           }
+           return formataMatriz(novoResultado)
+       }
+*/
     const entradas = (opcao: string) => {
         switch (opcao) {
             case TipoTransfomacoes.CISALHAMENTO:
@@ -462,7 +473,8 @@ const Conteiner = () => {
                     altura={altura}
                     largura={largura}
                     x={0} y={0}
-                    figura={figura} />
+                    figura={figura}
+                    funcao={operarMatriz.find((item: Transformacao) => item.nome === TipoReflexao.FUNCAO)} />
             </Grid>
             <Grid item sm={6} xl={12}>
                 <Grid item sm={12} xl={12} p={2}>

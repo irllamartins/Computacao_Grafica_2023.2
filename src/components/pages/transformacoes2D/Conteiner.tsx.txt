@@ -28,7 +28,6 @@ import { makeStyles } from '@mui/styles';
 import Painel from './Painel'
 import React, { useEffect, useState } from 'react';
 import { Add, Delete } from '@mui/icons-material';
-import { cisalhamento, escala, reflexaoOrigem, reflexaoXY, reflexaoXZ, reflexaoYZ, rotacaoInversa, rotacaoX, rotacaoY, rotacaoZ, translacao } from './Operacoes';
 
 const useStyles = makeStyles({
     espacamento: {
@@ -85,8 +84,7 @@ interface Transformacao {
     nome: string
     x: any
     y: any
-    z: any
-    // matriz: Array<number[]>
+    matriz: Array<number[]>
 }
 const matriz: number[][] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
@@ -99,16 +97,10 @@ enum TipoTransfomacoes {
     REFLEXAO = "Reflexão"
 }
 enum TipoReflexao {
-    XY = "xy",
-    YZ = "yz",
-    XZ = "xz",
-    ORIGEM = "Reflexão origem",
-    FUNCAO = "Reflexão Função"
-}
-enum TipoRotacao {
     X = "x",
     Y = "y",
-    Z = "z"
+    ORIGEM = "origem",
+    FUNCAO = "funcao"
 }
 
 const Conteiner = () => {
@@ -118,38 +110,15 @@ const Conteiner = () => {
     const [opcao, setOpcao] = React.useState("")
     const [x, setX] = React.useState<number>(0)
     const [y, setY] = React.useState<number>(0)
-    const [z, setZ] = React.useState<number>(0)
-    const [ponto_x, setPonto_x] = React.useState<number>(1)
-    const [ponto_y, setPonto_y] = React.useState<number>(1)
-    const [ponto_z, setPonto_z] = React.useState<number>(1)
-    const [angulo, setAngulo] = React.useState(5)
-    const [tipoReflexao, setTipoReflexao] = React.useState<string | null>()
-    const [tipoRotacao, setTipoRotacao] = React.useState<string | null>()
+    const [ponto_x, setPonto_x] = React.useState<number>(10)
+    const [ponto_y, setPonto_y] = React.useState<number>(10)
+    const [grau, setGrau] = React.useState(5)
+    const [alignment, setAlignment] = React.useState<string | null>()
+    const [figura, setFigura] = React.useState<number[][]>([[0, 0, 1, 1], [0, 100, 1, 1], [100, 0, 1, 1], [0, 0, 1, 1]])
     const [operarMatriz, setOperarMatriz] = React.useState<Transformacao[]>([])
 
-    const [vertices, setVertices] = useState<number[]>([
-        -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
-        -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
-        -1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1,
-        1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1,
-        -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1,
-        -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
-    ])
-    const [cores, setCores] = useState<number[]>([
-        5, 3, 7, 5, 3, 7, 5, 3, 7, 5, 3, 7,
-        1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3,
-        0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
-        1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
-        0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
-    ])
-    const [indices, setIndices] = useState<number[]>([
-        0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7,
-        8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
-        16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
-    ])
-    const [mov_matrix, setMov_matriz] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
-    const [view_matrix, setView_matrix] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+    const altura = (TAMANHO_CANVAS / 2) - y
+    const largura = (TAMANHO_CANVAS / 2) + x
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
@@ -164,14 +133,14 @@ const Conteiner = () => {
         }
     }
 
-    const calcular = (label: any, ponto_x: number, ponto_y: number, ponto_z: number) => {
+    const calcular = (label: any, ponto_x: number, ponto_y: number, grau: number) => {
         switch (label) {
             case TipoTransfomacoes.CISALHAMENTO:
                 operarMatriz.push({
                     nome: TipoTransfomacoes.CISALHAMENTO,
                     x: ponto_x,
                     y: ponto_y,
-                    z: ponto_z,
+                    matriz: [[1, ponto_x, 0], [ponto_y, 1, 0], [0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.ESCALA:
@@ -179,114 +148,87 @@ const Conteiner = () => {
                     nome: TipoTransfomacoes.ESCALA,
                     x: ponto_x,
                     y: ponto_y,
-                    z: ponto_z,
+                    matriz: [[ponto_x, 0, 0], [0, ponto_y, 0], [0, 0, 1]]
                 })
                 break
             case TipoTransfomacoes.REFLEXAO:
-                if (tipoReflexao === TipoReflexao.XY) {
+                if (alignment === TipoReflexao.X) {
                     operarMatriz.push({
-                        nome: TipoTransfomacoes.REFLEXAO,
-                        x: 1,
-                        y: 1,
-                        z: -1,
-                    })
-                }
-                if (tipoReflexao === TipoReflexao.YZ) {
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.REFLEXAO,
-                        x: -1,
-                        y: 1,
-                        z: 1,
-                    })
-                } if (tipoReflexao === TipoReflexao.XZ) {
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.REFLEXAO,
+                        nome: "Reflexão em X",
                         x: 1,
                         y: -1,
-                        z: 1,
-
+                        matriz: [[1, 0, 0], [0, -1, 0], [0, 0, 1]]
                     })
                 }
-                if (tipoReflexao === TipoReflexao.ORIGEM) {
+                if (alignment === TipoReflexao.Y) {
                     operarMatriz.push({
-                        nome: TipoReflexao.ORIGEM,
+                        nome: "Reflexão em Y",
+                        x: -1,
+                        y: 1,
+                        matriz: [[-1, 0, 0], [0, 1, 0], [0, 0, 1]],
+                    })
+                }
+                if (alignment === TipoReflexao.ORIGEM) {
+                    operarMatriz.push({
+                        nome: "Reflexão na origem",
                         x: -1,
                         y: -1,
-                        z: 1,
+                        matriz: [[-1, 0, 0], [0, -1, 0], [0, 0, 1]]
                     })
                 }
-                if (tipoReflexao === TipoReflexao.FUNCAO) {
+                if (alignment === TipoReflexao.FUNCAO) {
+                    //  const sen = (ponto_x) / Math.sqrt((Math.pow(ponto_x, 2) + 1))
+                    const sen = Math.sin(grau)
+                    const cos = Math.cos(grau)
+                    // const cos = 1 / Math.sqrt((Math.pow(ponto_x, 2) + 1))
                     operarMatriz.push({
-                        nome: TipoReflexao.FUNCAO,
+                        nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
                         x: 0,
                         y: 0,
-                        z: 0,
+                        matriz: [[1, 0, 0 * -1], [0, 1, 0 * -1], [0, 0, 1]]
                     })
-                    /* operarMatriz.push({
-                         nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
-                         x: 0,
-                         y: 0,
-                         z: 1,
-                     })
-                     operarMatriz.push({
-                         nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
-                         x: 0,
-                         y: 0,
-                         z: 1,
-                     })
- 
-                     operarMatriz.push({
-                         nome: TipoTransfomacoes.REFLEXAO + "(Reflexão em função)",
-                         x: 0,
-                         y: 0,
-                         z: 1,
-                     })
-                     operarMatriz.push({
-                         nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
-                         x: 0,
-                         y: 0,
-                         z: 1,
-                     })
-                     operarMatriz.push({
-                         nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
-                         x: 0,
-                         y: 0,
-                         z: 1,
-                     })*/
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[cos, sen * -1, 0], [sen, cos, 0], [0, 0, 1]]
+                    })
+
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.REFLEXAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[cos, sen * -1, 0], [sen, cos, 0], [0, 0, 1]]
+                    })
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.ROTACAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[cos, sen, 0], [sen * -1, cos, 0], [0, 0, 1]]
+                    })
+                    operarMatriz.push({
+                        nome: TipoTransfomacoes.TRANSLACAO + "(Reflexão em função)",
+                        x: 0,
+                        y: 0,
+                        matriz: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+                    })
                 }
                 break
             case TipoTransfomacoes.ROTACAO:
-
-                if (tipoRotacao === TipoRotacao.X) {
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.ROTACAO,
-                        x: angulo,
-                        y: 0,
-                        z: 0,
-                    })
-                }
-                if (tipoRotacao === TipoRotacao.Y) {
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.ROTACAO,
-                        x: 0,
-                        y: angulo,
-                        z: 0,
-                    })
-                } if (tipoRotacao === TipoRotacao.Z) {
-                    operarMatriz.push({
-                        nome: TipoTransfomacoes.ROTACAO,
-                        x: 0,
-                        y: 0,
-                        z: angulo,
-                    })
-                }
+                let radianos = grau * (Math.PI/180);
+                operarMatriz.push({
+                    nome: TipoTransfomacoes.ROTACAO,
+                    x: grau,
+                    y: "",
+                    matriz: [[Math.cos(radianos), Math.sin(radianos) * -1, 0], [Math.sin(radianos), Math.cos(radianos), 0], [0, 0, 1]]
+                })
                 break
             case TipoTransfomacoes.TRANSLACAO:
                 operarMatriz.push({
                     nome: TipoTransfomacoes.TRANSLACAO,
                     x: ponto_x,
                     y: ponto_y,
-                    z: ponto_z,
+                    matriz: [[1, 0, ponto_x], [0, 1, ponto_y], [0, 0, 1]]
                 })
                 break
             default:
@@ -294,132 +236,66 @@ const Conteiner = () => {
         }
     }
 
-    // transforma linha para coluna e coluna para linha
-     const formataMatriz = (array: any) => {
-          let lista = []
-  
-          for (let i = 0; i < array[0].length; i++) {
-              const ponto = []
-              for (let j = 0; j < array.length; j++) {
-                  ponto.push(array[j][i])
-              }
-              lista.push(ponto)
-  
-          }
-          // console.log("listasPontos", lista)
-          return lista
-      }
+    const addPonto = (x: number, y: number, figura: any) => {
+        const newArray = [x, y, 1];
+        setFigura(prevArrays => [...prevArrays, newArray]);
+        console.log(figura)
+    }
 
-    /*const calculaOperacao = (pontos: Array<number>, operarMatriz: Transformacao[]) => {
+    // transforma linha para coluna e coluna para linha
+    const formataMatriz = (array: any) => {
+        let lista = []
+
+        for (let i = 0; i < array[0].length; i++) {
+            const ponto = []
+            for (let j = 0; j < array.length; j++) {
+                ponto.push(array[j][i])
+            }
+            lista.push(ponto)
+
+        }
+        console.log("listasPontos", lista)
+        return lista
+    }
+
+    const calculaOperacao = (pontos: Array<number[]>, operarMatriz: Transformacao[]) => {
         const operacoes: Transformacao[] = [...operarMatriz]
-        let resultado: number[][] | undefined = [
-            [pontos[0], pontos[1], pontos[2], pontos[3]],
-            [pontos[4], pontos[5], pontos[6], pontos[7]],
-            [pontos[8], pontos[9], pontos[10], pontos[11]],
-            [pontos[12], pontos[13], pontos[14], pontos[15]]
-        ];
+        let resultado: number[][] | undefined = [...pontos]
 
         while (operacoes.length > 0) {
             let operacaoAtual = operacoes.shift()
             console.log("matriz cap:", operacaoAtual)
-            resultado = (operacaoAtual?.matriz && resultado) ? multiplicacaoOperacoes(resultado, operacaoAtual?.matriz) : undefined
+            resultado = (operacaoAtual?.matriz && resultado) ? multiplicacaoOperacoes(operacaoAtual?.matriz, resultado) : undefined
         }
-        const resultadoArray = resultado ? resultado.flat() : []
 
-        for (let i = 0; i < resultadoArray.length; i++) {
-            pontos[i] = resultadoArray[i];
-        }
-        console.log("matriz", resultado,"|",pontos)
-        setMov_matriz(pontos)
-    }*/
-
-    const calculaOperacao = (pontos: Array<number>, operarMatriz: Transformacao[]) => {
-        const operacoes: Transformacao[] = [...operarMatriz]
-        let resultado: number[][] | undefined = [
-            [pontos[0], pontos[1], pontos[2], pontos[3]],
-            [pontos[4], pontos[5], pontos[6], pontos[7]],
-            [pontos[8], pontos[9], pontos[10], pontos[11]],
-            [pontos[12], pontos[13], pontos[14], pontos[15]]
-        ]
-
-        while (operacoes.length > 0) {
-            let operacaoAtual = operacoes.shift()
-
-            switch (operacaoAtual?.nome) {
-                case TipoTransfomacoes.TRANSLACAO:
-                    resultado = (operacaoAtual && resultado) && translacao(resultado, operacaoAtual.x, operacaoAtual.y, operacaoAtual.z)
-                    break
-                case TipoTransfomacoes.ESCALA:
-                    resultado = (operacaoAtual && resultado) && escala(resultado, operacaoAtual.x, operacaoAtual.y, operacaoAtual.z)
-                    break
-                case TipoTransfomacoes.CISALHAMENTO:
-                    resultado = (operacaoAtual && resultado) && cisalhamento(resultado, operacaoAtual.x, operacaoAtual.y)
-                    break
-                case TipoTransfomacoes.ROTACAO:
-                    if (operacaoAtual.x !== 0) {
-                        resultado = (operacaoAtual && resultado) && rotacaoX(resultado, operacaoAtual.x)
-                    }
-                    else if (operacaoAtual.y !== 0) {
-                        resultado = (operacaoAtual && resultado) && rotacaoY(resultado, operacaoAtual.y)
-                    }
-                    else if (operacaoAtual.z !== 0) {
-                        resultado = (operacaoAtual && resultado) && rotacaoZ(resultado, operacaoAtual.z)
-                    }
-                    break
-                case TipoTransfomacoes.REFLEXAO:
-                    // plano yz
-                    if (operacaoAtual.x === -1) {
-                        resultado = (operacaoAtual && resultado) && reflexaoYZ(resultado)
-                    }
-                    // plano xz
-                    else if (operacaoAtual.y === -1) {
-                        resultado = (operacaoAtual && resultado) && reflexaoXZ(resultado)
-                    }
-                    // plano xy
-                    else if (operacaoAtual.z === -1) {
-                        resultado = (operacaoAtual && resultado) && reflexaoXY(resultado)
-                    }
-                    break
-                case TipoReflexao.ORIGEM:
-                    console.log("entrou")
-                    resultado = (operacaoAtual && resultado) && reflexaoOrigem(resultado)
-
-                    break
-                case TipoReflexao.FUNCAO:
-                    console.log("entrou")
-
-                    let vTranslacaoX: number = resultado ? resultado[3][0] : 0
-                    let vTranslacaoY: number = resultado ? resultado[3][1] : 0
-                    let vTranslacaoZ: number = resultado ? resultado[3][2] : 0
-                    let vRotacaoX: number = Math.atan2(matriz[2][1], matriz[2][2]);
-                    let vRotacaoY: number = Math.atan2(-matriz[2][0], Math.sqrt(matriz[2][1] * matriz[2][1] + matriz[2][2] * matriz[2][2]))
-                    let vRotacaoZ: number = Math.atan2(matriz[1][0], matriz[0][0]);
-
-                    console.log("original", resultado)
-                    resultado = (operacaoAtual && resultado) && translacao(resultado, vTranslacaoX * -1, vTranslacaoY * -1, vTranslacaoZ * -1)
-                    //   resultado = (operacaoAtual && resultado) && rotacaoInversa(resultado, rotacaoX, rotacaoY, rotacaoZ)
-                    //  resultado = (operacaoAtual && resultado) && reflexaoXY(resultado)
-                    // refazer para posição original
-                    console.log("antes", resultado)
-                    resultado = (operacaoAtual && resultado) && translacao(resultado, vTranslacaoX, vTranslacaoY, vTranslacaoZ)
-                    //  resultado = (operacaoAtual && resultado) && rotacaoX(resultado,5)      
-                    //  resultado = (operacaoAtual && resultado) && rotacaoY(resultado,rotacaoY)
-                    //  resultado = (operacaoAtual && resultado) && rotacaoZ(resultado,rotacaoZ)
-                    console.log("depois", resultado)
-
-                    break
-
-                default:
-                    return "Operação não selecionada"
-            }
-        }
-        const resultadoArray = resultado ? resultado.flat() : []
-
-        for (let i = 0; i < resultadoArray.length; i++) {
-            pontos[i] = resultadoArray[i];
-        }
-        setMov_matriz(pontos)
+        console.log("matriz", resultado)
+        setFigura(resultado ? resultado : [])
     }
+
+    const multiplicacaoOperacoes = (operacao: number[][], resultado: number[][]): number[][] => {
+        const novoResultado: number[][] = []
+
+        console.log("operacao", operacao, "|resultado|", resultado)
+        for (let i = 0; i < operacao.length; i++) {
+            novoResultado[i] = [];
+
+            for (let j = 0; j < resultado.length; j++) {
+                let soma = 0;
+
+                for (let k = 0; k < operacao[0].length; k++) {
+                    // console.log("mult", resultado, "|", operacao)
+                    console.log("|", operacao[i][k], "|", resultado[j][k])
+                    soma += operacao[i][k] * resultado[j][k];
+                }
+                // console.log("soma", soma)
+                novoResultado[i][j] = soma;
+                //  console.log("matriz soma", novoResultado[i][j])
+            }
+
+        }
+        return formataMatriz(novoResultado)
+    }
+
     const entradas = (opcao: string) => {
         switch (opcao) {
             case TipoTransfomacoes.CISALHAMENTO:
@@ -432,6 +308,7 @@ const Conteiner = () => {
                             variant="standard"
                             fullWidth
                             onChange={e => tratamentoEntrada(e.target.value, setPonto_x)}
+
                         />
                     </Grid>
                     <Grid item sm={6} className={classes.espacamento}>
@@ -448,7 +325,7 @@ const Conteiner = () => {
                 </Grid>
             case TipoTransfomacoes.ESCALA:
                 return <Grid item container sm={12} direction="row">
-                    <Grid item sm={4} className={classes.espacamento}>
+                    <Grid item sm={6} className={classes.espacamento}>
                         <TextField
                             id="ponto_x"
                             value={ponto_x}
@@ -459,7 +336,7 @@ const Conteiner = () => {
 
                         />
                     </Grid>
-                    <Grid item sm={4} className={classes.espacamento}>
+                    <Grid item sm={6} className={classes.espacamento}>
                         <TextField
                             id="ponto_y"
                             value={ponto_y}
@@ -470,45 +347,31 @@ const Conteiner = () => {
 
                         />
                     </Grid>
-                    <Grid item sm={4} className={classes.espacamento}>
-                        <TextField
-                            id="ponto_z"
-                            value={ponto_z}
-                            label="Ponto Z"
-                            variant="standard"
-                            fullWidth
-                            onChange={e => tratamentoEntrada(e.target.value, setPonto_z)}
-
-                        />
-                    </Grid>
                 </Grid>
             case TipoTransfomacoes.REFLEXAO:
 
-                const handleTipoReflexao = (
+                const handleAlignment = (
                     event: React.MouseEvent<HTMLElement>,
-                    newtipoReflexao: string | null,
+                    newAlignment: string | null,
                 ) => {
-                    setTipoReflexao(newtipoReflexao)
+                    setAlignment(newAlignment)
                 }
                 return <Grid item container sm={12}>
                     <Grid item sm={12} >
                         <ToggleButtonGroup
-                            value={tipoReflexao}
+                            value={alignment}
                             exclusive
                             size='small'
                             fullWidth
                             color='primary'
-                            onChange={handleTipoReflexao}
+                            onChange={handleAlignment}
                             aria-label="tipos de reflexão"
                         >
-                            <ToggleButton value={TipoReflexao.XY} aria-label={TipoReflexao.XY}>
-                                Eixo XY
+                            <ToggleButton value={TipoReflexao.X} aria-label={TipoReflexao.X}>
+                                Eixo X
                             </ToggleButton>
-                            <ToggleButton value={TipoReflexao.YZ} aria-label={TipoReflexao.YZ}>
-                                Eixo YZ
-                            </ToggleButton>
-                            <ToggleButton value={TipoReflexao.XZ} aria-label={TipoReflexao.XZ}>
-                                Eixo XZ
+                            <ToggleButton value={TipoReflexao.Y} aria-label={TipoReflexao.Y}>
+                                Eixo Y
                             </ToggleButton>
                             <ToggleButton value={TipoReflexao.ORIGEM} aria-label={TipoReflexao.ORIGEM} >
                                 Na origem
@@ -519,7 +382,7 @@ const Conteiner = () => {
                         </ToggleButtonGroup>
                     </Grid>
                     {
-                        tipoReflexao === TipoReflexao.FUNCAO && <Grid item sm={12} container direction="row">
+                        alignment === TipoReflexao.FUNCAO && <Grid item sm={12} container direction="row">
                             <Grid item sm={6} className={classes.espacamento}>
                                 <TextField
                                     id="x"
@@ -547,49 +410,22 @@ const Conteiner = () => {
                     }
 
                 </Grid>
-            //rotacionar em x, y, ou z
             case TipoTransfomacoes.ROTACAO:
-                const handleTipoRotacao = (
-                    event: React.MouseEvent<HTMLElement>,
-                    novoTipoRotacao: string | null,
-                ) => {
-                    setTipoRotacao(novoTipoRotacao)
-                }
                 return <Grid item sm={12}>
-                    <ToggleButtonGroup
-                        value={tipoRotacao}
-                        exclusive
-                        size='small'
-                        fullWidth
-                        color='primary'
-                        onChange={handleTipoRotacao}
-                        aria-label="tipos de reflexão"
-                    >
-                        <ToggleButton value={TipoRotacao.X} aria-label={TipoRotacao.X}>
-                            Eixo X
-                        </ToggleButton>
-                        <ToggleButton value={TipoRotacao.Y} aria-label={TipoRotacao.Y}>
-                            Eixo Y
-                        </ToggleButton>
-                        <ToggleButton value={TipoRotacao.Z} aria-label={TipoRotacao.Z}>
-                            Eixo Z
-                        </ToggleButton>
-                    </ToggleButtonGroup>
                     <TextField
-                        id="Angulo"
-                        value={angulo}
+                        id="grau"
+                        value={grau}
                         variant="standard"
                         InputProps={{
                             endAdornment: <InputAdornment position="end">graus</InputAdornment>,
                         }}
                         fullWidth
-                        onChange={e => tratamentoEntrada(e.target.value, setAngulo)}
+                        onChange={e => tratamentoEntrada(e.target.value, setGrau)}
                     />
-
                 </Grid>
             case TipoTransfomacoes.TRANSLACAO:
                 return <Grid item container sm={12} direction="row">
-                    <Grid item sm={4} className={classes.espacamento}>
+                    <Grid item sm={6} className={classes.espacamento}>
                         <TextField
                             id="x"
                             value={ponto_x}
@@ -600,7 +436,7 @@ const Conteiner = () => {
 
                         />
                     </Grid>
-                    <Grid item sm={4} className={classes.espacamento}>
+                    <Grid item sm={6} className={classes.espacamento}>
                         <TextField
                             id="y"
                             value={ponto_y}
@@ -609,18 +445,6 @@ const Conteiner = () => {
                             fullWidth
                             type="number"
                             onChange={e => tratamentoEntrada(e.target.value, setPonto_y)}
-
-                        />
-                    </Grid>
-                    <Grid item sm={4} className={classes.espacamento}>
-                        <TextField
-                            id="z"
-                            value={ponto_z}
-                            label="Ponto Z"
-                            variant="standard"
-                            fullWidth
-                            type="number"
-                            onChange={e => tratamentoEntrada(e.target.value, setPonto_z)}
 
                         />
                     </Grid>
@@ -635,11 +459,10 @@ const Conteiner = () => {
             <Grid item sm={6} xl={12} marginTop={5} >
                 <Painel
                     tamanho={TAMANHO_CANVAS}
-                    cores={cores}
-                    indices={indices}
-                    mov_matrix={mov_matrix}
-                    view_matrix={view_matrix}
-                    vertices={vertices} />
+                    altura={altura}
+                    largura={largura}
+                    x={0} y={0}
+                    figura={figura} />
             </Grid>
             <Grid item sm={6} xl={12}>
                 <Grid item sm={12} xl={12} p={2}>
@@ -652,11 +475,87 @@ const Conteiner = () => {
                             aria-label="basic tabs example"
                             variant="fullWidth"
                             centered>
-                            <Tab label="Adicionar modificação" {...a11yProps(0)} />
-                            <Tab label="Historico" {...a11yProps(1)} />
+                            <Tab label="Desenhar figura" {...a11yProps(0)} />
+                            <Tab label="Adicionar modificação" {...a11yProps(1)} />
+                            <Tab label="Historico" {...a11yProps(2)} />
                         </Tabs>
                     </Box>
                     <CustomTabPanel value={value} index={0}>
+                        <Grid container direction="row" >
+                            <Grid item sm={5} className={classes.espacamento}>
+                                <TextField
+                                    id="x"
+                                    value={x}
+                                    label="Ponto X"
+                                    variant="standard"
+                                    fullWidth
+                                    onChange={e => tratamentoEntrada(e.target.value, setX)}
+
+                                />
+                            </Grid>
+                            <Grid item sm={5} className={classes.espacamento}>
+                                <TextField
+                                    id="y"
+                                    value={y}
+                                    label="Ponto Y"
+                                    variant="standard"
+                                    fullWidth
+                                    onChange={e => tratamentoEntrada(e.target.value, setY)}
+
+                                />
+                            </Grid>
+                            <Grid item sm={2} className={classes.espacamento}>
+                                <IconButton onClick={() => addPonto(x, y, figura)}>
+                                    <Add />
+                                </IconButton>
+                            </Grid>
+                            <Grid item sm={12} marginY={2}>
+                                <TableContainer sx={{ maxHeight: 250 }}>
+                                    <Table stickyHeader size="small" aria-label="sticky table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell align="center" colSpan={2}>
+                                                    Pontos
+                                                </TableCell>
+                                                <TableCell align="center" colSpan={3}>
+                                                    Ação
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell align="center">X</TableCell>
+                                                <TableCell align="center">Y</TableCell>
+                                                <TableCell align="center" />
+
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {figura.map((ponto, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell align="center">{ponto[0]}</TableCell>
+                                                    <TableCell align="center">{ponto[1]}</TableCell>
+                                                    <TableCell align="center">
+                                                        <IconButton
+                                                            aria-label="delete"
+                                                            size="small"
+
+                                                            onClick={() => {
+                                                                const newFigura = [...figura]
+                                                                newFigura.splice(index, 1)
+                                                                setFigura(newFigura)
+                                                            }}
+                                                        >
+                                                            <Delete />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Grid>
+                        </Grid>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
                         <Grid
                             container
                             alignItems="center"
@@ -682,11 +581,11 @@ const Conteiner = () => {
                             </Grid>
                             {entradas(opcao)}
                             <Grid item sm={12} bottom="5%" position="absolute" >
-                                <Button variant="contained" fullWidth onClick={() => calcular(opcao, ponto_x, ponto_y, ponto_z)}>Adicionar transformação</Button>
+                                <Button variant="contained" fullWidth onClick={() => calcular(opcao, ponto_x, ponto_y, grau)}>Adicionar transformação</Button>
                             </Grid>
                         </Grid>
                     </CustomTabPanel>
-                    <CustomTabPanel value={value} index={1}>
+                    <CustomTabPanel value={value} index={2}>
                         <Grid
                             container
                             alignItems="center"
@@ -695,23 +594,22 @@ const Conteiner = () => {
                             <Grid item sm={12} marginY={2}>
                                 <TableContainer sx={{ maxHeight: 250 }}>
                                     <Table stickyHeader size="small" aria-label="sticky table">
-                                        <TableHead >
-                                            <TableRow >
-                                                <TableCell align="center" colSpan={2} sx={{ color: "white" }}>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell align="center" colSpan={2}>
                                                     Transformação
                                                 </TableCell>
-                                                <TableCell align="center" colSpan={3} sx={{ color: "white" }}>
+                                                <TableCell align="center" colSpan={2}>
                                                     Pontos
                                                 </TableCell>
-                                                <TableCell align="center" colSpan={5} sx={{ color: "white" }}>
+                                                <TableCell align="center" colSpan={3}>
                                                     Ação
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell align="center" colSpan={2} />
-                                                <TableCell align="center" sx={{ color: "white" }}>X</TableCell>
-                                                <TableCell align="center" sx={{ color: "white" }}>Y</TableCell>
-                                                <TableCell align="center" sx={{ color: "white" }}>Z</TableCell>
+                                                <TableCell align="center">X</TableCell>
+                                                <TableCell align="center">Y</TableCell>
                                                 <TableCell align="center" />
 
                                             </TableRow>
@@ -722,7 +620,6 @@ const Conteiner = () => {
                                                     <TableCell align="center" colSpan={2} >{matriz.nome}</TableCell>
                                                     <TableCell align="center">{matriz.x}</TableCell>
                                                     <TableCell align="center">{matriz.y}</TableCell>
-                                                    <TableCell align="center">{matriz.z}</TableCell>
                                                     <TableCell align="center">
                                                         <IconButton
                                                             aria-label="delete"
@@ -744,7 +641,7 @@ const Conteiner = () => {
                                 </TableContainer>
                             </Grid>
                             <Grid item sm={12} bottom="5%" position="absolute" >
-                                <Button variant="contained" fullWidth onClick={() => calculaOperacao(mov_matrix, operarMatriz)}>Fazer transformação</Button>
+                                <Button variant="contained" fullWidth onClick={() => calculaOperacao(figura, operarMatriz)}>Fazer transformação</Button>
                             </Grid>
                         </Grid>
                     </CustomTabPanel>

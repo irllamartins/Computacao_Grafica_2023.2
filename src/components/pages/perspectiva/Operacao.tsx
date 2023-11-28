@@ -73,6 +73,28 @@ export const ortografica = (m: number[], lagura: number, altura: number) => {
 }
 
 
+export const pontoFuga = (m: number[], corteDistante: number, corteProximo: number) => {
+
+    const base = [
+        [corteDistante, 0, 0, 0],
+        [0, corteDistante, 0, 0],
+        [0, 0, (corteDistante + corteProximo) / ((corteProximo - corteDistante)), 2*corteProximo*corteDistante/((corteDistante-corteProximo))]
+        , [0, 0, -1, 0]]
+    let matriz4x4 = [
+        [m[0], m[1], m[2], m[3]],
+        [m[4], m[5], m[6], m[7]],
+        [m[8], m[9], m[10], m[11]],
+        [m[12], m[13], m[14], m[15]]
+    ];
+    const resultado = multiplicacaoOperacoes(matriz4x4, base)
+    const resultadoArray = resultado.flat()
+    for (let i = 0; i < resultadoArray.length; i++) {
+        m[i] = resultadoArray[i];
+    }
+    return m;
+}
+
+
 export const rotacaoY = (m: number[], angulo: number) => {
     let radianos = angulo * (Math.PI / 180);
     let cos = Math.cos(radianos)

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import DesenharLimite from '../../util/PlanoCartesiano'
 import DesenharFigura from '../../util/DesenharFigura'
 
-const Transformacoes = ({ tamanho,altura,largura, x, y, figura }) => {
+const Transformacoes = ({ tamanho,altura,largura, x, y, figura,funcao }) => {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -22,10 +22,19 @@ const Transformacoes = ({ tamanho,altura,largura, x, y, figura }) => {
 
     DesenharLimite(ctx, canvas)
     DesenharFigura(tamanho,figura, cor, ctx)
+    if(funcao){
+      const cont = 250
+      ctx.fillStyle = "red"
+      ctx.beginPath();
+      ctx.moveTo(tamanho/2, (tamanho/2)-funcao.y);
+      ctx.lineTo((tamanho/2)+cont*funcao.x,(tamanho/2)-(funcao.x*cont +funcao.y));
+      ctx.closePath();
+      ctx.stroke();
+    }
 
 
 
-  }, [tamanho,altura,largura, x, y, figura ])
+  }, [tamanho,altura,largura, x, y, figura,funcao ])
 
   return <canvas ref={canvasRef} width={tamanho} height={tamanho} />
 }

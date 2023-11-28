@@ -1,10 +1,10 @@
 import { Grid, TextField, Typography } from "@mui/material"
 import Painel from "./Painel"
 import { useState } from "react"
-import GerarBatimentos from "./GerarBatimentos"
+//import GerarBatimentos from "./GerarBatimentos"
 
 const TAMANHO_CANVAS = 500
-const AUMENTO_LAGURA = 5
+const AUMENTO_LAGURA = 2
 const Batimentos = () => {
     return <Grid container direction="row" >
         <Grid item sm={12}>
