@@ -4,7 +4,6 @@ const GeraImagem = (props) => {
     const {matriz,largura,altura}  = props
 
     const canvasRef = useRef(null)
-// console.log("m:",matriz)
     useEffect(() => {
         const canvas = canvasRef.current
 

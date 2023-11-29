@@ -1,16 +1,6 @@
-import { useRef, useEffect, useState } from "react"
+import { ObjetoImagem } from "../operacao.imagem/Container"
 
-import readline from 'readline'
-import { AddAPhoto, Cached, CloudUpload, ContactlessOutlined } from "@mui/icons-material"
-import { Button, Grid, IconButton, Input, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
-import sharp from "sharp"
-import GeraImagem from "./GeraImagem"
-
-
-
-
-const GeraMatriz = (event: any) => {
-    // const [imagemTransformada, setImagemTransformada] = useState<number[][]>([])
+const GeraMatriz = (event: any): Promise<ObjetoImagem> => {
     return new Promise((resolve, reject) => {
         let matriz: number[][] = []
         // capturar o arquivo
@@ -50,9 +40,7 @@ const GeraMatriz = (event: any) => {
                 imagem.push(linhaImagem)
             }
 
-          //  matriz = adicionarBorda(imagem)
-           // console.log( matriz )
-            resolve( imagem )
+            resolve({ matriz: imagem, maximoCor: valorMaximoCor })
 
         }
 
