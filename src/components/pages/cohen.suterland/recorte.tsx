@@ -1,6 +1,5 @@
-import DesenharReta from "./DesenharReta"
 import { Reta } from "./Conteiner"
-import _, { forEach } from 'lodash'
+import _ from 'lodash'
 import DesenharRetaCorte from "./DesenharRetaCorte"
 
 
@@ -16,8 +15,6 @@ const Recorte = (tamanho: number, retas: Reta[], xmin: number, ymin: number, xma
 
     retasNovas.forEach((reta) => {
        
-        
-
         function calcularBit(x:number, y:number, xmin:number, xmax:number, ymin:number, ymax:number) {
             let bits = Bits.DENTRO
 
@@ -41,7 +38,7 @@ const Recorte = (tamanho: number, retas: Reta[], xmin: number, ymin: number, xma
             let bits2 = calcularBit(x2, y2, xmin, xmax, ymin, ymax);
 
             while (true) {
-                console.log("bits",bits1,"|",bits2)
+               // console.log("bits",bits1,"|",bits2)
                 if ((bits1 === 0) && (bits2 === 0)) {
                     return { xInicial: x1, yInicial: y1, xFinal: x2, yFinal: y2, cor: reta.cor }
                 } else if ((bits1 & bits2) !== 0) {
@@ -83,9 +80,9 @@ const Recorte = (tamanho: number, retas: Reta[], xmin: number, ymin: number, xma
         if (result) {
             DesenharRetaCorte(tamanho, result, ctx) 
 
-            console.log(`Segmento recortado: (${result.xInicial}, ${result.yInicial}) a (${result.xFinal}, ${result.yFinal})`);
+        //    console.log(`Segmento recortado: (${result.xInicial}, ${result.yInicial}) a (${result.xFinal}, ${result.yFinal})`);
         } else {
-            console.log("O segmento esta fora");
+          //  console.log("O segmento esta fora");
         }
 
     })

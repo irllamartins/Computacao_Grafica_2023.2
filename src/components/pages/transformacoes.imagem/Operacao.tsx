@@ -35,19 +35,14 @@ export const negativo = (matriz: number[][]): number[][] => {
     return novaMatriz
 }
 
-export const intencidadeGeral = (matriz: number[][], r: number, w: number, sigma: number): number[][] => {
+export const intencidadeGeral = (matriz: number[][], w: number, sigma: number): number[][] => {
     const e: number = 2.71828
     let novaMatriz: number[][] = []
-
-    const n = matriz.flat().length
-
-    const media = matriz.flat().reduce((a, b) => a + b) / n
-    const desvioPadrao = Math.sqrt(matriz.flat().map(x => Math.pow(x - media, 2)).reduce((a, b) => a + b) / n)
 
     for (let i = 0; i < matriz?.length; i++) {
         let array: number[] = []
         for (let j = 0; j < matriz[i]?.length; j++) {
-            let x = (matriz[i][j] - media) / desvioPadrao
+            let x = (matriz[i][j] - w) / sigma
             let resultado = Math.round(255 * (1 / (1 + Math.pow(e, (x * -1)))))
 
             if (resultado > 255) {

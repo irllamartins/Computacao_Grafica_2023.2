@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react"
+import {  useState } from "react"
 import { AddAPhoto, Cached } from "@mui/icons-material"
 import {
     Button,
@@ -15,9 +15,7 @@ import {
     Theme,
     Typography
 } from "@mui/material"
-import sharp from "sharp"
 import GeraImagem from "./GeraImagem"
-import _, { forEach } from 'lodash';
 import GeraMatriz from "./GeraMatriz"
 import Operacao, { aplicacaoMascaraMediana, magnetude } from "./Operacao"
 import { makeStyles } from "@mui/styles"
@@ -76,8 +74,7 @@ const Container = () => {
     const [imagemTransformada, setImagemTransformada] = useState<number[][]>([])
     const [opcao, setOpcao] = useState<string>(TiposTransformacao.MEDIA)
     const [reforco, setReforco] = useState<number>(0)
-    const [success, setSuccess] = useState(false)
-    const timer = useRef<number>();
+    const [success] = useState(false)
 
     const calcular = (label: any) => {
         switch (label) {
@@ -246,7 +243,7 @@ const Container = () => {
                 startIcon={<Cached />}>
                 Transformar
 
-                {success && (imagem.length == 0 ? true : false) && (
+                {success && (imagem.length=== 0 ? true : false) && (
                     <CircularProgress
                         size={24}
                         sx={{

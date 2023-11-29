@@ -16,7 +16,6 @@ const GeraMatriz = (event: any): Promise<ObjetoImagem> => {
         // capturar o arquivo
         const arquivo = event.target.files[0]
 
-
         // cria um arquivo
         const reader = new FileReader()
 

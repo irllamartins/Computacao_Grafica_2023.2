@@ -1,5 +1,4 @@
-import React, { useRef, useEffect } from 'react'
-import DesenharLimite from '../../util/PlanoCartesiano'
+import { useRef, useEffect } from 'react'
 import DDA from './DDA'
 // import GerarBatimentos from './GerarBatimentos'
 

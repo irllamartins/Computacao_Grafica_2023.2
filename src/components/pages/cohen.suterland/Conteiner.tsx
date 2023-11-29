@@ -13,10 +13,11 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions
+    DialogActions,
+    Typography
 } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Add, Delete, DesignServices } from '@mui/icons-material';
 import PainelMundo from './PainelMundo'
 import PainelRecorte from './PainelRecorte'
@@ -57,8 +58,6 @@ const Conteiner = () => {
     const classes = useStyles()
 
     const [open, setOpen] = React.useState<boolean>(false)
-    const [x, setX] = React.useState<number>(0)
-    const [y, setY] = React.useState<number>(0)
     const [ponto_x_inicial, setPonto_x_inicial] = React.useState<number>(10)
     const [ponto_y_inicial, setPonto_y_inicial] = React.useState<number>(10)
     const [ponto_x_final, setPonto_x_final] = React.useState<number>(100)
@@ -102,6 +101,9 @@ const Conteiner = () => {
 
     return (
         <Grid container direction="row" >
+             <Grid item sm={12} xl={12} p={2}>
+            <Typography variant="h5" align="center">Cohen Suterland</Typography>
+        </Grid>
             <Grid container item sm={6} xl={6} justifyContent="center" alignContent="center" alignItems="center">
                 <Grid item sm={12}  >
                     <PainelMundo
@@ -170,7 +172,7 @@ const Conteiner = () => {
                 </Grid>
 
             </Grid>   
-            <Grid container item sm={6} xl={6} alignContent="center" alignItems="center">
+            <Grid container item sm={6} xl={6} alignContent="center"  >
                 <Grid item sm={12}  >
                     <PainelRecorte
                         retas={retas}

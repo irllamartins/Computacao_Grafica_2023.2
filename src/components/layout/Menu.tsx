@@ -15,14 +15,11 @@ import {
   styled,
   useTheme,
   AppBarProps as MuiAppBarProps,
-  Paper,
-  Theme
+  Paper
 } from '@mui/material'
 import MuiAppBar from '@mui/material/AppBar'
 import {
   Menu as MenuIcon,
-  Inbox as InboxIcon,
-  Email as MailIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   TransformSharp,
@@ -32,26 +29,23 @@ import {
   AspectRatio,
   RecentActors,
   Pets,
-  PermMedia,
   NaturePeople,
   Iso,
-  BarChart,
-  Equalizer,
   Balance,
   AppRegistration,
-  MonitorHeartOutlined
+  MonitorHeartOutlined,
+  Compare
 } from '@mui/icons-material'
-import { makeStyles } from '@mui/styles';
 
 import Circuferencia from '../pages/circuferencia/Conteiner'
 import Nomalizacao from '../pages/normalizacao/Conteiner'
 import Retas from '../pages/reta/Conteiner'
-import TransformacoesObjeto from '../pages/transformacoes2D/Conteiner'
+import Transformacoes2D from '../pages/transformacoes2D/Conteiner'
 import Transformacoes3D from '../pages/transformacoes3D/Conteiner'
 import CohenSuterland from '../pages/cohen.suterland/Conteiner'
 import Filtros from '../pages/filtro/Container'
 import OperacaoImagem from '../pages/operacao.imagem/Container'
-import Histograma from '../pages/transformacoes.imagem/Container'
+import TrasformacoesImagem from '../pages/transformacoes.imagem/Container'
 import Equalizacao from '../pages/equalizacao/Container'
 import Batimentos from '../pages/batimentos/Conteiner'
 import Morfologia from '../pages/morfologia/Container'
@@ -59,22 +53,6 @@ import Gato from '../pages/gato/Container'
 import Perspectiva from '../pages/perspectiva/Container'
 
 const drawerWidth = 240;
-
-const useStyles = makeStyles((theme: Theme) => ({
-  /* ativo: {
-     backgroundColor: `${theme.palette.background.default}`
-   },
-   header: {
-     backgroundColor:  `${theme.palette.primary.main}`
-   }*/
-  /* ativo: {
-     backgroundColor: `${theme.palette.background.default}`
-   },
-   header: {
-     backgroundColor:  `${theme.palette.primary.main}`
-   }*/
-}))
-
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean
@@ -120,7 +98,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
 }))
@@ -131,40 +108,39 @@ const pages = (value: number) => {
     case 0:
       return <Nomalizacao />
     case 1:
-      return <Retas />
+      return <Batimentos />
     case 2:
-      return <Circuferencia />
+      return <Retas />
     case 3:
-      return <TransformacoesObjeto />
+      return <Circuferencia />
     case 4:
-      return <Transformacoes3D />
+      return <Transformacoes2D />
     case 5:
-      return <Perspectiva />
+      return <Transformacoes3D />
     case 6:
       return <CohenSuterland />
     case 7:
-      return <Filtros />
+      return <Perspectiva />
     case 8:
-      return <Gato />
+      return <Filtros />
     case 9:
-      return <Histograma />
-    case 10:
-      return < Equalizacao />
-    case 11:
       return <OperacaoImagem />
+    case 10:
+      return <TrasformacoesImagem />
+    case 11:
+      return < Equalizacao />
     case 12:
-      return <Morfologia />
+      return <Gato />
     case 13:
-      return <Batimentos />
+      return <Morfologia />
+
     default:
       return "Não encontrado"
-
   }
 }
 
 export default function PersistentDrawerLeft() {
   const theme = useTheme()
-  const classes = useStyles()
 
   const [open, setOpen] = React.useState(false)
 
@@ -180,19 +156,20 @@ export default function PersistentDrawerLeft() {
 
   const titulo = [
     { label: 'Normalizaçao', icon: <TransformSharp /> },
+    { label: 'Batimentos Cardiacos', icon: <MonitorHeartOutlined /> },
     { label: 'Reta', icon: <Timeline /> },
     { label: 'Circuferencia', icon: <Toll /> },
     { label: 'Transformações2D', icon: <ShapeLine /> },
     { label: 'Transformações3D', icon: <ShapeLine /> },
-    { label: 'Perspectiva', icon: <NaturePeople /> },
     { label: 'Cohen Surterland', icon: <AspectRatio /> },
+    { label: 'Perspectiva', icon: <NaturePeople /> },
     { label: 'Filtros', icon: <RecentActors /> },
-    { label: 'Gato de Arnold', icon: <Pets /> },
-    { label: 'Transformações imagem', icon: <BarChart /> },
-    { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
-    { label: 'operadores morfológicos', icon: <AppRegistration /> },
-    { label: 'Batimentos Cardiacos', icon: <MonitorHeartOutlined /> }
+    { label: 'Transformações imagem', icon: <Compare /> },
+    { label: 'Equalização de imagem', icon: <Balance /> },
+    { label: 'Gato de Arnold', icon: <Pets /> },
+    { label: 'Operadores morfológicos', icon: <AppRegistration /> }
+
   ]
 
   return (

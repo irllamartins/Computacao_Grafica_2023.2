@@ -1,18 +1,10 @@
-import { Alert, Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, Radio, RadioGroup, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Theme, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material"
-import { makeStyles } from "@mui/styles"
+import { Box, Button, Grid, Tab,  Tabs, Typography } from "@mui/material"
 import { useState } from "react"
-import { AddAPhoto, AutoFixHigh, Delete } from "@mui/icons-material"
 import Painel from "./Painel"
 import { isometrico, ortografica, pontoFuga, rotacaoY } from "./Operacao"
 
 
 // Fonte base: https://webglfundamentals.org/webgl/lessons/webgl-3d-orthographic.html
-
-const useStyles = makeStyles((theme: Theme) => ({
-  espacamento: {
-    padding: "5px"
-  }
-}))
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,17 +41,10 @@ function a11yProps(index: number) {
 const LARGURA = 1000
 const ALTURA = 500
 const Trasformacao3D = () => {
-  const classes = useStyles()
-  const [opcao, setOpcao] = useState("")
   const [value, setValue] = useState<number>(0)
-  const [entrada1, setEntrada1] = useState<number>(1)
-  const [entrada2, setEntrada2] = useState<number>(0)
-  const [entrada3, setEntrada3] = useState<number>(0)
-  const [alignment, setAlignment] = useState<string | null>()
-  const [rotate, setRotate] = useState<string | null>()
 
 
-  const [vertices, setVertices] = useState<number[]>([
+  const [vertices] = useState<number[]>([
     -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
     -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
     -1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1,
@@ -67,7 +52,7 @@ const Trasformacao3D = () => {
     -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1,
     -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
   ])
-  const [cores, setCores] = useState<number[]>([
+  const [cores] = useState<number[]>([
     5, 3, 7, 5, 3, 7, 5, 3, 7, 5, 3, 7,
     1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3,
     0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
@@ -75,15 +60,15 @@ const Trasformacao3D = () => {
     1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
     0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
   ])
-  const [indices, setIndices] = useState<number[]>([
+  const [indices] = useState<number[]>([
     0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7,
     8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
     16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
   ])
-  const [mov_matrix, setMov_matriz] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+  const [mov_matrix] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
   const [mov_matrixTransfomada, setMov_matrizTransfomada] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
 
-  const [view_matrix, setView_matrix] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+  const [view_matrix] = useState<number[]>([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)

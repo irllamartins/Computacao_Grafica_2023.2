@@ -1,4 +1,4 @@
-import { Alert, Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Theme, Typography } from "@mui/material"
+import { Alert, Button,  Grid, Theme, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { useState } from "react"
 import GeraMatriz from "./GeraMatriz"
@@ -20,11 +20,10 @@ export interface ObjetoImagem {
     maximoCor: number
 }
 
-const Equalizacao = () => {
+const Gato = () => {
     const classes = useStyles()
     const [imagem, setImagem] = useState<number[][]>([])
     const [imagemTransfomada, setImagemTransfomada] = useState<number[][]>([])
-    const [maximoCor, setMaximoCor] = useState<number>(0)
     const [success, setSuccess] = useState(false)
     const [quantidade, setQuantidade] = useState(0)
 
@@ -33,7 +32,8 @@ const Equalizacao = () => {
             <Typography variant="h5" align="center">Gato de Arnold</Typography>
         </Grid>
         <Grid item sm={12} xl={12} p={2}>
-            <Alert severity="info">Funciona para imagem de escala de cinza e com a altura e largura do mesmo tamanho</Alert>
+            <Alert severity="info">Funciona para imagem de escala de cinza e com a altura e largura do mesmo tamanho.
+             <strong>Teoria do caos</strong></Alert>
         </Grid>
         <Grid item container sm={6} direction="column" className={classes.imagemGrupo}>
             <Grid item >
@@ -46,7 +46,6 @@ const Equalizacao = () => {
                         GeraMatriz(e).then((matriz: ObjetoImagem) => {
                             setImagem(matriz.matriz)
                             setImagemTransfomada(matriz.matriz)
-                            setMaximoCor(matriz.maximoCor)
                             setSuccess(true)
                         }).catch(error => {
                             console.error(error)
@@ -82,7 +81,6 @@ const Equalizacao = () => {
                     startIcon={<AutoFixHigh />}
                     sx={{ margin: "2%" }}
                     onClick={() => {
-
                         setQuantidade(0)
                         let intervalId = setInterval(() => {
                             setSuccess(false)
@@ -115,4 +113,4 @@ const Equalizacao = () => {
         </Grid>
     </Grid>
 }
-export default Equalizacao      
+export default Gato      

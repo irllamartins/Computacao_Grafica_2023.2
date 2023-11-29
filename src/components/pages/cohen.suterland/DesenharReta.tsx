@@ -6,7 +6,7 @@ export const DesenharReta = (tamanho: number, retas: Reta[],  ctx: any) => {
   ctx.lineWidth = 2;
 
   retas.forEach((reta) => {
-    console.log(reta)
+   // console.log(reta)
     // Define a cor das linhas
     ctx.strokeStyle = reta.cor;
     

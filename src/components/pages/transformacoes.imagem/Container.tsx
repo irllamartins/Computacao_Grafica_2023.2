@@ -1,8 +1,8 @@
 import { Alert, Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Theme, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Grafico from "./Grafico"
-import { AddAPhoto, CircleNotifications, FlipCameraAndroidOutlined } from "@mui/icons-material"
+import { AddAPhoto,  FlipCameraAndroidOutlined } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
 import { dinamica, gamma, intencidadeGeral, linear, logaritmo, negativo } from "./Operacao"
@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Info: { [key: string]: string } = {
     "Linear": "y = ax + b: O 'a' ajusta o contraste e o 'b' o brilho",
     "Logaritma": "y = a*log(cinza + 1): Realça areas escuras da imagem",
-    "Intecidade geral": "Realçar ou suavizar a imagem",
-    "Negativo": "O negativo da imagem",
-    "Gamma": "S= cr^y. O C=1; 0< Y <1",
-    "Faixa dinamica": "Determina a faixa que a imagem vai ficar"
+    "Intecidade geral": "Realçar ou suavizar a imagem. F(r)=255 * (1 / (1 + e^(((r - w) / sigma) * -1)))).Por padrão o w = media e sigma = desvio padrão, mas é editável.",
+    "Negativo": "O negativo da imagem. S = maximoCinza - cinza",
+    "Gamma": "S= cr^y. O C=variavel que controla o brilho e o 0< Y <1",
+    "Faixa dinamica": "Redistribui a nova faixa que a imagem vai ficar. F(cinza) = (cinza -minimoCinza)/(maximoCinza-minimoCinza). Escurece a imagem"
 }
 enum AlgoritimosTipos {
     LINEAR = "Linear",
@@ -40,7 +40,7 @@ export interface ObjetoImagem {
     maximoCor: number
 }
 
-const Histograma = () => {
+const TransfomacaoImagem = () => {
     const classes = useStyles()
     const [tipoTransfomacao, setTipoTransfomacao] = useState<string>("")
     const [imagem, setImagem] = useState<number[][]>([])
@@ -49,7 +49,6 @@ const Histograma = () => {
     const [success, setSuccess] = useState(false)
     const [entrada1, setEntrada1] = useState<number>(1)
     const [entrada2, setEntrada2] = useState<number>(0)
-    const [entrada3, setEntrada3] = useState<number>(0)
 
     const tratamentoEntrada = (texto: any, setEntrada: any) => {
         if (texto === "") {
@@ -58,6 +57,18 @@ const Histograma = () => {
             setEntrada(parseFloat(texto.replace(/[a-zA-Z]/g, '').replace(/,/g, '.')))
         }
     }
+   
+    useEffect(() => {  
+          
+        if (tipoTransfomacao === AlgoritimosTipos.INTENCIDADE_GERAL) {
+            const n = imagem.flat().length
+            const media = imagem.length > 0 ? Math.round(imagem.flat().reduce((a, b) => a + b) / n ): 0
+            const desvioPadrao = imagem.length > 0 ? Math.round(Math.sqrt(imagem.flat().map(x => Math.pow(x - media, 2)).reduce((a, b) => a + b) / n)) : 0
+           
+            setEntrada1(media)
+            setEntrada2(desvioPadrao)
+        }
+    }, [tipoTransfomacao])   
 
     const entradas = (tipo: string) => {
         switch (tipo) {
@@ -98,12 +109,13 @@ const Histograma = () => {
                     </Grid>
                 </>
             case AlgoritimosTipos.INTENCIDADE_GERAL:
+                // valorPadraoIntencidade()
                 return <>
                     <Grid item sm={6} className={classes.espacamento}>
                         <TextField
                             id=""
                             variant="standard"
-                            label="Centro dos valores cinza"
+                            label="Largura dos valores cinza(W)"
                             size="small"
                             fullWidth
                             value={entrada1}
@@ -113,21 +125,11 @@ const Histograma = () => {
                         <TextField
                             id=""
                             variant="standard"
-                            label="Largura dos valores cinza"
+                            label="Largura dos valores cinza(sigma)"
                             size="small"
                             fullWidth
                             value={entrada2}
                             onChange={(e) => tratamentoEntrada(e.target.value, setEntrada2)} />
-                    </Grid>
-                    <Grid item sm={6} className={classes.espacamento}>
-                        <TextField
-                            id=""
-                            variant="standard"
-                            label="Largura dos valores cinza"
-                            size="small"
-                            fullWidth
-                            value={entrada3}
-                            onChange={(e) => tratamentoEntrada(e.target.value, setEntrada3)} />
                     </Grid>
                 </>
             case AlgoritimosTipos.GAMMA:
@@ -168,7 +170,7 @@ const Histograma = () => {
                 </>
         }
     }
-    const calcular = (tipo: string, matriz: number[][], variavel1: number, variavel2: number, variavel3: number) => {
+    const calcular = (tipo: string, matriz: number[][], variavel1: number, variavel2: number) => {
         switch (tipo) {
             case AlgoritimosTipos.LOGARITMICA:
                 setImagemTransfomada(logaritmo(matriz, variavel1))
@@ -180,7 +182,7 @@ const Histograma = () => {
                 setImagemTransfomada(negativo(matriz))
                 break
             case AlgoritimosTipos.INTENCIDADE_GERAL:
-                setImagemTransfomada(intencidadeGeral(matriz, variavel1, variavel2, variavel3))
+                setImagemTransfomada(intencidadeGeral(matriz, variavel1, variavel2))
                 break
             case AlgoritimosTipos.GAMMA:
                 setImagemTransfomada(gamma(matriz, variavel1, variavel2))
@@ -279,7 +281,7 @@ const Histograma = () => {
                         sx={{ padding: "4%" }}
                         disabled={!success}
                         onClick={() => {
-                            calcular(tipoTransfomacao, imagem, entrada1 || 0, entrada2 || 0, entrada3 || 0)
+                            calcular(tipoTransfomacao, imagem, entrada1 || 0, entrada2 || 0)
                             setSuccess(true)
                         }}>
                         Transfomar img
@@ -290,4 +292,4 @@ const Histograma = () => {
         </Grid>
     </Grid>
 }
-export default Histograma
+export default TransfomacaoImagem
