@@ -12,6 +12,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         alignItems: "center",
         justifyContent: "center",
         margin: "2%",
+    },
+    campos: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2px"
     }
 }))
 
@@ -26,10 +32,28 @@ export const Formato = {
 const Transformacoes: { [key: string]: any[][] } = {
     "Media": [[0.111, 0.111, 0.111], [0.111, 0.111, 0.111], [0.111, 0.111, 0.111]],
 }
-enum TiposTransformacao {
-    MEDIA = "Media",
-
+enum TiposTransformacaoBinaria {
+    DILATACAO = "Dilatação",
+    EROSAO = "Erosão",
+    ABERTURA = "Abertura",
+    FECHAMENTO = "Fechamento",
+    HITMISS = "Hit-Or-Miss",
+    CONTORNOEXTERNO = "Contorno externo",
+    CONTORNOINTERNO = "Contorno interno",
+    GRADIENTE = "Gradiente"
 }
+enum TiposTransformacaoCinza {
+    DILATACAO = "Dilatação",
+    EROSAO = "Erosão",
+    ABERTURA = "Abertura",
+    FECHAMENTO = "Fechamento",
+    CONTORNOEXTERNO = "Contorno externo",
+    CONTORNOINTERNO = "Contorno interno",
+    GRADIENTE = "Gradiente",
+    TOPHAT = "Top-Hat",
+    BOTTMHAT = "Bottom-Hat"
+}
+
 
 
 
@@ -40,29 +64,32 @@ const Morfologia = () => {
     const [imagemTransfomada, setImagemTransformada] = useState<number[][]>([])
     const [success, setSuccess] = useState(false)
     const [forma, setForma] = useState("Tons de cinza")
-    const [opcao, setOpcao] = useState<string>(TiposTransformacao.MEDIA)
-    const [elementoEstruturante, setElementoEstruturante] = useState(Array(3).fill(Array(3).fill(0)));
-    /*useEffect(() => {
-        if (forma === Formato.CINZA) {
-            setImagem(imagemCinza);
-        } else {
-            setImagem(imagemBinaria);
-        }
-    }, [forma, imagemCinza, imagemBinaria]);*/
-    const handleInputChange = (e: any, i: number, j: number) => {
+    const [opcao, setOpcao] = useState<string>()
+    const [elementoEstruturante, setElementoEstruturante] = useState(Array(3).fill(null).map(() => Array(3).fill(0)));
+    const [pixelAtivo, setPixelAtivo] = useState(Array(2).fill(0));
+
+    const atuallizarElementoEstruturante = (e: any, i: number, j: number) => {
         const novoElementoEstruturante = [...elementoEstruturante];
         novoElementoEstruturante[i][j] = Number(e.target.value);
         setElementoEstruturante(novoElementoEstruturante);
+        console.log("elementoEstruturante", elementoEstruturante)
+    };
+    const atualizarPixelAtivo = (e: any, i: number) => {
+        const novoPixelAtivo = [...pixelAtivo];
+        novoPixelAtivo[i] = Number(e.target.value);
+        setPixelAtivo(novoPixelAtivo);
+        console.log("novopixelAtivo", novoPixelAtivo)
     };
     const calcular = (label: any) => {
         switch (label) {
-            case TiposTransformacao.MEDIA:
+            /*case TiposTransformacao.MEDIA:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.MEDIA]))
-                break
+                break*/
             default:
                 return "Operação não selecionada"
         }
     }
+
     return <Grid container direction="row" alignContent="center" alignItems="center">
         <Grid item sm={12} xl={12} p={2}>
             <Typography variant="h5" align="center">Equalização de imagem</Typography>
@@ -94,7 +121,7 @@ const Morfologia = () => {
                         size="small"
                         startIcon={<AddAPhoto />}
                         sx={{ margin: "2%" }}>
-                        Adicionar imagem
+                        Selecionar imagem
                     </Button>
                 </label>
             </Grid>
@@ -126,7 +153,7 @@ const Morfologia = () => {
                 </FormControl>
 
             </Grid>
-            <Grid item >
+            <Grid container item direction="row">
                 <TextField
                     inputProps={{ style: { textAlign: 'center' } }}
                     select
@@ -137,7 +164,7 @@ const Morfologia = () => {
                     value={opcao}
                 >
                     {
-                        Object.values(TiposTransformacao).map(tipo => {
+                        Object.values(forma===Formato.CINZA?TiposTransformacaoCinza:TiposTransformacaoBinaria).map(tipo => {
                             return <MenuItem
                                 key={`menu_item_${tipo}`}
                                 value={tipo}
@@ -148,26 +175,40 @@ const Morfologia = () => {
                     }
                 </TextField>
             </Grid>
-            <Grid  item className={classes.imagemGrupo}>
-                <Grid container item spacing={1}>
-                    {elementoEstruturante.map((linha, i) => (
-                        <Grid container item key={i} spacing={1}>
-                            {linha.map((elemento: number, j: number) => (
-                                <Grid item key={j}>
-                                    <TextField
-                                        variant="outlined"
-                                        size="small" // para tornar o campo de texto menor
-                                        style={{ width: '50px' }} // para ajustar a largura do campo de texto
-                                        value={elemento}
-                                        onChange={(e) => handleInputChange(e, i, j)}
-                                    />
-                                </Grid>
-                            ))}
+            <Grid container item direction="row" className={classes.campos}>
+                <Typography variant="body2" align="center">Elemento Estruturante</Typography>
+                {elementoEstruturante.map((linha, i) => (
+                    <Grid container item key={i} className={classes.campos}>
+                        {linha.map((elemento: number, j: number) => (
+                            <Grid item key={j} className={classes.campos}>
+                                <TextField
+                                    variant="outlined"
+                                    size="small"
+                                    style={{ width: '50px', backgroundColor: (pixelAtivo[0] === i && pixelAtivo[1] === j) ? 'red' : 'white' }}
+                                    value={elemento}
+                                    onChange={(e) => atuallizarElementoEstruturante(e, i, j)}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                ))}
+            </Grid>
+            <Grid container item direction="row" className={classes.campos}>
+                <Typography variant="body2" align="center">Pixel ativo(lxc)</Typography>
+                    {pixelAtivo.map((linha, i) => (
+                        <Grid item key={i} className={classes.campos}>
+                            <TextField
+                                variant="outlined"
+                                size="small"
+                                style={{ width: '50px' }}
+                                value={linha}
+                                onChange={(e) => atualizarPixelAtivo(e, i)}
+                            />
                         </Grid>
                     ))}
-                </Grid>
-            </Grid> 
+            </Grid>
         </Grid>
+
         <Grid item container sm={4} direction="column" className={classes.imagemGrupo}>
 
             <Grid item>
@@ -188,4 +229,4 @@ const Morfologia = () => {
 
     </Grid >
 }
-export default Morfologia      
+export default Morfologia

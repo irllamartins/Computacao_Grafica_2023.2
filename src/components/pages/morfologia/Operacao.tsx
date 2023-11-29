@@ -6,7 +6,7 @@ export const transfomarBinario = (matriz: number[][],maximoCor:number) => {
     const cloneMatriz = _.cloneDeep(matriz)
     let soma = somaDeCinza(cloneMatriz)
     let media = soma/(cloneMatriz.length*cloneMatriz[0].length)
-    console.log("matriz",cloneMatriz)
+    //console.log("matriz",cloneMatriz)
     console.log("Media:",media, "| Soma",soma, "| divisao",cloneMatriz.length*cloneMatriz[0].length)
     for (let i = 0; i < cloneMatriz.length; i++) {
         for (let j = 0; j < cloneMatriz.length; j++) {
