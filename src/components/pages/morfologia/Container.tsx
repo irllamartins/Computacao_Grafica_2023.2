@@ -83,7 +83,6 @@ const Container = () => {
         switch (label) {
             case TiposTransformacao.MEDIA:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.MEDIA]))
-
                 break
             case TiposTransformacao.MEDIANA:
                 setImagemTransformada(aplicacaoMascaraMediana(imagem))
@@ -149,7 +148,7 @@ const Container = () => {
 
     return <Grid container>
         <Grid item sm={12} xl={12} p={2}>
-            <Typography variant="h5" align="center">Aplicação de filtros em imagem</Typography>
+            <Typography variant="h5" align="center">Operação Morfologica</Typography>
         </Grid>
         <Grid item container sm={4} className={classes.imagemGrupo}>
             <input

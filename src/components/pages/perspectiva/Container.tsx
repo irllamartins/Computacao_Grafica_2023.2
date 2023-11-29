@@ -87,7 +87,8 @@ const Trasformacao3D = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
-  }
+    setMov_matrizTransfomada(mov_matrix)
+  }      
 
 
 
@@ -110,8 +111,8 @@ const Trasformacao3D = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0} >
-        <Button onClick={() => { setMov_matrizTransfomada(rotacaoY(mov_matrix, 5)) }}>Rotacionar no Y</Button>
-          <Button onClick={() => setMov_matrizTransfomada(pontoFuga(mov_matrix,-6,-5))}>Transformar</Button>
+          <Button onClick={() => { setMov_matrizTransfomada(rotacaoY(mov_matrix, 5)) }}>Rotacionar no Y</Button>
+          <Button onClick={() => setMov_matrizTransfomada(pontoFuga(mov_matrix, 10, -5))}>Transformar</Button>
           <Painel altura={ALTURA} largura={LARGURA} vertices={vertices} cores={cores} indices={indices} mov_matrix={mov_matrixTransfomada} view_matrix={view_matrix} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>

@@ -54,6 +54,7 @@ import OperacaoImagem from '../pages/operacao.imagem/Container'
 import Histograma from '../pages/transformacoes.imagem/Container'
 import Equalizacao from '../pages/equalizacao/Container'
 import Batimentos from '../pages/batimentos/Conteiner'
+import Morfologia from '../pages/morfologia/Container'
 import Gato from '../pages/gato/Container'
 import Perspectiva from '../pages/perspectiva/Container'
 
@@ -138,19 +139,21 @@ const pages = (value: number) => {
     case 4:
       return <Transformacoes3D />
     case 5:
-      return <Perspectiva/>
+      return <Perspectiva />
     case 6:
       return <CohenSuterland />
     case 7:
       return <Filtros />
     case 8:
-      return <Gato/>
+      return <Gato />
     case 9:
       return <Histograma />
     case 10:
       return < Equalizacao />
     case 11:
       return <OperacaoImagem />
+    case 12:
+      return <Morfologia />
     case 13:
       return <Batimentos />
     default:
@@ -165,7 +168,7 @@ export default function PersistentDrawerLeft() {
 
   const [open, setOpen] = React.useState(false)
 
-  const [pagesNumber, setPagesNumber] = React.useState(3)
+  const [pagesNumber, setPagesNumber] = React.useState(12)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -188,8 +191,8 @@ export default function PersistentDrawerLeft() {
     { label: 'Transformações imagem', icon: <BarChart /> },
     { label: 'Equalização de imagem', icon: <Balance /> },
     { label: 'Operação de imagem', icon: <Iso /> },
-    { label: 'operadores morfológicos', icon: <AppRegistration /> },  
-    { label: 'Batimentos Cardiacos', icon: <MonitorHeartOutlined/> }
+    { label: 'operadores morfológicos', icon: <AppRegistration /> },
+    { label: 'Batimentos Cardiacos', icon: <MonitorHeartOutlined /> }
   ]
 
   return (

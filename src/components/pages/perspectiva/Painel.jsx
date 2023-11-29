@@ -13,6 +13,8 @@ const Painel = ({ vertices, cores, indices, mov_matrix ,view_matrix,largura,altu
       alert("Não suportado")
       return
     }
+    
+
     // Define a cor do fundo (R, G, B, A=1.0)
     ctx.clearColor(0.0, 0.0, 0.0, 1.0)
 
