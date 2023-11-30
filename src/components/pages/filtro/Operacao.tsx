@@ -57,7 +57,7 @@ const multiplicacao = (imagem: number[][], mascara: number[][]) => {
     for (let i = 0; i < mascara.length; i++) {
         for (let j = 0; j < mascara[0].length; j++) {
             let produto = imagem[i][j] * mascara[i][j]
-            resultado += produto
+            resultado += Math.round(produto)
         }
     }
     // trunca valores
@@ -127,6 +127,95 @@ export const magnetude = (filtroX: number[][], filtroY: number[][]) => {
         let array = []
         for (let j = 0; j < filtroX[0].length; j++) {
             array.push(Math.abs(filtroX[i][j])+Math.abs(filtroY[i][j]))
+        }
+        resultado.push(array)
+    }
+    return resultado;
+}
+
+export const magnetudePrewitt = (imagem: number[][]) => {
+    let resultado: number[][] = []
+    let filtroX: number[][] = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]
+    let filtroY: number[][] = [[-1, -1, -1], [0, 0, 0], [1, 1, 1]] 
+
+    for (let i = 0; i < imagem.length - 2; i++) {
+        let array = []
+        for (let j = 0; j < imagem[0].length - 2; j++) {
+            let sumX = 0
+            let sumY = 0
+            for (let k = 0; k < 3; k++) {
+                for (let l = 0; l < 3; l++) {
+                    sumX += imagem[i + k][j + l] * filtroX[k][l]
+                    sumY += imagem[i + k][j + l] * filtroY[k][l]
+                }
+            }
+            array.push(Math.abs(sumX) + Math.abs(sumY))
+        }
+        resultado.push(array)
+    }
+    return resultado;
+}
+export const magnetudeRobert = (imagem: number[][]) => {
+    let resultado: number[][] = []
+    let filtroX: number[][] = [[0, 0, 0], [0, 1, 0], [0, -1, 0]]
+    let filtroY: number[][] = [[0, 0, 0], [0, 1, -1], [0, 0, 0]]
+
+    for (let i = 0; i < imagem.length - 2; i++) {
+        let array = []
+        for (let j = 0; j < imagem[0].length - 2; j++) {
+            let sumX = 0
+            let sumY = 0
+            for (let k = 0; k < 3; k++) {
+                for (let l = 0; l < 3; l++) {
+                    sumX += imagem[i + k][j + l] * filtroX[k][l]
+                    sumY += imagem[i + k][j + l] * filtroY[k][l]
+                }
+            }
+            array.push(Math.abs(sumX) + Math.abs(sumY))
+        }
+        resultado.push(array)
+    }
+    return resultado;
+}
+export const magnetudeRobertCruzado = (imagem: number[][]) => {
+    let resultado: number[][] = []
+    let filtroX: number[][] = [[0, 0, 0], [0, 1, 0], [0, 0, -1]]
+    let filtroY: number[][] = [[0, 0, 0], [0, 0, 1], [0, -1, 0]]
+
+    for (let i = 0; i < imagem.length - 2; i++) {
+        let array = []
+        for (let j = 0; j < imagem[0].length - 2; j++) {
+            let sumX = 0
+            let sumY = 0
+            for (let k = 0; k < 3; k++) {
+                for (let l = 0; l < 3; l++) {
+                    sumX += imagem[i + k][j + l] * filtroX[k][l]
+                    sumY += imagem[i + k][j + l] * filtroY[k][l]
+                }
+            }
+            array.push(Math.abs(sumX) + Math.abs(sumY))
+        }
+        resultado.push(array)
+    }
+    return resultado;
+}
+export const magnetudeSobel = (imagem: number[][]) => {
+    let resultado: number[][] = []
+    let filtroX: number[][] = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]] // Filtro Prewitt X
+    let filtroY: number[][] = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] // Filtro Prewitt Y
+
+    for (let i = 0; i < imagem.length - 2; i++) {
+        let array = []
+        for (let j = 0; j < imagem[0].length - 2; j++) {
+            let sumX = 0
+            let sumY = 0
+            for (let k = 0; k < 3; k++) {
+                for (let l = 0; l < 3; l++) {
+                    sumX += imagem[i + k][j + l] * filtroX[k][l]
+                    sumY += imagem[i + k][j + l] * filtroY[k][l]
+                }
+            }
+            array.push(Math.abs(sumX) + Math.abs(sumY))
         }
         resultado.push(array)
     }

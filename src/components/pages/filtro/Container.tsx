@@ -17,7 +17,7 @@ import {
 } from "@mui/material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
-import Operacao, { aplicacaoMascaraMediana, magnetude } from "./Operacao"
+import Operacao, { aplicacaoMascaraMediana, magnetude, magnetudePrewitt,magnetudeRobert, magnetudeRobertCruzado,magnetudeSobel } from "./Operacao"
 import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -102,7 +102,7 @@ const Container = () => {
             case TiposTransformacao.ROBERT_MAGNETUDE:
                 const robert_x = Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_X])
                 const robert_y = Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_Y])
-                setImagemTransformada(magnetude(robert_x,robert_y))
+                setImagemTransformada(magnetudeRobert(imagem))
                 break
             case TiposTransformacao.ROBERT_CRUZADO_X:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_X]))
@@ -113,7 +113,8 @@ const Container = () => {
             case TiposTransformacao.ROBERT_CRUZADO_MAGNETUDE:
                 const robert_cruzado_x=Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_X])
                 const robert_cruzado_y=Operacao(imagem, Transformacoes[TiposTransformacao.ROBERT_CRUZADO_Y])
-                setImagemTransformada(magnetude(robert_cruzado_x,robert_cruzado_y))
+                //setImagemTransformada(magnetude(robert_cruzado_x,robert_cruzado_y))
+                setImagemTransformada(magnetudeRobertCruzado(imagem))
                 break
             case TiposTransformacao.PREWITT_X:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_X]))
@@ -124,7 +125,8 @@ const Container = () => {
             case TiposTransformacao.PREWITT_MAGNETUDE:
                 const prewitt_x = Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_X])
                 const prewitt_y = Operacao(imagem, Transformacoes[TiposTransformacao.PREWITT_Y])
-                setImagemTransformada(magnetude( prewitt_x, prewitt_y))
+                // setImagemTransformada(magnetude( prewitt_x, prewitt_y))
+                setImagemTransformada(magnetudePrewitt(imagem))
                 break
             case TiposTransformacao.SOBEL_X:
                 setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_X]))
@@ -135,7 +137,8 @@ const Container = () => {
             case TiposTransformacao.SOBEL_MAGNETUDE:
                 const sobel_x = Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_Y])
                 const sobel_y = Operacao(imagem, Transformacoes[TiposTransformacao.SOBEL_Y])
-                setImagemTransformada(magnetude( sobel_x, sobel_y))
+                // setImagemTransformada(magnetude( sobel_x, sobel_y))
+                setImagemTransformada(magnetudeSobel(imagem))
                 break
             case TiposTransformacao.ALTO_REFORCO:
                 const novaMatriz = Transformacoes[TiposTransformacao.ALTO_REFORCO]
