@@ -17,6 +17,7 @@ const Painel = ({ tamanho, aumentoLagura, pontoInicialX, pontoInicialY, pontoFin
   let y = tamanho / 2;
   let ondas=0
   let prevOndas=0
+  let add = 60      
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -31,23 +32,26 @@ const Painel = ({ tamanho, aumentoLagura, pontoInicialX, pontoInicialY, pontoFin
       // y = (1 - a) * pontoInicialY + a * pontoFinalY;
       //const x=20 y=130
 
-      if (x === ondas ) {
-       Batimento(x,y,ctx)
-       ondas+= 200
-      }
-      else if(x<=prevOndas||x>ondas){
-        ctx.fillRect(x, y, 2, 2);
-      }  
+      
      
+      if (x === ondas ) {
+        Batimento(x,y,ctx)
+        prevOndas= ondas
+        ondas+= 200
+        x+= add
+       }
+       if(x<=prevOndas||x<=ondas){
+         ctx.fillRect(x, y, 2, 2);
+       }  
 
-
-   
+   console.log(x)
 
       if (x > canvas.width) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         x += speed;
         x = 0;
         ondas=200
+        prevOndas=200
       }
 
       // Chama a função drawPoint novamente no próximo frame de animação

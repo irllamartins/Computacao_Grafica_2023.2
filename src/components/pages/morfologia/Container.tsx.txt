@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { AddAPhoto, Balance, ContactSupportOutlined } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
-import { aberturaImagem, aplicacaoMascaraBinaria/*, contornoExternoImagem, contornoInternoImagem*/, dilatarImagem, erodirImagem, /*fechamentoImagem, gradienteImagem,*/ transfomarBinario } from "./Operacao"
+import { aberturaImagem, aplicacaoMascaraBinaria, contornoExternoImagem, contornoInternoImagem, dilatarImagem, erodirImagem, fechamentoImagem, gradienteImagem, transfomarBinario } from "./Operacao"
 
 const useStyles = makeStyles((theme: Theme) => ({
     imagemGrupo: {
@@ -93,25 +93,25 @@ const Morfologia = () => {
                 setImagemTransformada(erodida)
                 break
             case TiposTransformacaoBinaria.ABERTURA:
-                //const abertura = aberturaImagem(imagemBinaria, elementoEstruturante)
+                const abertura = aberturaImagem(imagemBinaria, elementoEstruturante)
               //  console.log("t", abertura)
-             //   setImagemTransformada(abertura)
+                setImagemTransformada(abertura)
                 break
             case TiposTransformacaoBinaria.FECHAMENTO:
-               // const fechamento = fechamentoImagem(imagemBinaria, elementoEstruturante)
-               // setImagemTransformada(fechamento)
+                const fechamento = fechamentoImagem(imagemBinaria, elementoEstruturante)
+                setImagemTransformada(fechamento)
                 break
             case TiposTransformacaoBinaria.CONTORNOEXTERNO:
-              //  const externo = contornoExternoImagem(imagemBinaria, elementoEstruturante)
-               // setImagemTransformada(externo)
+                const externo = contornoExternoImagem(imagemBinaria, elementoEstruturante)
+                setImagemTransformada(externo)
                 break
             case TiposTransformacaoBinaria.CONTORNOINTERNO:
-               // const interno = contornoInternoImagem(imagemBinaria, elementoEstruturante)
-               // setImagemTransformada(interno)
+                const interno = contornoInternoImagem(imagemBinaria, elementoEstruturante)
+                setImagemTransformada(interno)
                 break
             case TiposTransformacaoBinaria.GRADIENTE:
-               // const gradiente = gradienteImagem(imagemBinaria, elementoEstruturante)
-               // setImagemTransformada(gradiente)
+                const gradiente = gradienteImagem(imagemBinaria, elementoEstruturante)
+                setImagemTransformada(gradiente)
                 break
             case TiposTransformacaoBinaria.HITMISS:
                 break
