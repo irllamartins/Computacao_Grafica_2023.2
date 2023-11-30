@@ -29,9 +29,6 @@ export const Formato = {
     CINZA: "Tons de cinza",
     BINARIA: "Binaria",
 }
-const Transformacoes: { [key: string]: any[][] } = {
-    "Media": [[0.111, 0.111, 0.111], [0.111, 0.111, 0.111], [0.111, 0.111, 0.111]],
-}
 enum TiposTransformacaoBinaria {
     DILATACAO = "Dilatação",
     EROSAO = "Erosão",

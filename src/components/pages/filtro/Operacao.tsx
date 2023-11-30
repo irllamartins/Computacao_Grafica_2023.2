@@ -67,7 +67,7 @@ const multiplicacao = (imagem: number[][], mascara: number[][]) => {
     else if (resultado < 0) {
         resultado = 0
     }
-
+    console.log("multiplicacao",resultado)
     return resultado
 }
 export const aplicacaoMascaraMediana = (imagemOriginal: number[][]) => {
@@ -123,7 +123,7 @@ export const magnetude = (filtroX: number[][], filtroY: number[][]) => {
 
     // console.log(mascara)
 
-    for (let i = 0; i < filtroY.length; i++) {
+    for (let i = 0; i < filtroX.length; i++) {
         let array = []
         for (let j = 0; j < filtroX[0].length; j++) {
             array.push(Math.abs(filtroX[i][j])+Math.abs(filtroY[i][j]))

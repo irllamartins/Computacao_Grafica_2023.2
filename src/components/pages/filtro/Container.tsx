@@ -28,7 +28,14 @@ const useStyles = makeStyles((theme: Theme) => ({
         margin: "2%",
     }
 }))
+const tratamentoEntrada = (texto: any, setEntrada: any) => {
 
+    if (texto === "") {
+        setEntrada(0);
+    } else {
+        setEntrada(Number(texto.replace(/[a-zA-Z]/g, '').replace(/^0+(?=[\d-])/, '').replace(/,/g, '.')))
+    }
+}
 const Transformacoes: { [key: string]: any[][] } = {
     "Media": [[0.111, 0.111, 0.111], [0.111, 0.111, 0.111], [0.111, 0.111, 0.111]],
     "Mediana": [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]],
@@ -64,9 +71,7 @@ enum TiposTransformacao {
     SOBEL_X = "Sobel X",
     SOBEL_Y = "Sobel Y",
     SOBEL_MAGNETUDE = "Sobel Magnetude",
-
 }
-
 
 const Container = () => {
     const classes = useStyles()
@@ -228,7 +233,7 @@ const Container = () => {
                         type="number"
                         size="small"
                         variant="standard"
-                        onChange={e => setReforco(parseInt(e.target.value, 10))}
+                        onChange={e => tratamentoEntrada(e.target.value, setReforco)}
                     /> : undefined
             }
             <Button
