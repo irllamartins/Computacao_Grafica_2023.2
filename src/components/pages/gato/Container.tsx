@@ -109,8 +109,8 @@ const Gato = () => {
 
         </Grid>
         <Grid item sm={12} md={12} xs={12}>
-            <Typography align="center">Quantidade de execução: {quantidade}</Typography>
+            {/*<Typography align="center">Quantidade de execução: {quantidade}</Typography>*/}
         </Grid>
     </Grid>
 }
-export default Gato      
+export default Gato

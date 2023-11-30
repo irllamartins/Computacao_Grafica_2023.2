@@ -63,6 +63,7 @@ const Morfologia = () => {
     const [forma, setForma] = useState("Tons de cinza")
     const [opcao, setOpcao] = useState<string>("")
     const [elementoEstruturante, setElementoEstruturante] = useState(Array(3).fill(null).map(() => Array(3).fill(0)))
+    // const [elementoEstruturante, setElementoEstruturante] = useState(Array(3).fill(0))
     const [pixelAtivo, setPixelAtivo] = useState(Array(2).fill(0));
 
     const atuallizarElementoEstruturante = (e: any, i: number, j: number) => {
@@ -225,7 +226,7 @@ const Morfologia = () => {
                                 <TextField
                                     variant="outlined"
                                     size="small"
-                                    style={{ width: '50px', backgroundColor: (pixelAtivo[0] === i && pixelAtivo[1] === j) ? 'red' : 'white' }}
+                                    style={{ width: '50px', backgroundColor: (pixelAtivo[0] === i && pixelAtivo[1] === j) ? 'green' : 'white' }}
                                     value={elemento}
                                     onChange={(e) => atuallizarElementoEstruturante(e, i, j)}
                                 />
