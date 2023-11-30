@@ -1,10 +1,10 @@
-import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Theme, Typography } from "@mui/material"
+import { Button, CircularProgress, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Theme, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { useState, useEffect } from "react"
-import { AddAPhoto, Balance } from "@mui/icons-material"
+import { AddAPhoto, Balance, ContactSupportOutlined } from "@mui/icons-material"
 import GeraImagem from "./GeraImagem"
 import GeraMatriz from "./GeraMatriz"
-import Operacao, { transfomarBinario } from "./Operacao"
+import { Operacao, aberturaImagem, aplicacaoMascaraBinaria, dilatarImagem, erodirImagem, transfomarBinario } from "./Operacao"
 
 const useStyles = makeStyles((theme: Theme) => ({
     imagemGrupo: {
@@ -51,7 +51,7 @@ enum TiposTransformacaoCinza {
     CONTORNOINTERNO = "Contorno interno",
     GRADIENTE = "Gradiente",
     TOPHAT = "Top-Hat",
-    BOTTMHAT = "Bottom-Hat"
+    BOTTOMHAT = "Bottom-Hat"
 }
 
 
@@ -64,8 +64,8 @@ const Morfologia = () => {
     const [imagemTransfomada, setImagemTransformada] = useState<number[][]>([])
     const [success, setSuccess] = useState(false)
     const [forma, setForma] = useState("Tons de cinza")
-    const [opcao, setOpcao] = useState<string>()
-    const [elementoEstruturante, setElementoEstruturante] = useState(Array(3).fill(null).map(() => Array(3).fill(0)));
+    const [opcao, setOpcao] = useState<string>("")
+    const [elementoEstruturante, setElementoEstruturante] = useState(Array(3).fill(null).map(() => Array(3).fill(0)))
     const [pixelAtivo, setPixelAtivo] = useState(Array(2).fill(0));
 
     const atuallizarElementoEstruturante = (e: any, i: number, j: number) => {
@@ -73,18 +73,61 @@ const Morfologia = () => {
         novoElementoEstruturante[i][j] = Number(e.target.value);
         setElementoEstruturante(novoElementoEstruturante);
         console.log("elementoEstruturante", elementoEstruturante)
-    };
+    }
     const atualizarPixelAtivo = (e: any, i: number) => {
         const novoPixelAtivo = [...pixelAtivo];
         novoPixelAtivo[i] = Number(e.target.value);
         setPixelAtivo(novoPixelAtivo);
         console.log("novopixelAtivo", novoPixelAtivo)
-    };
+    }
     const calcular = (label: any) => {
+
         switch (label) {
-            /*case TiposTransformacao.MEDIA:
-                setImagemTransformada(Operacao(imagem, Transformacoes[TiposTransformacao.MEDIA]))
-                break*/
+            case TiposTransformacaoBinaria.DILATACAO:
+                console.log("imagem", imagemBinaria)
+                const t = dilatarImagem(/*Operacao(*/imagemBinaria/*)*/, elementoEstruturante)
+                console.log("t", t)
+                setImagemTransformada(t)
+                break
+            case TiposTransformacaoBinaria.EROSAO:
+             //   console.log("imagem", imagemBinaria)
+                const erodida = erodirImagem(/*Operacao(*/imagemBinaria/*)*/, elementoEstruturante)
+                console.log("t", erodida )
+                setImagemTransformada(erodida )
+                break
+            case TiposTransformacaoBinaria.ABERTURA:
+                const abertura = aberturaImagem(/*Operacao(*/imagemBinaria/*)*/, elementoEstruturante)
+                console.log("t", abertura )
+                setImagemTransformada(abertura )
+                break
+            case TiposTransformacaoBinaria.FECHAMENTO:
+                break
+            case TiposTransformacaoBinaria.CONTORNOEXTERNO:
+                break
+            case TiposTransformacaoBinaria.CONTORNOINTERNO:
+                break
+            case TiposTransformacaoBinaria.GRADIENTE:
+                break
+            case TiposTransformacaoBinaria.HITMISS:
+                break
+            case TiposTransformacaoBinaria.DILATACAO:
+                break
+            case TiposTransformacaoCinza.EROSAO:
+                break
+            case TiposTransformacaoCinza.ABERTURA:
+                break
+            case TiposTransformacaoCinza.FECHAMENTO:
+                break
+            case TiposTransformacaoCinza.CONTORNOEXTERNO:
+                break
+            case TiposTransformacaoCinza.CONTORNOINTERNO:
+                break
+            case TiposTransformacaoCinza.GRADIENTE:
+                break
+            case TiposTransformacaoCinza.TOPHAT:
+                break;
+            case TiposTransformacaoCinza.BOTTOMHAT:
+                break
             default:
                 return "Operação não selecionada"
         }
@@ -92,7 +135,7 @@ const Morfologia = () => {
 
     return <Grid container direction="row" alignContent="center" alignItems="center">
         <Grid item sm={12} xl={12} p={2}>
-            <Typography variant="h5" align="center">Equalização de imagem</Typography>
+            <Typography variant="h5" align="center">Morfologia</Typography>
         </Grid>
         <Grid item container sm={4} direction="column" className={classes.imagemGrupo}>
             <Grid item >
@@ -103,9 +146,10 @@ const Morfologia = () => {
                     type="file"
                     onChange={e => {
                         GeraMatriz(e).then((matriz: ObjetoImagem) => {
+                            console.log("upload!", matriz)
                             setImagem(matriz.matriz)
                             setImagemBinaria(transfomarBinario(matriz.matriz, matriz.maximoCor))
-                            setSuccess(true)
+
                         }).catch(error => {
                             console.error(error)
                         })
@@ -164,7 +208,7 @@ const Morfologia = () => {
                     value={opcao}
                 >
                     {
-                        Object.values(forma===Formato.CINZA?TiposTransformacaoCinza:TiposTransformacaoBinaria).map(tipo => {
+                        Object.values(forma === Formato.CINZA ? TiposTransformacaoCinza : TiposTransformacaoBinaria).map(tipo => {
                             return <MenuItem
                                 key={`menu_item_${tipo}`}
                                 value={tipo}
@@ -195,17 +239,17 @@ const Morfologia = () => {
             </Grid>
             <Grid container item direction="row" className={classes.campos}>
                 <Typography variant="body2" align="center">Pixel ativo(lxc)</Typography>
-                    {pixelAtivo.map((linha, i) => (
-                        <Grid item key={i} className={classes.campos}>
-                            <TextField
-                                variant="outlined"
-                                size="small"
-                                style={{ width: '50px' }}
-                                value={linha}
-                                onChange={(e) => atualizarPixelAtivo(e, i)}
-                            />
-                        </Grid>
-                    ))}
+                {pixelAtivo.map((linha, i) => (
+                    <Grid item key={i} className={classes.campos}>
+                        <TextField
+                            variant="outlined"
+                            size="small"
+                            style={{ width: '50px' }}
+                            value={linha}
+                            onChange={(e) => atualizarPixelAtivo(e, i)}
+                        />
+                    </Grid>
+                ))}
             </Grid>
         </Grid>
 
@@ -215,12 +259,29 @@ const Morfologia = () => {
                 <Button
                     variant="contained"
                     fullWidth
-                    disabled={!success}
+                    disabled={ imagem.length === 0}
                     size="small"
                     startIcon={<Balance />}
                     sx={{ margin: "2%" }}
                     onClick={() => {
-                    }}>Operar</Button>
+                        if (opcao!=="") {
+                            setSuccess(true)
+                       //     console.log("loading",success)
+                            calcular(opcao)
+                            setSuccess(false)
+                        //    console.log("loadingF",success)
+                        }
+                    }}
+                >Operar
+                    {success && (
+                        <CircularProgress
+                            size={24}
+                            sx={{
+                                position: 'absolute',
+                                left: '45%',
+                            }}
+                        />
+                    )}</Button>
             </Grid>
             <Grid item>
                 <GeraImagem matriz={imagemTransfomada} altura={imagemTransfomada[0]?.length || 1} largura={imagemTransfomada?.length || 1} />
