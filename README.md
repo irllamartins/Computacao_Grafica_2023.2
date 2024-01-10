@@ -1,3 +1,12 @@
+# Desenvolvido para o projeto final de disciplina de Computação Grafica
+
+## Batiemnto cardiaco
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/e6a64a49-1edf-4c2d-85a6-8b8d81aa7c43)
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
