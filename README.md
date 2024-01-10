@@ -34,6 +34,8 @@
 ## Gato Arnold
 ![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/9091256b-2cf4-4754-9d0e-02dfdee0a6ce)
 
+## Transformações de imagens
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/d1255b14-0dcd-4dda-9702-b51b25e38e82)
 
 # Getting Started with Create React App
 
