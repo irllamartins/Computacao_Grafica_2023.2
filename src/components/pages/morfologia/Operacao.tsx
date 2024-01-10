@@ -162,12 +162,58 @@ const erodir = (imagem: number[][], mascara: number[][], pixelAtivo: number[]) =
     }
     return imagemErodida;
 }
+const diferencaImagem = (imagemA: number[][], imagemB: number[][]): number[][] => {
+    let imagemNova: number[][] = Array(imagemA[0].length).fill(null).map(() => Array(imagemA.length).fill(0))
+    const pixelAtivo = 255
+    const pixelDesativado = 0
+    for (let i = 0; i < imagemA.length; i++) {
+        for (let j = 0; j < imagemA[0].length; j++) {
+            if (imagemA[i][j] === imagemB[i][j] && imagemB[i][j] === pixelAtivo) {
+                imagemNova[i][j] = pixelDesativado
+            }
+        }
+    }
+    return imagemNova
+}
 
 export const aberturaImagem = (imagem: number[][], mascara: number[][]) => {
-    let imagemParcial: number[][] = _.cloneDeep(imagem); // Cria uma cópia da imagem original
+    // let imagemParcial: number[][] = _.cloneDeep(imagem); // Cria uma cópia da imagem original
+    let imagemParcial: number[][] = Array(imagem[0].length).fill(null).map(() => Array(imagem.length).fill(0))
+
     imagemParcial = erodirImagem(imagem, mascara)
     const imagemFinal = dilatarImagem(imagemParcial, mascara)
-    return imagemFinal 
+    return imagemFinal
+}
+
+export const fechamentoImagem = (imagem: number[][], mascara: number[][]) => {
+    let imagemParcial: number[][] = _.cloneDeep(imagem) // Cria uma cópia da imagem original
+    imagemParcial = dilatarImagem(imagem, mascara)
+    const imagemFinal = erodirImagem(imagemParcial, mascara)
+    return imagemFinal
+}
+
+
+export const contornoExternoImagem = (imagem: number[][], mascara: number[][]) => {
+    let imagemParcial: number[][] = _.cloneDeep(imagem) // Cria uma cópia da imagem original
+    imagemParcial = dilatarImagem(imagem, mascara)
+    const imagemFinal = diferencaImagem(imagemParcial, imagem)
+    return imagemFinal
+}
+export const contornoInternoImagem = (imagem: number[][], mascara: number[][]) => {
+    let imagemParcial: number[][] = _.cloneDeep(imagem) // Cria uma cópia da imagem original
+    imagemParcial = erodirImagem(imagem, mascara)
+    const imagemFinal = diferencaImagem(imagem, imagemParcial)
+    return imagemFinal
+}
+
+export const gradienteImagem = (imagem: number[][], mascara: number[][]) => {
+    let imagemdilatada: number[][] = Array(imagem[0].length).fill(null).map(() => Array(imagem.length).fill(0))
+    let imagemErodida: number[][] = Array(imagem[0].length).fill(null).map(() => Array(imagem.length).fill(0))
+
+    imagemdilatada = dilatarImagem(imagem, mascara)
+    imagemErodida = erodirImagem(imagem, mascara)
+    const imagemFinal = diferencaImagem(imagemdilatada, imagemErodida)
+    return imagemFinal
 }
 /*
 // captura uma matriz 3x3
@@ -186,6 +232,7 @@ const minimatriz = (imagem: number[][], mascara: number[][], inicio_x: number, i
 
     return miniImagem
 }*/
+
 
 const adicionarBorda = (matriz: number[][]) => {
     const cloneMatriz = _.cloneDeep(matriz)
