@@ -3,7 +3,7 @@
 #### Observação: O seguinte projeto contem bugs que não vão ser solucionados. Ao utiliza-lo estará ciente disso
 
 
-## Batiemnto cardiaco
+## Batimento cardiaco
 ![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/e6a64a49-1edf-4c2d-85a6-8b8d81aa7c43)
 
 ## Retas 
