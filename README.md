@@ -1,10 +1,38 @@
 # Desenvolvido para o projeto final de disciplina de Computação Grafica
 
+#### Observação: O seguinte projeto contem bugs que não vão ser solucionados. Ao utiliza-lo estará ciente disso
+
+
 ## Batiemnto cardiaco
 ![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/e6a64a49-1edf-4c2d-85a6-8b8d81aa7c43)
 
+## Retas 
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/c7e2b6c4-9be0-46db-b4c8-9149cd37a69d)
 
+## Transformação 2D
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/831a8d70-5bdc-4035-be65-6ba87bd92d3d)
 
+## Transformação 3D
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/bf8afc60-2672-4654-9d29-b5a7789b1d3f)
+
+## Cohen Suterland 
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/8112cec6-dc6b-4715-ae19-13e02b99ecf3)
+
+## Perspectivas
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/6c913a22-9745-4d9a-8e98-531f2f62901e)
+
+## Operações com imagens
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/c73de66c-6e78-4117-8ef0-a95e3f3aaa65)
+
+## Aplicação  de filtros de imagem
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/d14c89ca-90f1-425c-af85-754d72a91e32)
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/d117a560-b9f4-4e22-89aa-53915ba5d496)
+
+## Equalizar imagem
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/c4c3f8ec-d523-42be-a6f2-213be1cf7b03)
+
+## Gato Arnold
+![image](https://github.com/irllamartins/Computacao_Grafica_2023.2/assets/39415559/9091256b-2cf4-4754-9d0e-02dfdee0a6ce)
 
 
 # Getting Started with Create React App
